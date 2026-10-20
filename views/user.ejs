@@ -1,0 +1,53 @@
+<%- include('partials/header', {title: 'Team Members - CSCE 331 Lab Activity'}) %>
+
+<div class="card">
+    <h2>Team Members (Queried from PostgreSQL <code>teammembers</code> Table)</h2>
+    <p>This page demonstrates querying our PostgreSQL database via <code>pg.Pool</code> and dynamically rendering the results with EJS.</p>
+
+    <!-- Slide-compliant output format -->
+    <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 1.25rem; margin: 1.25rem 0;">
+        <h3 style="color: #475569; margin-bottom: 0.75rem; font-size: 1.1rem;">Slide Output Format (TAs / Team):</h3>
+        <% for (var i in teammembers) { %>
+            <p style="margin-bottom: 0.4rem; font-family: monospace;">
+                <strong>Name:</strong> <%= teammembers[i].student_name %>, 
+                <strong>Section:</strong> <%= teammembers[i].section %>, 
+                <strong>Favorite Movie:</strong> <%= teammembers[i].favorite_movie %>,
+                <strong>Role:</strong> <%= teammembers[i].role %>
+            </p>
+        <% } %>
+    </div>
+
+    <!-- Structured Table View -->
+    <h3 style="margin-top: 1.5rem; color: #1e293b;">Structured Database View</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Student Name</th>
+                <th>Section</th>
+                <th>Role</th>
+                <th>Favorite Movie</th>
+                <th>UIN</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (var i in teammembers) { %>
+                <tr>
+                    <td><strong><%= teammembers[i].id %></strong></td>
+                    <td><%= teammembers[i].student_name %></td>
+                    <td><span class="badge badge-info">Sec <%= teammembers[i].section %></span></td>
+                    <td><%= teammembers[i].role %></td>
+                    <td><%= teammembers[i].favorite_movie %></td>
+                    <td><code><%= teammembers[i].uin %></code></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 1.5rem;">
+        <a href="/" class="btn">&larr; Back to Home</a>
+        <a href="/products" class="btn" style="background-color: #2c3e50; margin-left: 0.5rem;">View POS Products &rarr;</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

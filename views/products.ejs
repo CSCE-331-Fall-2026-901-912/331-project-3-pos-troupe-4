@@ -1,0 +1,32 @@
+<%- include('partials/header', {title: 'POS Products - CSCE 331 Lab Activity'}) %>
+
+<div class="card">
+    <h2>POS Menu Products (Queried from PostgreSQL <code>products</code> Table)</h2>
+    <p>This demonstrates live database access to our team's Point of Sale database (<code>troupe_04_db</code>), pulling real menu items and base pricing.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Product Name</th>
+                <th>Price ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (var i = 0; i < products.length; i++) { %>
+                <tr>
+                    <td><%= i + 1 %></td>
+                    <td><strong><%= products[i].product_name %></strong></td>
+                    <td>$<%= Number(products[i].price).toFixed(2) %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 1.5rem;">
+        <a href="/" class="btn">&larr; Back to Home</a>
+        <a href="/user" class="btn" style="background-color: #2c3e50; margin-left: 0.5rem;">View Team Members &rarr;</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

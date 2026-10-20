@@ -1,0 +1,36 @@
+# ==============================================================================
+# Best Practice .gitignore for CSCE 331 Web App & Database Connection
+# ==============================================================================
+
+# 1. Dependency directories (heavy binaries and installed packages)
+node_modules/
+jspm_packages/
+
+# 2. Sensitive database credentials and environment files
+# NEVER commit credentials, API keys, or database passwords to source control
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 3. Server and npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# 4. OS and editor metadata
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 5. Build outputs / coverage
+dist/
+coverage/
+.nyc_output/
