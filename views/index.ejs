@@ -1,45 +1,146 @@
-<%- include('partials/header', {title: 'Home - CSCE 331 Lab Activity'}) %>
-
-<div class="card">
-    <h2>Welcome to <%= name %>'s Homepage</h2>
-    <p>This web application is built for the <strong>CSCE 331 Lab Activity</strong> demonstrating full-stack server-side development with Node.js, Express.js, PostgreSQL (via <code>pg.Pool</code>), and EJS templating.</p>
-</div>
-
-<div class="card">
-    <h2>Lab Evidence & Checklist for TA Review</h2>
-    <div class="grid">
-        <div class="grid-item">
-            <span class="badge badge-success">Task 1 Verified</span>
-            <h3 style="margin-top: 0.5rem;">PostgreSQL Connection</h3>
-            <p>Node.js connects securely to PostgreSQL using connection pooling (<code>pg.Pool</code>) and environment variables via <code>dotenv</code>.</p>
-            <a href="/user" class="btn">View /user Route</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSCE 331 - Troupe 04 POS Web App</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        h1 {
+            color: #500000; /* Texas A&M Maroon */
+            margin-top: 0;
+            font-size: 1.6rem;
+        }
+        h2 {
+            color: #334155;
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        .status-badge {
+            display: inline-block;
+            background-color: #dcfce7;
+            color: #166534;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+        }
+        th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: #f8fafc;
+        }
+        code {
+            background-color: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>CSCE 331 &bull; Troupe 04 POS Web App</h1>
+            <div class="status-badge">&bull; Database Connected: <%= dbName %> (<%= dbHost %>)</div>
+            <p style="margin: 0; color: #64748b; font-size: 0.95rem;">
+                Deployed Node.js + Express web application connected live to remote PostgreSQL database.
+            </p>
         </div>
 
-        <div class="grid-item">
-            <span class="badge badge-success">Task 2 Verified</span>
-            <h3 style="margin-top: 0.5rem;">.gitignore Best Practice</h3>
-            <p>Database credentials in <code>.env</code> and dependencies in <code>node_modules/</code> are strictly excluded from source control. A sanitized <code>.env.example</code> is tracked.</p>
-            <p style="margin-top: 0.5rem; font-family: monospace; font-size: 0.85rem; color: #4b5563;">git status &rarr; .env is untracked &amp; ignored</p>
+        <div class="card">
+            <h2>Team Members (Queried from <code>teammembers</code>)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Section</th>
+                        <th>Role</th>
+                        <th>Favorite Movie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i = 0; i < teammembers.length; i++) { %>
+                        <tr>
+                            <td><strong><%= teammembers[i].student_name %></strong></td>
+                            <td>Section <%= teammembers[i].section %></td>
+                            <td><%= teammembers[i].role %></td>
+                            <td><%= teammembers[i].favorite_movie %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
         </div>
 
-        <div class="grid-item">
-            <span class="badge badge-success">Task 3 Verified</span>
-            <h3 style="margin-top: 0.5rem;">Hosted Code Docs</h3>
-            <p>Interactive Javadoc documentation for the POS project is actively hosted and viewable in the browser.</p>
-            <a href="/docs" target="_blank" class="btn">Browse Javadoc &rarr;</a>
+        <div class="card">
+            <h2>POS Menu Products (Queried from <code>products</code>)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i = 0; i < products.length; i++) { %>
+                        <tr>
+                            <td><%= i + 1 %></td>
+                            <td><%= products[i].product_name %></td>
+                            <td><strong>$<%= Number(products[i].price).toFixed(2) %></strong></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
         </div>
+
+        <footer>
+            CSCE 331 &bull; Fall 2026 &bull; Troupe 04 &bull; Hosted on Render
+        </footer>
     </div>
-</div>
-
-<div class="card">
-    <h2>Database Live Data Endpoints</h2>
-    <p>Select any route below to query the live <code>troupe_04_db</code> PostgreSQL instance:</p>
-    <ul style="margin-left: 1.5rem; margin-top: 0.75rem;">
-        <li><a href="/user" style="font-weight: 600;">/user</a>: Queries the <code>teammembers</code> table (Student Name, Section, Role, Favorite Movie).</li>
-        <li><a href="/products" style="font-weight: 600;">/products</a>: Queries the <code>products</code> table from our POS database.</li>
-        <li><a href="/inventory" style="font-weight: 600;">/inventory</a>: Queries the <code>inventory</code> table showing live ingredient stock levels.</li>
-        <li><a href="/docs" target="_blank" style="font-weight: 600;">/docs</a>: Serves the full Javadoc suite generated from our POS source code.</li>
-    </ul>
-</div>
-
-<%- include('partials/footer') %>
+</body>
+</html>
