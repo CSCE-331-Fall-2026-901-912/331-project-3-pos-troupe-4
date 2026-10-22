@@ -69,6 +69,21 @@ app.get('/products', (req, res) => {
         });
 });
 
+// Route: POS Inventory page (queries PostgreSQL inventory table)
+app.get('/inventory', (req, res) => {
+    pool
+        .query('SELECT item_name, amount FROM inventory ORDER BY item_name ASC;')
+        .then(query_res => {
+            const inventory = query_res.rows;
+            console.log(`[GET /inventory] Retrieved ${inventory.length} inventory items from PostgreSQL.`);
+            res.render('inventory', { inventory: inventory });
+        })
+        .catch(err => {
+            console.error('[GET /inventory] Database query error:', err);
+            res.status(500).send('Database Error: ' + err.message);
+        });
+});
+
 // Start the HTTP server
 app.listen(port, () => {
     console.log(`====================================================`);
