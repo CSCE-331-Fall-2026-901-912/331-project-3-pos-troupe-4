@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: csce331-pos-troupe4
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: PSQL_HOST
+        value: csce-315-db.engr.tamu.edu
+      - key: PSQL_USER
+        value: troupe_04
+      - key: PSQL_DATABASE
+        value: troupe_04_db
+      - key: PSQL_PORT
+        value: "5432"
+      - key: PSQL_PASSWORD
+        sync: false # Prompt for password in Render dashboard to avoid committing secret
