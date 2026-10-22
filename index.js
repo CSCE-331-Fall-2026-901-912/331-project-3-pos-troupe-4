@@ -26,14 +26,14 @@ process.on('SIGINT', function() {
     process.exit(0);
 });
 
-// Root Route: Queries live data from PostgreSQL and renders simple overview
+// Root Route: Queries live inventory and menu products from PostgreSQL
 app.get('/', async (req, res) => {
     try {
-        const teamResult = await pool.query('SELECT * FROM teammembers ORDER BY id ASC;');
-        const productResult = await pool.query('SELECT product_name, price FROM products ORDER BY product_name ASC LIMIT 10;');
+        const inventoryResult = await pool.query('SELECT item_name, amount FROM inventory ORDER BY item_name ASC;');
+        const productResult = await pool.query('SELECT product_name, price FROM products ORDER BY product_name ASC;');
         
         res.render('index', {
-            teammembers: teamResult.rows,
+            inventory: inventoryResult.rows,
             products: productResult.rows,
             dbName: process.env.PSQL_DATABASE || 'troupe_04_db',
             dbHost: process.env.PSQL_HOST || 'csce-315-db.engr.tamu.edu'

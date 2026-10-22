@@ -93,23 +93,21 @@
         </div>
 
         <div class="card">
-            <h2>Team Members (Queried from <code>teammembers</code>)</h2>
+            <h2>Current Inventory Stock (Queried from <code>inventory</code>)</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Section</th>
-                        <th>Role</th>
-                        <th>Favorite Movie</th>
+                        <th>#</th>
+                        <th>Item / Ingredient</th>
+                        <th>Units in Stock</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <% for (var i = 0; i < teammembers.length; i++) { %>
+                    <% for (var i = 0; i < inventory.length; i++) { %>
                         <tr>
-                            <td><strong><%= teammembers[i].student_name %></strong></td>
-                            <td>Section <%= teammembers[i].section %></td>
-                            <td><%= teammembers[i].role %></td>
-                            <td><%= teammembers[i].favorite_movie %></td>
+                            <td><%= i + 1 %></td>
+                            <td><strong><%= inventory[i].item_name %></strong></td>
+                            <td><code><%= inventory[i].amount %></code></td>
                         </tr>
                     <% } %>
                 </tbody>
