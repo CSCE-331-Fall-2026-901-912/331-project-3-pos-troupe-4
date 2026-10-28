@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// ManagerView data
+// get ManagerView data
 app.get('/api/manager', async (req, res) => {
     try {
         const data = await Model.getManagerData();
@@ -19,6 +19,29 @@ app.get('/api/manager', async (req, res) => {
         res.status(500).json({
             error: 'Failed to load manager data'
         });
+    }
+});
+
+//add inventory item
+app.post('/api/inventory', async (req, res) => {
+    try {
+        const { itemName, initialStock, supplierCost, isAddable } = req.body;
+
+        const success = await Model.addInventoryItem(
+            itemName,
+            initialStock,
+            supplierCost,
+            isAddable
+        );
+
+        if (!success) {
+            return res.status(400).json({ error: 'Invalid item name' });
+        }
+
+        res.status(201).json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to add inventory item' });
     }
 });
 

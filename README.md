@@ -10,7 +10,7 @@ A full-stack Node.js and Express.js web application connecting to a remote Postg
 - **Connection Pool**: Uses `pg.Pool` with SSL support (`ssl: { rejectUnauthorized: false }`) to manage connections efficiently without reconnect overhead.
 - **Environment Configuration**: Database connection variables (`PSQL_HOST`, `PSQL_USER`, `PSQL_DATABASE`, `PSQL_PASSWORD`, `PSQL_PORT`) are loaded safely using `dotenv`.
 - **Graceful Shutdown**: Listens for `SIGINT` (Ctrl+C) to gracefully terminate database connections via `pool.end()`.
-- **EJS Templating Engine**: Dynamic server-side rendering for `/user` (querying the `teammembers` table) and `/products` (querying the live POS `products` table).
+
 
 ### 2. Demonstrated Best Practice Usage of `.gitignore`
 - **Protected Secrets**: Sensitive database credentials in `.env` are strictly excluded from git tracking via `.gitignore`.
@@ -35,11 +35,7 @@ npm install
 ```
 
 ### 2. Set Up Environment Variables
-Copy the template and configure your database credentials:
-```bash
-cp .env.example .env
-# Edit .env with your PostgreSQL credentials
-```
+
 
 ### 3. Start the Server
 ```bash
