@@ -1,7 +1,7 @@
 {
   "name": "csce331_web_app",
   "version": "1.0.0",
-  "description": "",
+  "description": "A full-stack Node.js and Express.js web application connecting to a remote PostgreSQL database, built for CSCE 331 (Fall 2026, Troupe 04).",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -16,5 +16,13 @@
     "ejs": "^7.0.2",
     "express": "^5.3.0",
     "pg": "^8.23.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSCE-331-Fall-2026-901-912/331-project-3-pos-troupe-4.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CSCE-331-Fall-2026-901-912/331-project-3-pos-troupe-4/issues"
+  },
+  "homepage": "https://github.com/CSCE-331-Fall-2026-901-912/331-project-3-pos-troupe-4#readme"
 }
