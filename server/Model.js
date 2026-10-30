@@ -281,21 +281,230 @@ async function addInventoryItem(itemName, initialStock, supplierCost, isAddable)
     }
 }
 
-//adds a complete new menu item
-async function addProductWithItems(productName, price, constituentItems, newItemsStock) {
+// Adds a product and links its constituent items
+async function addProductWithItems(
+    productName,
+    price,
+    constituentItems,
+    newItemsStock = null
+) {
+    if (!productName || !productName.trim()) {
+        return false;
+    }
 
+    if (!Number.isFinite(Number(price)) || Number(price) < 0) {
+        return false;
+    }
+
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        const trimmedName = productName.trim();
+
+        // 1. Insert or update product
+        await client.query(
+            `INSERT INTO products (product_name, price)
+             VALUES ($1, $2)
+             ON CONFLICT (product_name)
+             DO UPDATE SET price = EXCLUDED.price`,
+            [trimmedName, price]
+        );
+
+        // 2. Process constituent items
+        if (Array.isArray(constituentItems)) {
+            for (const itemName of constituentItems) {
+                if (!itemName || !itemName.trim()) continue;
+
+                const trimmedItem = itemName.trim();
+
+                // Check if item already exists
+                const checkResult = await client.query(
+                    `SELECT COUNT(*)
+                     FROM items
+                     WHERE LOWER(item_name) = LOWER($1)`,
+                    [trimmedItem]
+                );
+
+                const exists = Number(checkResult.rows[0].count) > 0;
+
+                // 3. Create missing item and inventory record
+                if (!exists) {
+                    const stockAmt =
+                        newItemsStock?.[trimmedItem] ?? 100;
+
+                    await client.query(
+                        `INSERT INTO items
+                            (item_name, price, is_addable)
+                         VALUES ($1, 0.25, false)
+                         ON CONFLICT DO NOTHING`,
+                        [trimmedItem]
+                    );
+
+                    await client.query(
+                        `INSERT INTO inventory (item_name, amount)
+                         VALUES ($1, $2)
+                         ON CONFLICT (item_name)
+                         DO UPDATE SET amount = EXCLUDED.amount`,
+                        [trimmedItem, stockAmt]
+                    );
+                }
+
+                // 4. Link item to product
+                await client.query(
+                    `INSERT INTO products_items
+                        (item_name, product_name)
+                     VALUES ($1, $2)
+                     ON CONFLICT DO NOTHING`,
+                    [trimmedItem, trimmedName]
+                );
+            }
+        }
+
+        await client.query('COMMIT');
+        return true;
+
+    } catch (err) {
+        await client.query('ROLLBACK');
+        console.error('Error adding product with items:', err);
+        return false;
+
+    } finally {
+        client.release();
+    }
 }
 
-async function setProductConstituents(
+// Replaces constituent items for an existing product
+async function setProductConstituentItems(productName, constituentItems) {
+    if (!productName || !productName.trim()) {
+        return false;
+    }
 
-) {
+    const client = await pool.connect();
 
+    try {
+        await client.query('BEGIN');
+
+        const trimmedName = productName.trim();
+
+        // Remove existing constituent items
+        await client.query(
+            `DELETE FROM products_items
+             WHERE LOWER(product_name) = LOWER($1)`,
+            [trimmedName]
+        );
+
+        // Insert new constituent items
+        if (Array.isArray(constituentItems)) {
+            for (const item of constituentItems) {
+                if (!item || !item.trim()) continue;
+
+                await client.query(
+                    `INSERT INTO products_items
+                        (item_name, product_name)
+                     VALUES ($1, $2)
+                     ON CONFLICT DO NOTHING`,
+                    [item.trim(), trimmedName]
+                );
+            }
+        }
+
+        await client.query('COMMIT');
+        return true;
+
+    } catch (err) {
+        await client.query('ROLLBACK');
+        console.error('Error updating constituent items:', err);
+        return false;
+
+    } finally {
+        client.release();
+    }
 }
 
-async function placeOrder(
+// Saves order details, records add-ins, and updates inventory
+async function placeOrder(order) {
+    if (!order || !Array.isArray(order.items) || order.items.length === 0) {
+        console.error('Cannot process checkout with null or empty cart!');
+        return false;
+    }
 
-) {
+    const client = await pool.connect();
 
+    try {
+        await client.query('BEGIN');
+
+        // Default invalid/guest employee IDs to 0
+        const employeeId = order.employeeId < 0 ? 0 : order.employeeId;
+        const customerName = order.customerName || 'Guest';
+
+        // A. Insert order history record
+        const orderResult = await client.query(
+            `INSERT INTO order_history
+                (employee_id, total_price, customer_name, date_time)
+             VALUES ($1, $2, $3, CURRENT_TIMESTAMP)
+             RETURNING order_id`,
+            [employeeId, order.totalPrice, customerName]
+        );
+
+        const orderId = orderResult.rows[0].order_id;
+
+        // B. Insert products, add-ins, and deduct inventory
+        for (const product of order.items) {
+
+            // Link product to order
+            await client.query(
+                `INSERT INTO orders_products (order_id, product_name)
+                 VALUES ($1, $2)`,
+                [orderId, product.productName]
+            );
+
+            // Record additions in add_ins
+            if (Array.isArray(product.selectAddOns)) {
+                for (const custom of product.selectAddOns) {
+                    if (custom.isAddition) {
+                        await client.query(
+                            `INSERT INTO add_ins (order_id, item_name)
+                             SELECT $1, $2
+                             WHERE EXISTS (
+                                 SELECT 1 FROM items
+                                 WHERE LOWER(item_name) = LOWER($2)
+                             )`,
+                            [orderId, custom.itemName]
+                        );
+                    }
+                }
+            }
+
+            // Deduct inventory for each final constituent item
+            if (Array.isArray(product.finalConstituentItems)) {
+                for (const ingredient of product.finalConstituentItems) {
+                    if (!ingredient || !ingredient.trim()) continue;
+
+                    await client.query(
+                        `UPDATE inventory
+                         SET amount = GREATEST(0, amount - 1)
+                         WHERE LOWER(item_name) = LOWER($1)`,
+                        [ingredient.trim()]
+                    );
+                }
+            }
+        }
+
+        await client.query('COMMIT');
+
+        console.log(`Order #${orderId} saved successfully!`);
+        return true;
+
+    } catch (err) {
+        await client.query('ROLLBACK');
+        console.error('Error saving order:', err);
+        return false;
+
+    } finally {
+        client.release();
+    }
 }
 
 
@@ -335,8 +544,9 @@ module.exports = {
     removeItem,
     addInventoryItem,
     addProductWithItems,
-    setProductConstituents,
+    setProductConstituentItems,
     placeOrder,
+    
 
     // Screen-level data
     getManagerData
