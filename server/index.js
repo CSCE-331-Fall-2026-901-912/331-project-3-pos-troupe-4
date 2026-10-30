@@ -1,4 +1,7 @@
-require('dotenv').config({ path: require('path').join(__dirname, '.env') });
+const path = require('path');
+const fs = require('fs');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const express = require('express');
 const pool = require('./db');
@@ -314,6 +317,23 @@ app.post('/api/orders', async (req, res) => {
             error: 'Failed to place order'
         });
     }
+});
+
+// Serve static frontend assets built by Vite
+const distPath = path.join(__dirname, '../dist');
+const indexHtmlPath = path.join(distPath, 'index.html');
+app.use(express.static(distPath));
+
+// Fallback all non-API GET routes to index.html for React Router SPA
+app.use((req, res, next) => {
+    if (req.method === 'GET' && !req.path.startsWith('/api')) {
+        if (fs.existsSync(indexHtmlPath)) {
+            return res.sendFile(indexHtmlPath);
+        } else {
+            return res.status(200).send('API server running. Build the frontend with `npm run build` to view the UI.');
+        }
+    }
+    next();
 });
 
 const server = app.listen(port, () => {
