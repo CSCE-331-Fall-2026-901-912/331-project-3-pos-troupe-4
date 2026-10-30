@@ -1,4 +1,6 @@
+
 import { useEffect, useState } from 'react';
+import { getManagerData } from '../api';
 import './ManagerPage.css';
 
 export default function ManagerPage() {
@@ -6,13 +8,7 @@ export default function ManagerPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/api/manager')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Could not load manager data.');
-        }
-        return response.json();
-      })
+    getManagerData()
       .then(setData)
       .catch((err) => setError(err.message));
   }, []);
