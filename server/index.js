@@ -341,6 +341,9 @@ const server = app.listen(port, () => {
     console.log(
         `Configured database: ${process.env.PSQL_DATABASE}@${process.env.PSQL_HOST}`
     );
+    console.log(
+        `Frontend build status: ${fs.existsSync(indexHtmlPath) ? 'FOUND dist/index.html' : 'MISSING dist/index.html'} at ${indexHtmlPath}`
+    );
 });
 
 let shuttingDown = false;
