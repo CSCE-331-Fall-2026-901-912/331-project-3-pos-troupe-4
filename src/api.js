@@ -18,11 +18,13 @@ async function apiFetch(endpoint, options = {}) {
 // GET requests
 
 export async function getOrderProducts(order_id) {
-  return apiFetch(`/orders_products?${newURLSearchParams({ order_id })}`)
+  const params = new URLSearchParams()
+  params.append("order_id", order_id)
+  return apiFetch(`/orders_products?${params}`)
 }
 
-export async function getOrderHistory(startDate = new Date("2026-09-05"), endDate = new Date("2026-09-05"), limit = 10) {
-  const params = newURLSearchParams({ startDate, endDate, limit })
+export async function getOrderHistory(startDate = "2026-09-05", endDate = "2026-09-05", limit = 10) {
+  const params = new URLSearchParams({ startDate, endDate, limit })
   return apiFetch(`/order_history?${params}`)
 }
 
