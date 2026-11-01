@@ -67,14 +67,25 @@ async function getOrderProducts(order_id) {
 async function getOrderHistory(startDate, endDate, limit) {
   try {
     const result = await pool.query(
-      `SELECT * FROM order_history WHERE date > ${startDate + ' 8:00:00'} AND date < ${endDate + ' 23:59:59'} LIMIT ${limit}`
+      `SELECT *
+       FROM order_history
+       WHERE date_time >= $1::timestamp
+       AND date_time <= $2::timestamp
+       LIMIT $3`,
+      [
+        `${startDate} 08:00:00`,
+        `${endDate} 23:59:59`,
+        Number(limit)
+      ]
     );
+
     return result.rows;
   } catch (err) {
-    console.error('Error getting order history: ', err);
+    console.error('Error getting order history:', err);
     throw err;
   }
 }
+
 // Grabs all items marked is_addable = true from the Items table that are currently in stock (amount > 0)
 async function getAddableItems() {
   try {

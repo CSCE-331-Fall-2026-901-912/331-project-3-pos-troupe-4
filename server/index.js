@@ -14,29 +14,31 @@ app.use(express.json());
 
 app.get('/api/orders_products', async (req, res) => {
   try {
-    const { order_id } = req.body;
+    const { order_id } = req.query;
     const data = await Model.getOrderProducts(order_id);
     res.json(data);
   } catch (err) {
+    console.error(err);
     res.status(500).json({
       error: 'Failed to load product names'
-    })
+    });
   }
-})
+});
 
 // GET order_history between two dates
 app.get('/api/order_history', async (req, res) => {
   try {
-    const { startDate, endDate, limit } = req.body;
+    const { startDate, endDate, limit } = req.query;
     const data = await Model.getOrderHistory(startDate, endDate, limit);
     console.log(data);
     res.json(data);
   } catch (err) {
+    console.error(err);
     res.status(500).json({
       error: 'Failed to load order_history'
     });
   }
-})
+});
 
 // GET ManagerView data
 app.get('/api/manager', async (req, res) => {

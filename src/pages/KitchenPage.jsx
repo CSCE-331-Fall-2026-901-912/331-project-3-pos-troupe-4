@@ -1,41 +1,48 @@
 import { useState, useEffect } from 'react';
-import { getOrderHistory, getOrderProducts } from '../api.js'
-import KitchenCard from '../components/KitchenCard.jsx'
-import EmptyCard from '../components/EmptyCard.jsx'
-import '../page-styles/kitchen-styles.css'
+import { getOrderHistory, getOrderProducts } from '../api.js';
+import KitchenCard from '../components/KitchenCard.jsx';
+import '../page-styles/kitchen-styles.css';
 
 export default function KitchenPage() {
-  const [orderHistory, setOrderHistory] = useState('')
-  const [kitchenCardOutput, setKitchenCardOutput] = useState(<EmptyCard></EmptyCard>)
-  //const testCard = <KitchenCard receiptNum={-1} orderContents={["Taro Milk Tea", "Orange Juice"]} notes="None" undoFunc={() => { return; }} checkFunc={() => { return; }}></KitchenCard>;
+  const [orders, setOrders] = useState([]);
 
-  // Allows asynchronous functions to be called in a client function.
   useEffect(() => {
-    async function localGetOrderHistory() {
-      const data = await getOrderHistory('2026-09-05', '2026-09-05', '10');
-      setOrderHistory(data);
-    }
-    async function getOrderContents() {
+    async function loadOrders() {
       try {
-        const localKitchenCardOutput = orderHistory.map(async (order) => {
-          return <li><KitchenCard receiptNum={order.ID} orderContents={await getOrderProducts(order.ID)} notes="None" undoFunc={() => { return; }} checkFunc={() => { return; }}></KitchenCard></li>
-        });
-        setKitchenCardOutput(localKitchenCardOutput);
-      } catch {
-        console.error("Failed GET attempt in KitchenPage getOrderContents()");
+        const data = await getOrderHistory('2026-09-05', '2026-09-05', 10);
+
+        const ordersWithProducts = await Promise.all(
+          data.map(async (order) => ({
+            ...order,
+            products: await getOrderProducts(order.order_id)
+          }))
+        );
+
+        setOrders(ordersWithProducts);
+      } catch (err) {
+        console.error('Kitchen page error:', err);
       }
     }
-    if (!orderHistory) {
-      localGetOrderHistory();
-    }
-    else if (kitchenCardOutput == <EmptyCard></EmptyCard>) {
-      getOrderContents();
-    }
-  }, [])
+
+    loadOrders();
+  }, []);
+
   return (
     <div>
-      <label>Kitchen Page</label>
-      <ul>{kitchenCardOutput}</ul>
+      <h2>Kitchen Page</h2>
+      <ul>
+        {orders.map(order => (
+          <li key={order.order_id}>
+            <KitchenCard
+              receiptNum={order.order_id}
+              orderContents={order.products.map(product => product.product_name)}
+              notes="None"
+              undoFunc={() => {}}
+              checkFunc={() => {}}
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

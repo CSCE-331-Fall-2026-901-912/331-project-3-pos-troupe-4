@@ -1,8 +1,9 @@
-const API_URL = import.meta.env.VITE_API_URL;
+// Reusable fetch helper
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 // Reusable fetch helper
 async function apiFetch(endpoint, options = {}) {
-  const response = await fetch(`${API_URL}${endpoint}`, options);
+  const response = await fetch(`${API_URL}/api${endpoint}`, options);
 
   const data = response.status === 204
     ? null
