@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL ?? '';
 
 // Reusable fetch helper
 async function apiFetch(endpoint, options = {}) {
@@ -18,7 +18,7 @@ async function apiFetch(endpoint, options = {}) {
 // GET requests
 
 export async function getMenuItems() {
-    return apiFetch('/menu');
+    return apiFetch('/api/menu');
 }
 
 export async function getManagerData() {

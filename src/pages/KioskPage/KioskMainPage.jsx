@@ -4,37 +4,40 @@ import { getMenuItems } from '../../api';
 
 export default function KioskPage() {
     const [menuItems, setMenuItems] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
+    const [loading,setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchMenu = async () => {
+        let cancelled = false;
+
+        async function loadMenu() {
             try {
-                const data = getMenuItems();
-                setMenuItems(data);
-            } catch(err) {
-                setError(err.message);
+                const data = await getMenuItems();
+                if (!cancelled) setMenuItems(data);
+            } catch (err) {
+                console.error('Error loading menu:', err);
+                if (!cancelled) setError("Couldn't load the menu");
             } finally {
-                setLoading(false);
+                if (!cancelled) setLoading(false);
             }
-        };
-
-        fetchMenu();
+        }
+        loadMenu();
+        return () => {cancelled = true;};
     }, []);
-
-    if (loading) return <p>Loading buttons</p>
-    if (error) return <p>Error: {error}</p>
+    
+    if (loading) return <p>Loading menu</p>
+    if (error) return <p className='kiosk-error'>Couldn't load the menu.</p>
     
     return (
         <main className="kiosk-container">
-            <label>Kiosk Page</label>
-            <div style={{ display: 'flex', gap: '10px',flexWrap: 'wrap'}}>
-                {menuItems.map((menuItem) => (
-                    <button key={menuItem.id} onClick={() => alert('Clicked ${menuItem.name}')}>
-                    {menuItem.name}
+            <div className="menu-grid">
+                {menuItems.map((item) => (
+                    <button key={item.id ?? item.name} className="kiosk-button">
+                        <span className="name">{item.name}</span>
+                        <span className="price"> ${Number(item.price).toFixed(2)}</span>
                     </button>
                 ))}
             </div>
         </main>
-    )
+    );
 }
