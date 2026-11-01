@@ -25,8 +25,12 @@ export default function KitchenPage() {
         console.error("Failed GET attempt in KitchenPage getOrderContents()");
       }
     }
-    localGetOrderHistory();
-    getOrderContents();
+    if (!orderHistory) {
+      localGetOrderHistory();
+    }
+    else if (kitchenCardOutput == <EmptyCard></EmptyCard>) {
+      getOrderContents();
+    }
   }, [])
   return (
     <div>
