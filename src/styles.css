@@ -1,0 +1,15 @@
+:root {
+  /*
+   * Any colors should be inserted here like so
+   */
+  --primary-color: #FAFAFA;
+  --secondary-color: #CCC;
+  --font-color: #111;
+  --font-family: Garamond, Helvetica, Arial, Sans-Serif;
+}
+
+body {
+  background-color: var(--primary-color);
+  color: var(--font-color);
+  font-family: var(--font-family);
+}
