@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import ManagerPage from './pages/ManagerPage';
 import CashierPage from './pages/CashierPage';
-import KioskPage from './pages/KioskPage';
+import KioskPage from './pages/KioskPage/KioskMainPage';
 import KitchenPage from './pages/KitchenPage';
 import RoleSelector from './pages/RoleSelector';
 
