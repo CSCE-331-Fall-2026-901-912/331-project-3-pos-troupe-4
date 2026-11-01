@@ -1,3 +1,4 @@
+import './ProductSlot.css';
 /**
  * 
  * Resusable product tile 
