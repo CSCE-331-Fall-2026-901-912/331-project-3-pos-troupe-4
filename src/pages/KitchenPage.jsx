@@ -12,7 +12,7 @@ export default function KitchenPage() {
   // Allows asynchronous functions to be called in a client function.
   useEffect(() => {
     async function localGetOrderHistory() {
-      const data = await getOrderHistory("2026-09-05", "2026-09-05", 10);
+      const data = await getOrderHistory('2026-09-05', '2026-09-05', '10');
       setOrderHistory(data);
     }
     async function getOrderContents() {

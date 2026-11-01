@@ -29,6 +29,7 @@ app.get('/api/order_history', async (req, res) => {
   try {
     const { startDate, endDate, limit } = req.body;
     const data = await Model.getOrderHistory(startDate, endDate, limit);
+    console.log(data);
     res.json(data);
   } catch (err) {
     res.status(500).json({
