@@ -12,25 +12,21 @@ export default function KitchenPage() {
   // Allows asynchronous functions to be called in a client function.
   useEffect(() => {
     async function localGetOrderHistory() {
-      const data = await getOrderHistory();
+      const data = await getOrderHistory("2026-09-05", "2026-09-05", 10);
       setOrderHistory(data);
     }
     async function getOrderContents() {
       try {
         const localKitchenCardOutput = orderHistory.map(async (order) => {
-          return <li><KitchenCard receiptNum={order.ID} orderContents={await getOrderProducts(order.id)} notes="None" undoFunc={() => { return; }} checkFunc={() => { return; }}></KitchenCard></li>
+          return <li><KitchenCard receiptNum={order.ID} orderContents={await getOrderProducts(order.ID)} notes="None" undoFunc={() => { return; }} checkFunc={() => { return; }}></KitchenCard></li>
         });
         setKitchenCardOutput(localKitchenCardOutput);
       } catch {
         console.error("Failed GET attempt in KitchenPage getOrderContents()");
       }
     }
-    if (!orderHistory) {
-      localGetOrderHistory();
-    }
-    else if (!kitchenCardOutput) {
-      getOrderContents();
-    }
+    localGetOrderHistory();
+    getOrderContents();
   }, [])
   return (
     <div>

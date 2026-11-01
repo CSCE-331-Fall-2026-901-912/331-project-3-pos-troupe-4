@@ -23,9 +23,9 @@ export async function getOrderProducts(order_id) {
   return apiFetch(`/orders_products?${params}`)
 }
 
-export async function getOrderHistory(limit = 10) {
-  const params = new URLSearchParams({});
-  return apiFetch(`/order_history`)
+export async function getOrderHistory(startDate = "2026-09-05", endDate = "2026-09-05", limit = 10) {
+  const params = new URLSearchParams({ startDate, endDate, limit });
+  return apiFetch(`/order_history?${params}`)
 }
 
 export async function getMenuItems() {
