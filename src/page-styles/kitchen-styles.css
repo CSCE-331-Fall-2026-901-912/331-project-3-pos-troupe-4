@@ -1,0 +1,18 @@
+@import url("../styles.css");
+
+.component {
+  display: block;
+  width: fit-content;
+
+  padding: 2vh 1vw;
+
+  border: solid 0.2vh var(--secondary-color);
+  border-radius: 0.5vh;
+}
+.component-list {
+  list-style: none;
+}
+
+.component-list-item {
+  padding: 1vh 0;
+}
