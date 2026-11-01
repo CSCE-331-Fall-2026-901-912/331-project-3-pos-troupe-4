@@ -7,45 +7,45 @@ import KitchenPage from './pages/KitchenPage';
 import RoleSelector from './pages/RoleSelector';
 
 export default function App() {
-    return (
+  return (
     <BrowserRouter>
       <Routes>
 
         <Route
           path="/"
           element={
-              <RoleSelector />
+            <RoleSelector />
           }
         />
 
         <Route
           path="/kiosk"
           element={
-              <KioskPage />
+            <KioskPage />
           }
         />
 
         <Route
           path="/manager"
           element={
-              <ManagerPage />
+            <ManagerPage />
           }
         />
 
         <Route
           path="/cashier"
           element={
-              <CashierPage />
+            <CashierPage />
           }
         />
 
         <Route
           path="/kitchen"
           element={
-              <KitchenPage />
+            <KitchenPage />
           }
         />
       </Routes>
     </BrowserRouter>
-    );
+  );
 }
