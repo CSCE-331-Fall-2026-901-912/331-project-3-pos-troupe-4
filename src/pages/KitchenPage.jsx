@@ -17,9 +17,8 @@ export default function KitchenPage() {
     }
     async function getOrderContents() {
       try {
-        const order_contents = await getOrderProducts(order.ID)
-        const localKitchenCardOutput = orderHistory.map((order) => {
-          return <li><KitchenCard receiptNum={order.ID} orderContents={order_contents} notes="None" undoFunc={() => { return; }} checkFunc={() => { return; }}></KitchenCard></li>
+        const localKitchenCardOutput = orderHistory.map(async (order) => {
+          return <li><KitchenCard receiptNum={order.ID} orderContents={await getOrderProducts(order.id)} notes="None" undoFunc={() => { return; }} checkFunc={() => { return; }}></KitchenCard></li>
         });
         setKitchenCardOutput(localKitchenCardOutput);
       } catch {
