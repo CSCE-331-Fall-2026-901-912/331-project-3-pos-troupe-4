@@ -24,7 +24,10 @@ export async function getOrderProducts(order_id) {
 }
 
 export async function getOrderHistory(startDate = "2026-09-05", endDate = "2026-09-05", limit = 10) {
-  const params = new URLSearchParams({ startDate, endDate, limit })
+  const params = new URLSearchParams();
+  params.append("date >", startDate);
+  params.append("date <", endDate);
+  params.append("limit", limit);
   return apiFetch(`/order_history?${params}`)
 }
 
