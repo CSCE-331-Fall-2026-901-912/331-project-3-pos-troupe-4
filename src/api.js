@@ -17,8 +17,12 @@ async function apiFetch(endpoint, options = {}) {
 
 // GET requests
 
+export async function getOrderProducts(order_id) {
+  return apiFetch(`/orders_products?${newURLSearchParams({ order_id })}`)
+}
+
 export async function getOrderHistory(startDate = new Date("2026-09-05"), endDate = new Date("2026-09-05"), limit = 10) {
-  const params = newURLSearchParams({ startDate, endDate, limit });
+  const params = newURLSearchParams({ startDate, endDate, limit })
   return apiFetch(`/order_history?${params}`)
 }
 
