@@ -144,12 +144,13 @@ async function getSalesReport(startDate, endDate) {
 //note: manager is BOOL
 async function addEmployee(employeeName, manager, password) {
     try {
+        const isMgr = manager === true || manager === 'true' || manager === 't' || manager === 1;
         const result = await pool.query(
-            `INSERT INTO employees (employee_name, isManager, password)
+            `INSERT INTO employees (employee_name, is_manager, password)
             VALUES ($1, $2, $3)`,
-            [employeeName, manager, password]
+            [employeeName, isMgr, password]
         );
-
+        return true;
     } catch(err) {
         console.error('Error adding employee: ', err);
         throw err;
@@ -163,7 +164,7 @@ async function removeEmployee(employeeID) {
             WHERE employee_id = $1`,
             [employeeID]
         );
-
+        return true;
     } catch(err) {
         console.error('Error removing employee: ', err);
         throw err;
@@ -177,7 +178,7 @@ async function addProduct(productName, price) {
             VALUES ($1, $2)`,
             [productName, price]
         );
-
+        return true;
     } catch(err) {
         console.error('Error adding product: ', err);
         throw err;
@@ -197,9 +198,9 @@ async function removeProduct(productName) {
             WHERE product_name = $1`,
             [productName]
         );
-
+        return true;
     } catch(err) {
-        console.error('Error removing employee: ', err);
+        console.error('Error removing product: ', err);
         throw err;
     }
 }
@@ -211,7 +212,7 @@ async function addItem(itemName, supplierPricePerUnit, isAddable) {
             VALUES ($1, $2, $3)`,
             [itemName, supplierPricePerUnit, isAddable]
         );
-
+        return true;
     } catch(err) {
         console.error('Error adding item: ', err);
         throw err;
@@ -231,9 +232,9 @@ async function removeItem(itemName) {
             WHERE item_name = $1`,
             [itemName]
         );
-
+        return true;
     } catch(err) {
-        console.error('Error adding item: ', err);
+        console.error('Error removing item: ', err);
         throw err;
     }
 }
@@ -509,17 +510,202 @@ async function placeOrder(order) {
 
 
 
+async function getEmployees() {
+    try {
+        const result = await pool.query(
+            `SELECT employee_id, employee_name, is_manager 
+             FROM employees 
+             ORDER BY employee_id ASC`
+        );
+        return result.rows;
+    } catch (err) {
+        console.error('Error fetching employees:', err);
+        throw err;
+    }
+}
+
+async function updateEmployee(employeeId, employeeName, isManager, password) {
+    try {
+        const isMgr = isManager === true || isManager === 'true' || isManager === 't' || isManager === 1;
+        if (password && password.trim() !== '') {
+            await pool.query(
+                `UPDATE employees 
+                 SET employee_name = $1, is_manager = $2, password = $3 
+                 WHERE employee_id = $4`,
+                [employeeName, isMgr, password, employeeId]
+            );
+        } else {
+            await pool.query(
+                `UPDATE employees 
+                 SET employee_name = $1, is_manager = $2 
+                 WHERE employee_id = $3`,
+                [employeeName, isMgr, employeeId]
+            );
+        }
+        return true;
+    } catch (err) {
+        console.error('Error updating employee:', err);
+        throw err;
+    }
+}
+
+async function updateProductPrice(productName, price) {
+    try {
+        await pool.query(
+            `UPDATE products SET price = $1 WHERE product_name = $2`,
+            [price, productName]
+        );
+        return true;
+    } catch (err) {
+        console.error('Error updating product price:', err);
+        throw err;
+    }
+}
+
+async function updateInventoryStock(itemName, amount) {
+    try {
+        await pool.query(
+            `UPDATE inventory SET amount = $1 WHERE item_name = $2`,
+            [amount, itemName]
+        );
+        return true;
+    } catch (err) {
+        console.error('Error updating inventory stock:', err);
+        throw err;
+    }
+}
+
+async function getItems() {
+    try {
+        const result = await pool.query(
+            `SELECT i.item_name, i.price, i.is_addable, COALESCE(inv.amount, 0) AS amount
+             FROM items i
+             LEFT JOIN inventory inv ON i.item_name = inv.item_name
+             ORDER BY i.item_name ASC`
+        );
+        return result.rows;
+    } catch (err) {
+        console.error('Error fetching items:', err);
+        throw err;
+    }
+}
+
+async function getXReport(targetDate) {
+    try {
+        let dateFilter = "DATE(date_time) = CURRENT_DATE";
+        let params = [];
+        if (targetDate && targetDate !== 'CURRENT_DATE' && targetDate !== 'today') {
+            dateFilter = "DATE(date_time) = $1::date";
+            params = [targetDate];
+        }
+
+        const incomeByHourRes = await pool.query(
+            `SELECT EXTRACT(HOUR FROM date_time)::int AS hour, ROUND(SUM(total_price), 2) AS total_income
+             FROM order_history
+             WHERE ${dateFilter}
+             GROUP BY EXTRACT(HOUR FROM date_time)
+             ORDER BY hour ASC`,
+            params
+        );
+
+        const transactionsByHourRes = await pool.query(
+            `SELECT EXTRACT(HOUR FROM date_time)::int AS hour, COUNT(*)::int AS transactions
+             FROM order_history
+             WHERE ${dateFilter}
+             GROUP BY EXTRACT(HOUR FROM date_time)
+             ORDER BY hour ASC`,
+            params
+        );
+
+        const totalsRes = await pool.query(
+            `SELECT 
+                COALESCE(ROUND(SUM(total_price), 2), 0.00) AS total_sales,
+                COUNT(*)::int AS total_transactions,
+                COALESCE(ROUND(AVG(total_price), 2), 0.00) AS avg_price_per_transaction
+             FROM order_history
+             WHERE ${dateFilter}`,
+            params
+        );
+
+        const transactionsByEmployeeRes = await pool.query(
+            `SELECT e.employee_name, COUNT(*)::int AS transactions
+             FROM order_history oh
+             JOIN employees e ON oh.employee_id = e.employee_id
+             WHERE ${dateFilter.replace(/date_time/g, 'oh.date_time')}
+             GROUP BY e.employee_name
+             ORDER BY transactions DESC`,
+            params
+        );
+
+        return {
+            date: targetDate || 'CURRENT_DATE',
+            totalSales: totalsRes.rows[0]?.total_sales || '0.00',
+            totalTransactions: totalsRes.rows[0]?.total_transactions || 0,
+            avgPricePerTransaction: totalsRes.rows[0]?.avg_price_per_transaction || '0.00',
+            incomeByHour: incomeByHourRes.rows,
+            transactionsByHour: transactionsByHourRes.rows,
+            transactionsByEmployee: transactionsByEmployeeRes.rows
+        };
+    } catch (err) {
+        console.error('Error fetching X-Report:', err);
+        throw err;
+    }
+}
+
+async function getInventoryUsage(startDate, endDate) {
+    try {
+        const result = await pool.query(
+            `SELECT pi.item_name, COUNT(pi.item_name)::int AS total_qty_used
+             FROM order_history oh
+             JOIN orders_products op ON oh.order_id = op.order_id
+             JOIN products_items pi ON op.product_name = pi.product_name
+             WHERE oh.date_time >= $1::date AND oh.date_time < ($2::date + INTERVAL '1 day')
+             GROUP BY pi.item_name
+             ORDER BY total_qty_used DESC`,
+            [startDate, endDate]
+        );
+        return result.rows;
+    } catch (err) {
+        console.error('Error fetching inventory usage:', err);
+        throw err;
+    }
+}
+
+async function getOrderHistory(startDate, endDate, limit = 50) {
+    try {
+        let query = `SELECT order_id, employee_id, total_price, customer_name, date_time 
+                     FROM order_history `;
+        const params = [];
+        if (startDate && endDate) {
+            query += `WHERE date_time >= $1::date AND date_time < ($2::date + INTERVAL '1 day') `;
+            params.push(startDate, endDate);
+        }
+        query += `ORDER BY order_id DESC LIMIT $${params.length + 1}`;
+        params.push(parseInt(limit) || 50);
+
+        const result = await pool.query(query, params);
+        return result.rows;
+    } catch (err) {
+        console.error('Error fetching order history:', err);
+        throw err;
+    }
+}
+
 //BY FUNCTION
 
 async function getManagerData() {
-    const [inventory, products] = await Promise.all([
+    const [inventory, products, employees, lowStock] = await Promise.all([
         getInventory(),
-        getMenuItems()
+        getMenuItems(),
+        getEmployees(),
+        getLowStockItems()
     ]);
 
     return {
         inventory,
         products,
+        employees,
+        lowStock,
         dbName: process.env.PSQL_DATABASE || 'troupe_04_db',
         dbHost: process.env.PSQL_HOST || 'csce-315-db.engr.tamu.edu'
     };
@@ -534,19 +720,26 @@ module.exports = {
     getConstituentItemsForProduct,
     getLowStockItems,
     getSalesReport,
+    getEmployees,
+    getItems,
+    getXReport,
+    getInventoryUsage,
+    getOrderHistory,
 
     // Setters
     addEmployee,
+    updateEmployee,
     removeEmployee,
     addProduct,
+    updateProductPrice,
     removeProduct,
     addItem,
     removeItem,
     addInventoryItem,
+    updateInventoryStock,
     addProductWithItems,
     setProductConstituentItems,
     placeOrder,
-    
 
     // Screen-level data
     getManagerData

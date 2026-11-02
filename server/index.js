@@ -82,6 +82,126 @@ app.get('/api/salesReport', async (req, res) => {
     }
 });
 
+// GET full inventory
+app.get('/api/inventory', async (req, res) => {
+    try {
+        const data = await Model.getInventory();
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to load inventory' });
+    }
+});
+
+// Update inventory stock
+app.put('/api/inventory/:itemName', async (req, res) => {
+    try {
+        const { itemName } = req.params;
+        const { amount } = req.body;
+        await Model.updateInventoryStock(itemName, amount);
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to update inventory stock' });
+    }
+});
+
+// GET inventory usage chart
+app.get('/api/reports/inventory-usage', async (req, res) => {
+    try {
+        const { startDate, endDate } = req.query;
+        const data = await Model.getInventoryUsage(startDate, endDate);
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to load inventory usage report' });
+    }
+});
+
+// GET X-Report
+app.get('/api/reports/x-report', async (req, res) => {
+    try {
+        const { date } = req.query;
+        const data = await Model.getXReport(date);
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to load X-Report' });
+    }
+});
+
+// GET employees
+app.get('/api/employees', async (req, res) => {
+    try {
+        const data = await Model.getEmployees();
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to load employees' });
+    }
+});
+
+// Update employee
+app.put('/api/employees/:employeeId', async (req, res) => {
+    try {
+        const { employeeId } = req.params;
+        const { employeeName, isManager, password } = req.body;
+        await Model.updateEmployee(employeeId, employeeName, isManager, password);
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to update employee' });
+    }
+});
+
+// GET all items
+app.get('/api/items', async (req, res) => {
+    try {
+        const data = await Model.getItems();
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to load items' });
+    }
+});
+
+// GET product constituent items
+app.get('/api/products/:name/constituents', async (req, res) => {
+    try {
+        const { name } = req.params;
+        const data = await Model.getConstituentItemsForProduct(name);
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to load product constituent items' });
+    }
+});
+
+// Update product price
+app.put('/api/products/:productName', async (req, res) => {
+    try {
+        const { productName } = req.params;
+        const { price } = req.body;
+        await Model.updateProductPrice(productName, price);
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to update product price' });
+    }
+});
+
+// GET order history
+app.get('/api/order_history', async (req, res) => {
+    try {
+        const { startDate, endDate, limit } = req.query;
+        const data = await Model.getOrderHistory(startDate, endDate, limit);
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to load order history' });
+    }
+});
+
 //add inventory item
 app.post('/api/inventory', async (req, res) => {
     try {

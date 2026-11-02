@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Reusable fetch helper
 async function apiFetch(endpoint, options = {}) {
@@ -17,9 +17,13 @@ async function apiFetch(endpoint, options = {}) {
 
 // GET requests
 
-export async function getOrderHistory(startDate = new Date("2026-09-05"), endDate = new Date("2026-09-05"), limit = 10) {
-  const params = newURLSearchParams({ startDate, endDate, limit });
-  return apiFetch(`/order_history?${params}`)
+export async function getOrderHistory(startDate, endDate, limit = 50) {
+  const query = {};
+  if (startDate) query.startDate = typeof startDate === 'string' ? startDate : startDate.toISOString().split('T')[0];
+  if (endDate) query.endDate = typeof endDate === 'string' ? endDate : endDate.toISOString().split('T')[0];
+  if (limit) query.limit = limit;
+  const params = new URLSearchParams(query);
+  return apiFetch(`/order_history?${params}`);
 }
 
 export async function getMenuItems() {
@@ -28,6 +32,52 @@ export async function getMenuItems() {
 
 export async function getManagerData() {
   return apiFetch('/manager');
+}
+
+export async function getInventory() {
+  return apiFetch('/inventory');
+}
+
+export async function updateInventoryStock(itemName, amount) {
+  return apiFetch(`/inventory/${encodeURIComponent(itemName)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount })
+  });
+}
+
+export async function getInventoryUsage(startDate, endDate) {
+  const params = new URLSearchParams({ startDate, endDate });
+  return apiFetch(`/reports/inventory-usage?${params}`);
+}
+
+export async function getXReport(date) {
+  const params = new URLSearchParams(date ? { date } : {});
+  return apiFetch(`/reports/x-report?${params}`);
+}
+
+export async function getEmployees() {
+  return apiFetch('/employees');
+}
+
+export async function updateEmployee(employeeId, employeeName, manager, password) {
+  return apiFetch(`/employees/${employeeId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ employeeName, isManager: manager, password })
+  });
+}
+
+export async function getItems() {
+  return apiFetch('/items');
+}
+
+export async function updateProductPrice(productName, price) {
+  return apiFetch(`/products/${encodeURIComponent(productName)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ price })
+  });
 }
 
 export async function getAddableItems() {
