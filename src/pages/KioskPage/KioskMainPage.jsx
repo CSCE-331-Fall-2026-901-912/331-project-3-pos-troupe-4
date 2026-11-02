@@ -33,6 +33,8 @@ export default function KioskPage() {
         setSelectedItem(null);
     }
 
+    const subtotal = order.reduce((sum, orderItem) => sum + orderItem.totalPrice, 0);
+
     if (loading) return <p>Loading menu</p>
     if (error) return <p className='kiosk-error'>Couldn't load the menu.</p>
     
@@ -56,6 +58,15 @@ export default function KioskPage() {
                     </button>
                 ))}
             </div>
+
+            <footer className="order-bar"> 
+                <span className="order-count">
+                    {order.length} {order.length === 1 ? 'item' : 'items'}
+                </span>
+                <span className="order-subtotal">
+                    Subtotal: ${subtotal.toFixed(2)}
+                </span>
+            </footer>
         </main>
     );
 }
