@@ -1,7 +1,7 @@
 # CSCE 331 - Web Application & PostgreSQL Database Connection
 
 A full-stack Node.js and Express.js web application connecting to a remote PostgreSQL database, built for CSCE 331 (Fall 2026, Troupe 04).
-
+Live view on Render: https://csce331-pos-troupe4-webapp.onrender.com
 ---
 
 ## Lab Requirements & Demonstrated Evidence
