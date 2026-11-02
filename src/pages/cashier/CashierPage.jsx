@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { getMenuItems } from '../../api';
 import ProductSlot from '../../components/Cashier/ProductSlot';
 import { useCart } from '../../components/Cashier/CartHandling';
+import './Cashier.css';
 
-//Picking a drink and opening the customization page when clicked on.
 export default function CashierPage() {
 	const [menu, setMenu] = useState([]);
 	const [search, setSearch] = useState('');
@@ -76,7 +76,7 @@ export default function CashierPage() {
 		
 		<div className="cashier__totals">
 			<div><span>Subtotal:</span><span>${subtotal.toFixed(2)}</span></div>
-			<div><span>Tax (8.25%):</span><span>${tax.toFixed(2)}</span></div>
+			<div><span>Tax (8.25%):</span> <span> ${tax.toFixed(2)}</span></div>
 			<div className="cashier__grand"><span>Total:</span><span>${total.toFixed(2)}</span>
 			
 			</div>

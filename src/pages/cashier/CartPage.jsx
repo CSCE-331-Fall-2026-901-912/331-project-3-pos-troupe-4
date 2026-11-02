@@ -68,8 +68,8 @@ export default function CartPage() {
 
       <div className="summary__end">
         <span>Subtotal: ${subtotal.toFixed(2)}</span>
-        <span>Tax: ${tax.toFixed(2)}</span>
-        <strong>Grand Total: ${total.toFixed(2)}</strong>
+        <span> Tax: ${tax.toFixed(2)}</span>
+        <strong> Grand Total: ${total.toFixed(2)}</strong>
       </div>
 
       {error && <p className="error">{error}</p>}
