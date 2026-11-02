@@ -319,7 +319,6 @@ app.post('/api/orders', async (req, res) => {
     }
 });
 
-
 // Serve static frontend assets built by Vite
 const distPath = path.join(__dirname, '../dist');
 const indexHtmlPath = path.join(distPath, 'index.html');
