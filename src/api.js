@@ -26,7 +26,7 @@ export async function getManagerData() {
 }
 
 export async function getAddableItems() {
-    return apiFetch('/addable-items');
+    return apiFetch('/api/addable-items');
 }
 
 export async function getLowStockItems() {
