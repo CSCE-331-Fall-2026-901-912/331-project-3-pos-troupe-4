@@ -63,7 +63,7 @@ async function getOrderProducts(order_id) {
     throw err;
   }
 }
-
+/*
 async function getOrderHistory(startDate, endDate, limit) {
   try {
     const result = await pool.query(
@@ -85,7 +85,7 @@ async function getOrderHistory(startDate, endDate, limit) {
     throw err;
   }
 }
-
+*/
 // Grabs all items marked is_addable = true from the Items table that are currently in stock (amount > 0)
 async function getAddableItems() {
   try {
