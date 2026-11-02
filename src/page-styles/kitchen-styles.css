@@ -1,25 +1,37 @@
 @import url("../styles.css");
 
-.component {
-  display: block;
-  width: fit-content;
-
-  padding: 2vh 1vw;
-
-  border: solid 0.2vh var(--secondary-color);
-  border-radius: 0.5vh;
-}
+.component,
 .fill-component {
-  background: 
-    linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) border-box, 
-    linear-gradient(var(--secondary-color) 0 0) padding-box;
-  width: 15vw;
-  height: 15vh;
-  border: solid 0.2vh var(--secondary-color);
-  border-radius: 1.5vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 75vw;
+  min-height: 15vh;
+  padding: 2vh 1vw;
+  border: solid 1px var(--secondary-color);
+  border-radius: 8px;
 }
+
+/* Regular card */
+.component {
+  background-color: white;
+}
+
+/* Filled card */
+.fill-component {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--secondary-color) 100%
+  );
+  color: white;
+}
+
+/* Card list */
 .component-list {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .component-list-item {

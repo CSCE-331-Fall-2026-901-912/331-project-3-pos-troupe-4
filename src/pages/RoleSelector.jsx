@@ -1,22 +1,76 @@
 import { useNavigate } from 'react-router-dom';
+import './RoleSelector.css';
 
 export default function RoleSelector() {
     const navigate = useNavigate();
+
+    const modes = [
+        {
+            title: 'Cashier Mode',
+            description: 'Take customer orders and process transactions.',
+            path: '/cashier'
+        },
+        {
+            title: 'Manager Mode',
+            description: 'Manage inventory, employees, menu items, and reports.',
+            path: '/manager'
+            
+        },
+        {
+            title: 'Kitchen Mode',
+            description: 'View incoming orders and track drink preparation.',
+            path: '/kitchen'
+        },
+        {
+            title: 'Kiosk Mode',
+            description: 'Allow customers to browse the menu and place orders.',
+            path: '/kiosk'
+        }
+    ];
+
     return (
-        <div>
-            <label>Welcome to our POS! Choose your mode:</label>
-            <button onClick={() => navigate("/cashier")}>
-                Cashier Mode
-            </button>
-            <button onClick={() => navigate("/manager")}>
-                Manager Mode
-            </button>
-            <button onClick={() => navigate("/kitchen")}>
-                Kitchen Mode
-            </button>
-            <button onClick={() => navigate("/kiosk")}>
-                Kiosk Mode
-            </button>
-        </div>
+        <main className="role-container">
+            <div className="role-shell">
+
+                <header className="role-header">
+                    <div>
+                        <h1>Welcome to Our POS!</h1>
+                        <p>CSCE 331 · Troupe 04 POS System</p>
+                    </div>
+                    <span className="role-status">System Ready</span>
+                </header>
+
+                <section className="role-content">
+                    <div className="role-intro">
+                        <h2>Choose Your Mode</h2>
+                        <p>
+                            Select the workspace you'd like to access.
+                        </p>
+                    </div>
+
+                    <div className="role-grid">
+                        {modes.map((mode) => (
+                            <button
+                                key={mode.path}
+                                className="role-card"
+                                onClick={() => navigate(mode.path)}
+                            >
+                                <span className="role-icon">{mode.icon}</span>
+                                <h3>{mode.title}</h3>
+                                <p>{mode.description}</p>
+                                <span className="role-card-link">
+                                    Open Mode →
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                </section>
+
+                <footer className="role-footer">
+                    CSCE 331 · Fall 2026 · Troupe 04 · Hosted on Render
+                </footer>
+
+            </div>
+        </main>
     );
 }
