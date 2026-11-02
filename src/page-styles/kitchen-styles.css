@@ -1,0 +1,27 @@
+@import url("../styles.css");
+
+.component {
+  display: block;
+  width: fit-content;
+
+  padding: 2vh 1vw;
+
+  border: solid 0.2vh var(--secondary-color);
+  border-radius: 0.5vh;
+}
+.fill-component {
+  background: 
+    linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) border-box, 
+    linear-gradient(var(--secondary-color) 0 0) padding-box;
+  width: 15vw;
+  height: 15vh;
+  border: solid 0.2vh var(--secondary-color);
+  border-radius: 1.5vh;
+}
+.component-list {
+  list-style: none;
+}
+
+.component-list-item {
+  padding: 1vh 0;
+}

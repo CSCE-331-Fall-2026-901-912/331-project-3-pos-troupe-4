@@ -25,6 +25,17 @@ export async function getOrderHistory(startDate, endDate, limit = 50) {
   const params = new URLSearchParams(query);
   return apiFetch(`/order_history?${params}`);
 }
+  
+export async function getOrderProducts(order_id) {
+  const params = new URLSearchParams()
+  params.append("order_id", order_id)
+  return apiFetch(`/orders_products?${params}`)
+}
+
+export async function getOrderHistory(startDate = "2026-09-05", endDate = "2026-09-05", limit = 10) {
+  const params = new URLSearchParams({ startDate, endDate, limit });
+  return apiFetch(`/order_history?${params}`)
+}
 
 export async function getMenuItems() {
   return apiFetch('/menu');
