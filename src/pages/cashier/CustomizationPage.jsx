@@ -6,7 +6,7 @@ import { useCart, ADDON_PRICE } from '../component/Cashier/CartHandling';
 const ICE_OPTIONS = ['- No Ice', '- Less Ice', '+ Extra Ice'];
 const SUGAR_OPTIONS = ['- Less Sugar', '- Half Sugar', '+ Extra Sugar'];
 
-export default function CashierCustomizePage() {
+export default function CustomizePage() {
   const {state} = useLocation();
   const navigate = useNavigate();
   const {addItem} = useCart();
