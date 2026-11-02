@@ -1,3 +1,4 @@
+import '../page-styles/kitchen-styles.css'
 export default function EmptyCard() {
   return (
     <div className="fill-component">
