@@ -6,6 +6,7 @@ import CashierPage from './pages/cashier/CashierPage';
 import KioskPage from './pages/KioskPage';
 import KitchenPage from './pages/KitchenPage';
 import RoleSelector from './pages/RoleSelector';
+import { CartProvider } from './components/Cashier/CartHandling';
 
 export default function App() {
   return (
@@ -44,6 +45,27 @@ export default function App() {
           path="/kitchen"
           element={
             <KitchenPage />
+          }
+        />
+
+        <Route 
+          path = "/cashier" 
+          element={
+            <CashierPage />
+          }
+        />
+
+        <Route 
+          path = "/cashier/customize" 
+          element={
+            <CustomizePage />
+          }
+        />
+
+        <Route 
+          path = "/cart" 
+          element={
+            <CartPage />
           }
         />
       </Routes>
