@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import './KioskMainPage.css';
-import { getMenuItems } from '../../api';
+import { getMenuItems, placeOrder } from '../../api';
+import { useCart } from '../../components/Cashier/CartHandling';
 import CustomizationScreen from './KioskCustomization';
+import CheckoutScreen from './KioskCheckout'
+
 
 export default function KioskPage() {
+    const {items, addItem, subtotal} = useCart();
     const [menuItems, setMenuItems] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [order, setOrder] = useState([]);
+    const [showCheckout, setShowCheckout] = useState(false);
+    const [orderConfirmed, setOrderConfirmed] = useState(false);
 
     useEffect(() => {
         let cancelled = false;
@@ -27,25 +32,52 @@ export default function KioskPage() {
         loadMenu();
         return () => {cancelled = true;};
     }, []);
+
+    useEffect(() => {
+        if (!orderConfirmed) return;
+        const timer = setTimeout(() => setOrderConfirmed(false), 20000);
+        return () => clearTimeout(timer);
+    }, [orderConfirmed]);
     
-    function addToOrder(customizedItem) {
-        setOrder((prev) => [...prev, customizedItem]);
+    function handleAddToCart(cartItem) {
+        addItem(cartItem);
         setSelectedItem(null);
     }
-
-    const subtotal = order.reduce((sum, orderItem) => sum + orderItem.totalPrice, 0);
 
     if (loading) return <p>Loading menu</p>
     if (error) return <p className='kiosk-error'>Couldn't load the menu.</p>
     
+    if (orderConfirmed) {
+        return (
+            <main className="kiosk-container">
+                <h2>Thank you! Your order has been placed.</h2>
+                <button className="checkout-button" onClick={() => setOrderConfirmed(false)}>
+                    Start a new order
+                </button>
+            </main>
+        );
+    }
+
         if (selectedItem) {
             return (
                 <CustomizationScreen
                     item={selectedItem}
                     onCancel={() => setSelectedItem(null)}
-                    onConfirm={addToOrder}
+                    onConfirm={handleAddToCart}
                 />
             );
+        }
+
+        if (showCheckout) {
+            return (
+                <CheckoutScreen
+                    onBack={() => setShowCheckout(false)}
+                    onDone={() => {
+                        setShowCheckout(false);
+                        setOrderConfirmed(true);
+                    }}
+                />
+            )
         }
 
     return (
@@ -61,11 +93,14 @@ export default function KioskPage() {
 
             <footer className="order-bar"> 
                 <span className="order-count">
-                    {order.length} {order.length === 1 ? 'item' : 'items'}
+                    {items.length} {items.length === 1 ? 'item' : 'items'}
                 </span>
                 <span className="order-subtotal">
                     Subtotal: ${subtotal.toFixed(2)}
                 </span>
+                <button className="checkout-button" onClick={() => setShowCheckout(true)} disabled={items.length ===0}>
+                    View order
+                </button>
             </footer>
         </main>
     );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './KioskCustomization.css';
 import {getAddableItems } from '../../api';
+import { ADDON_PRICE } from '../../components/Cashier/CartHandling';
 
 const labelOf = (x) => (typeof x === 'string' ? x : x.name);
 
@@ -45,11 +46,15 @@ export default function CustomizationScreen({item, onCancel, onConfirm}) {
     };
 
         const total =
-        Number(item.price) + addIns.reduce((sum, addIn) => sum + Number(addIn.price ?? 0), 0)
+        Number(item.price) + addIns.reduce((sum, addIn) => sum + Number(addIn.price ?? ADDON_PRICE), 0);
 
     function handleConfirm() {
         onConfirm({
-            ...item, removedItems: removed, addIns, totalPrice:total,
+            productName: item.name,
+            constituentItems: (item.constituentItems ?? []).map(labelOf),
+            addOns: addIns.map(labelOf),
+            removed,
+            itemTotal: total,
         });
     }
 
