@@ -1,164 +1,230 @@
-const API_URL = import.meta.env.VITE_API_URL ?? '';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Reusable fetch helper
 async function apiFetch(endpoint, options = {}) {
-    const response = await fetch(`${API_URL}${endpoint}`, options);
+  const response = await fetch(`${API_URL}${endpoint}`, options);
 
-    const data = response.status === 204
-        ? null
-        : await response.json();
+  const data = response.status === 204
+    ? null
+    : await response.json();
 
-    if (!response.ok) {
-        throw new Error(data?.error || 'API request failed');
-    }
+  if (!response.ok) {
+    throw new Error(data?.error || 'API request failed');
+  }
 
-    return data;
+  return data;
 }
 
 // GET requests
 
+export async function getOrderHistory(startDate, endDate, limit = 50) {
+  const query = {};
+  if (startDate) query.startDate = typeof startDate === 'string' ? startDate : startDate.toISOString().split('T')[0];
+  if (endDate) query.endDate = typeof endDate === 'string' ? endDate : endDate.toISOString().split('T')[0];
+  if (limit) query.limit = limit;
+  const params = new URLSearchParams(query);
+  return apiFetch(`/order_history?${params}`);
+}
+  
+export async function getOrderProducts(order_id) {
+  const params = new URLSearchParams()
+  params.append("order_id", order_id)
+  return apiFetch(`/orders_products?${params}`)
+}
+/*
+export async function getOrderHistory(startDate = "2026-09-05", endDate = "2026-09-05", limit = 10) {
+  const params = new URLSearchParams({ startDate, endDate, limit });
+  return apiFetch(`/order_history?${params}`)
+}*/
+
 export async function getMenuItems() {
-    return apiFetch('/api/menu');
+  return apiFetch('/menu');
 }
 
 export async function getManagerData() {
-    return apiFetch('/manager');
+  return apiFetch('/manager');
+}
+
+export async function getInventory() {
+  return apiFetch('/inventory');
+}
+
+export async function updateInventoryStock(itemName, amount) {
+  return apiFetch(`/inventory/${encodeURIComponent(itemName)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount })
+  });
+}
+
+export async function getInventoryUsage(startDate, endDate) {
+  const params = new URLSearchParams({ startDate, endDate });
+  return apiFetch(`/reports/inventory-usage?${params}`);
+}
+
+export async function getXReport(date) {
+  const params = new URLSearchParams(date ? { date } : {});
+  return apiFetch(`/reports/x-report?${params}`);
+}
+
+export async function getEmployees() {
+  return apiFetch('/employees');
+}
+
+export async function updateEmployee(employeeId, employeeName, manager, password) {
+  return apiFetch(`/employees/${employeeId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ employeeName, isManager: manager, password })
+  });
+}
+
+export async function getItems() {
+  return apiFetch('/items');
+}
+
+export async function updateProductPrice(productName, price) {
+  return apiFetch(`/products/${encodeURIComponent(productName)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ price })
+  });
 }
 
 export async function getAddableItems() {
-    return apiFetch('/api/addable-items');
+  return apiFetch('/addable-items');
 }
 
 export async function getLowStockItems() {
-    return apiFetch('/inventory/low-stock');
+  return apiFetch('/inventory/low-stock');
 }
 
 export async function getSalesReport(startDate, endDate) {
-    const params = new URLSearchParams({ startDate, endDate });
-    return apiFetch(`/salesReport?${params}`);
+  const params = new URLSearchParams({ startDate, endDate });
+  return apiFetch(`/salesReport?${params}`);
 }
 
 // INVENTORY
 
 export async function addInventoryItem(itemName, initialStock, supplierCost, isAddable) {
-    return apiFetch('/inventory', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            itemName,
-            initialStock,
-            supplierCost,
-            isAddable
-        })
-    });
+  return apiFetch('/inventory', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      itemName,
+      initialStock,
+      supplierCost,
+      isAddable
+    })
+  });
 }
 
 // EMPLOYEES
 
 export async function addEmployee(employeeName, manager, password) {
-    return apiFetch('/employees', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            employeeName,
-            manager,
-            password
-        })
-    });
+  return apiFetch('/employees', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      employeeName,
+      manager,
+      password
+    })
+  });
 }
 
 export async function removeEmployee(employeeId) {
-    return apiFetch(`/employees/${employeeId}`, {
-        method: 'DELETE'
-    });
+  return apiFetch(`/employees/${employeeId}`, {
+    method: 'DELETE'
+  });
 }
 
 // PRODUCTS
 
 export async function addProduct(productName, price) {
-    return apiFetch('/products', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            productName,
-            price
-        })
-    });
+  return apiFetch('/products', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      productName,
+      price
+    })
+  });
 }
 
 export async function removeProduct(productName) {
-    return apiFetch(`/products/${encodeURIComponent(productName)}`, {
-        method: 'DELETE'
-    });
+  return apiFetch(`/products/${encodeURIComponent(productName)}`, {
+    method: 'DELETE'
+  });
 }
 
 export async function addProductWithItems(productName, price, constituentItems, newItemsStock) {
-    return apiFetch('/products/complete', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            productName,
-            price,
-            constituentItems,
-            newItemsStock
-        })
-    });
+  return apiFetch('/products/complete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      productName,
+      price,
+      constituentItems,
+      newItemsStock
+    })
+  });
 }
 
 export async function setProductConstituentItems(name, constituentItems) {
-    return apiFetch(`/products/${encodeURIComponent(name)}/constituents`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            constituentItems
-        })
-    });
+  return apiFetch(`/products/${encodeURIComponent(name)}/constituents`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      constituentItems
+    })
+  });
 }
 
 export async function getConstituentItems(name) {
-    return apiFetch(`/products/${encodeURIComponent(name)}/constituents`);
+  return apiFetch(`/products/${encodeURIComponent(name)}/constituents`);
 }
 
 // ITEMS
 
 export async function addItem(itemName, supplierPricePerUnit, isAddable) {
-    return apiFetch('/items', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            itemName,
-            supplierPricePerUnit,
-            isAddable
-        })
-    });
+  return apiFetch('/items', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      itemName,
+      supplierPricePerUnit,
+      isAddable
+    })
+  });
 }
 
 export async function removeItem(itemName) {
-    return apiFetch(`/items/${encodeURIComponent(itemName)}`, {
-        method: 'DELETE'
-    });
+  return apiFetch(`/items/${encodeURIComponent(itemName)}`, {
+    method: 'DELETE'
+  });
 }
 
 // ORDERS
 
 export async function placeOrder(order) {
-    return apiFetch('/orders', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(order)
-    });
+  return apiFetch('/orders', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(order)
+  });
 }
