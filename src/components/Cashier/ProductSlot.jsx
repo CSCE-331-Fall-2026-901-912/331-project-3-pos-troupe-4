@@ -7,14 +7,14 @@ import './ProductSlot.css';
  */
 
 
-export default function ProductSlot({product, OnSelect}){
+export default function ProductSlot({product, onSelect, OnSelect}){
 	const isBlank = !product;
 
 	function handleClick(){
 		if(isBlank){
 			return;
 		}
-		onSelect?.(product);
+		(onSelect || OnSelect)?.(product);
 	}
 
 

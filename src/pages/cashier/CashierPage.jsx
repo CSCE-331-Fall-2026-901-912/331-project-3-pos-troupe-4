@@ -2,14 +2,14 @@ import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';	
 import { getMenuItems } from '../../api';
 import ProductSlot from '../../components/Cashier/ProductSlot';
-
+import { useCart } from '../../components/Cashier/CartHandling';
 
 //Picking a drink and opening the customization page when clicked on.
 export default function CashierPage() {
 	const [menu, setMenu] = useState([]);
-	const [search, setSearch] = useState([]);
+	const [search, setSearch] = useState('');
 	const navigate = useNavigate();
-	const {items, removeItem,  clearCart, customerName, setCustomerName, subtotal, tax, total} = useCart();
+	const {items, removeItem, clearCart, customerName, setCustomerName, subtotal, tax, total} = useCart();
 
 
 	useEffect(() => {
@@ -30,7 +30,7 @@ export default function CashierPage() {
 	);
 
 	function handleSelect(product){
-		navigate('CustomizationPage', {state: {product: product}});
+		navigate('/cashier/customize', {state: {product: product}});
 	}
 
 
@@ -63,7 +63,7 @@ export default function CashierPage() {
 			</label>
 
 		<div className="cashier__cart"></div>
-		{item.loadMenu === 0 &&(
+		{(!items || items.length === 0) &&(
 			<p className = "none"> Cart is Empty. <br /> Click drinks to customize.</p>
 		)}
 		{items.map((item, index) => (

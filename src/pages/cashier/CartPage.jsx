@@ -1,8 +1,7 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {placeOrder} from '../api';
-import {useCart} from '../Components/CartHandling';
-
+import {placeOrder} from '../../api';
+import {useCart} from '../../components/Cashier/CartHandling';
 
 const CASHIER_ID=3;
 
@@ -14,17 +13,17 @@ export default function CartPage() {
 
   async function handleSubmit() {
     const order ={
-      employeeId:CASHIER_ID,
-      customerName:customerName || 'Guest',
-      totalPrice:total,
-      items:items.map((item) => ({
+      employeeId: CASHIER_ID,
+      customerName: customerName || 'Guest',
+      totalPrice: total,
+      items: (items || []).map((item) => ({
         productName: item.productName,
-        selectAddOns: item.addOns.map((name) => ({ itemName: name, isAddition: true })),
+        selectAddOns: (item.addOns || []).map((name) => ({ itemName: name, isAddition: true })),
         finalConstituentItems: [
-          ...item.constituentItems.filter((name) => !item.removed.includes(name)),
-          ...item.addOns,
+          ...(item.constituentItems || []).filter((name) => !(item.removed || []).includes(name)),
+          ...(item.addOns || []),
         ],
-    })),
+      })),
     };
 
     setSubmitting(true);

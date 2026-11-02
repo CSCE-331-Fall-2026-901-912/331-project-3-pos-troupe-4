@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { getAddableItems } from '../api';
-import { useCart, ADDON_PRICE } from '../component/Cashier/CartHandling';
+import { getAddableItems } from '../../api';
+import { useCart, ADDON_PRICE } from '../../components/Cashier/CartHandling';
 
 const ICE_OPTIONS = ['- No Ice', '- Less Ice', '+ Extra Ice'];
 const SUGAR_OPTIONS = ['- Less Sugar', '- Half Sugar', '+ Extra Sugar'];
@@ -41,17 +41,17 @@ export default function CustomizePage() {
     }
   }
 
-  const itemTotal = product.price+addOns.length*ADDON_PRICE;
+  const itemTotal = (Number(product?.price) || 0) + (addOns?.length || 0) * ADDON_PRICE;
 
   function handleAdd() {
     addItem({
-      productName:product.name,
-      constituentItems:product.constituentItems,
-      removed:removed,
-      addOns:addOns,
-      ice:ice,
-      sugar:sugar,
-      itemTotal:itemTotal,
+      productName: product.name,
+      constituentItems: product.constituentItems || [],
+      removed: removed,
+      addOns: addOns,
+      ice: ice,
+      sugar: sugar,
+      itemTotal: itemTotal,
     });
     navigate('/cashier');
   }
@@ -60,14 +60,14 @@ export default function CustomizePage() {
     <div className="custom">
       <header className="custom__header">
         <button className="btn" onClick={() => navigate('/cashier')}>Cancel</button>
-        <h2>Customizing:{product.name}</h2>
+        <h2>Customizing: {product.name}</h2>
         <span className="custom__total">Item Total: ${itemTotal.toFixed(2)}</span>
         <button className="btn btn--blue" onClick={handleAdd}>Add to Order</button>
       </header>
 
     	<h4>Base Recipe Ingredients (click to omit/remove):</h4>
     <div className="custom__row">
-        {product.constituentItems.map((name) => (
+        {(product.constituentItems || []).map((name) => (
           <button
             key={name}
             className={removed.includes(name) ? 'chip chip--off' : 'chip chip--on'}
