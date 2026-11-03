@@ -48,6 +48,7 @@ export default function KitchenPage() {
         <KitchenCard
           receiptNum={order.order_id}
           orderContents={(order.products || []).map(product => product.product_name)}
+          timestamp={order.date_time}
           notes="None"
           undoFunc={() => { }}
           checkFunc={() => { }}

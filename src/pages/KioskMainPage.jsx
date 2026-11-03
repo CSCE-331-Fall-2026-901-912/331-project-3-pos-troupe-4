@@ -82,24 +82,44 @@ export default function KioskPage() {
 
   return (
     <main className="kiosk-container">
+      <header className="kiosk-header">
+        <div>
+          <h1>Build your drink.</h1>
+          <p>Choose an item to get started.</p>
+        </div>
+      </header>
+
       <div className="menu-grid">
         {menuItems.map((item) => (
-          <button key={item.id ?? item.name} className="kiosk-button" onClick={() => setSelectedItem(item)}>
+          <button
+            key={item.id ?? item.name}
+            className="kiosk-button"
+            onClick={() => setSelectedItem(item)}
+          >
             <span className="name">{item.name}</span>
-            <span className="price"> ${Number(item.price).toFixed(2)}</span>
+            <span className="price">
+              ${Number(item.price).toFixed(2)}
+            </span>
           </button>
         ))}
       </div>
 
       <footer className="order-bar">
-        <span className="order-count">
-          {items.length} {items.length === 1 ? 'item' : 'items'}
-        </span>
-        <span className="order-subtotal">
-          Subtotal: ${subtotal.toFixed(2)}
-        </span>
-        <button className="checkout-button" onClick={() => setShowCheckout(true)} disabled={items.length === 0}>
-          View order
+        <div className="order-summary">
+          <span className="order-count">
+            {items.length} {items.length === 1 ? 'item' : 'items'}
+          </span>
+          <span className="order-subtotal">
+            Subtotal: ${subtotal.toFixed(2)}
+          </span>
+        </div>
+
+        <button
+          className="checkout-button"
+          onClick={() => setShowCheckout(true)}
+          disabled={items.length === 0}
+        >
+          View order →
         </button>
       </footer>
     </main>

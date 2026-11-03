@@ -4,12 +4,14 @@
 .fill-component {
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 25vw;
+  min-width: 260px;
   min-height: 25vh;
-  padding: 2vh 1vw;
+  padding: 16px;
   border: solid 1px var(--secondary-color);
   border-radius: 8px;
+  gap: 14px;
 }
 
 /* Regular card */
@@ -34,19 +36,84 @@
   100% { background-position: 0% 50%; }
 }
 
-/* Card list */
-.component-list {
+/* Order header */
+.kitchen-card-header {
   display: flex;
   flex-direction: column;
-  list-style: none;
-  width: 100%;
-  height: fill;
-  padding: 0;
-  margin: 0;
+  gap: 4px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--secondary-color);
 }
 
+.kitchen-card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.order-timestamp {
+  font-size: 0.85rem;
+}
+
+/* Main card content */
+.kitchen-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.order-products h4 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.product-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.product-list li {
+  padding: 7px 9px;
+  margin-bottom: 5px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+/* Notes */
+.kitchen-card-notes {
+  padding: 10px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+}
+
+.kitchen-card-notes p {
+  margin: 5px 0 0;
+  overflow-wrap: anywhere;
+}
+
+/* Actions */
+.kitchen-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--secondary-color);
+}
+
+.kitchen-card-actions button {
+  padding: 8px 14px;
+  cursor: pointer;
+  border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Existing list styles, if used elsewhere */
 .card-list {
-  width:75%;
+  width: 75%;
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: 1fr 1fr 1fr;
@@ -55,24 +122,10 @@
   margin: 0;
 }
 
-.product-list {
-  padding: 1vh 0;
-  text-align: center;
-  list-style: none;
-  border: solid 0.25vh var(--secondary-color);
-  border-radius: 0.5vh;
-}
-
-.component-list-item {
-  padding: 1vh 0;
-  height: 100%;
-  width: 75%;
-  border: solid 0.25vh var(--secondary-color);
-  background-color: ;
-  border-radius: 0.5vh;
-  text-align: center;
-}
-
-.order-products {
-  width: 100%;
+@media (max-width: 900px) {
+  .component,
+  .fill-component {
+    width: 100%;
+    min-width: 0;
+  }
 }

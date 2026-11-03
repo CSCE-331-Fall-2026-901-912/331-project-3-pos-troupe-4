@@ -7,13 +7,13 @@
 .cashier__cart {flex: 1; padding: 10px; background: white; overflow-y: auto; }
 .cashier__cart-row {display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; font-size: 1px;}
 .cashier__totals div {display: flex; justify-content: space-between;}
-.cashier__grand {font-weight: 700; font-size: 1.1px;}
+.cashier__grand {font-weight: 700; font-size: 1.1rem;}
 .cashier__actions {display: flex; gap: 8px; justify-content: flex-end;}
 
-.muted {color: lightgray; font-size: 1px;}
+.muted {color: lightgray; font-size: 1rem;}
 .error {color: red;}
 
-.btn {padding: 10px 16px; border: 1px solid lightgrey; border-radius: 4px; background: #fff; cursor: pointer; font-size: 1px;}
+.btn {padding: 10px 16px; border: 1px solid lightgrey; border-radius: 4px; background: #fff; cursor: pointer; font-size: 1rem;}
 .btn:disabled {opacity: 0.5; cursor: default;}
 .btn--green {background: lightgreen; border-color: lightgreen; color: white;}
 .btn--blue {background:blue; border-color: blue; color: white;}

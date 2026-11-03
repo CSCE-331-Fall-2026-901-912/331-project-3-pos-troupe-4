@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { placeOrder } from "../../api";
 import { useCart } from "../../components/Cashier/CartHandling";
+import "../../page-styles/KioskCheckout.css";
 
 const KIOSK_EMPLOYEE_ID = 0;
 
@@ -44,7 +45,7 @@ export default function CheckoutPage({ onBack, onDone}) {
         <main className="checkout-container">
             <h2>Your order</h2>
                 <label className="checkout-name">
-                    <span> Name for you order</span>
+                    <span> Name for your order: </span>
                     <input
                         type="text"
                         value={customerName}
