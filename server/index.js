@@ -25,15 +25,14 @@ app.get('/api/orders_products', async (req, res) => {
   }
 });
 
-// GET order_history between two dates
+// GET order_history between two dates (or most recent if dates omitted)
 app.get('/api/order_history', async (req, res) => {
   try {
     const { startDate, endDate, limit } = req.query;
     const data = await Model.getOrderHistory(startDate, endDate, limit);
-    console.log(data);
     res.json(data);
   } catch (err) {
-    console.error(err);
+    console.error('Failed to load order_history:', err);
     res.status(500).json({
       error: 'Failed to load order_history'
     });
@@ -218,17 +217,6 @@ app.put('/api/products/:productName', async (req, res) => {
     }
 });
 
-// GET order history
-app.get('/api/order_history', async (req, res) => {
-    try {
-        const { startDate, endDate, limit } = req.query;
-        const data = await Model.getOrderHistory(startDate, endDate, limit);
-        res.json(data);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to load order history' });
-    }
-});
 
 //add inventory item
 app.post('/api/inventory', async (req, res) => {

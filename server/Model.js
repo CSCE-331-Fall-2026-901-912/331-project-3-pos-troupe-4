@@ -55,8 +55,9 @@ async function getMenuItems() {
 async function getOrderProducts(order_id) {
   try {
     const result = await pool.query(
-      `SELECT product_name FROM orders_products WHERE order_id=${order_id}`
-    )
+      `SELECT product_name FROM orders_products WHERE order_id = $1`,
+      [order_id]
+    );
     return result.rows;
   } catch (err) {
     console.error('Error getting products associated with order_id: ', err);
