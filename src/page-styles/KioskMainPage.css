@@ -1,7 +1,8 @@
+@import url("../styles.css");
 .kiosk-container{
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
-  background-color: #f8fafc;
+  background-color: var(--primary-bg-color);
   color: #1e293b;
   min-height: 100vh;
   box-sizing: border-box;

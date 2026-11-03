@@ -4,6 +4,8 @@
    */
   --primary-color: #FAFAFA;
   --secondary-color: #CCC;
+  --primary-bg-color: #FAFAFA;
+  --secondary-bg-color: #CCC;
   --font-color: #111;
   --font-family: serif, Arial, Sans-Serif;
 }
