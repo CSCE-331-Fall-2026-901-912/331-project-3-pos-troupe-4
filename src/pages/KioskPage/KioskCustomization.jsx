@@ -4,6 +4,8 @@ import {getAddableItems } from '../../api';
 import { ADDON_PRICE } from '../../components/Cashier/CartHandling';
 
 const labelOf = (x) => (typeof x === 'string' ? x : x.name);
+const ICE_OPTIONS = ['- No Ice', '- Less Ice', '+ Extra Ice'];
+const SUGAR_OPTIONS = ['- Less Sugar', '- Half Sugar', '+ Extra Sugar'];
 
 export default function CustomizationScreen({item, onCancel, onConfirm}) {
     const [addable, setAddable] = useState([]);
@@ -11,6 +13,8 @@ export default function CustomizationScreen({item, onCancel, onConfirm}) {
     const [error, setError] = useState('');
     const [removed, setRemoved] = useState([]);
     const [addIns, setAddIns] = useState([]);
+    const [ice, setIce] = useState('');
+    const [sugar, setSugar] = useState('');
 
     useEffect(() => {
         let cancelled = false;
@@ -54,9 +58,29 @@ export default function CustomizationScreen({item, onCancel, onConfirm}) {
             constituentItems: (item.constituentItems ?? []).map(labelOf),
             addOns: addIns.map(labelOf),
             removed,
+            ice,
+            sugar,
             itemTotal: total,
         });
     }
+
+    function ChoiceSection({ title, options, value, onChange}) {
+        return (
+            <section>
+                <h3>{title}</h3>
+                <div className='option-grid'>
+                    {options.map((option) => (
+                        <button key={option} 
+                        className={`option-button ${value === option ? 'selected' : ''}`} 
+                        onClick={() => onChange(value === option ? '' : option)}>
+                            {option}
+                        </button>
+
+                    ))}
+                </div>
+            </section>
+        )
+    };
 
     return (
         <main className="customize-container">
@@ -94,6 +118,9 @@ export default function CustomizationScreen({item, onCancel, onConfirm}) {
                     })}
                 </div>
             </section>
+
+            <ChoiceSection title="Ice" options={ICE_OPTIONS} value={ice} onChange={setIce} />
+            <ChoiceSection title="Sweetness" options={SUGAR_OPTIONS} value={sugar} onChange={setSugar} />
             <footer className="customize-footer">
                 <button className="option-button" onClick={onCancel}>Back</button>
                 <button className="option-button confirm" onClick={handleConfirm}>

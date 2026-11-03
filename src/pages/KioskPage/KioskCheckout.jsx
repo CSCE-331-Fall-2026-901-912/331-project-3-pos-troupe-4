@@ -54,7 +54,7 @@ export default function CheckoutPage({ onBack, onDone}) {
                         autoComplete="off"
                     />
                 </label>
-                
+
             {items.length === 0 ? (
                 <p className="checkout-empty"> Your order is empty.</p>
             ) : (
@@ -69,6 +69,8 @@ export default function CheckoutPage({ onBack, onDone}) {
                                 {item.addOns.map((name) => (
                                     <span key={name} className="checkout-mod added">+ {name} </span>
                                 ))}
+                                {item.ice && <span className="checkout-mod">{item.ice} </span>}
+                                {item.sugar && <span className="checkout-mod">{item.sugar} </span>}
                             </div>
                             <span className="checkout-item-price">${item.itemTotal.toFixed(2)}</span>
                             <button className="checkout-remove" onClick={() => removeItem(index)} aria-label={`Remove ${item.productName} from order`}>
