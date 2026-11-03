@@ -4,8 +4,8 @@
 .fill-component {
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  width: 75vw;
+  flex-direction: row;
+  width: 25vw;
   min-height: 25vh;
   padding: 2vh 1vw;
   border: solid 1px var(--secondary-color);
@@ -36,11 +36,43 @@
 
 /* Card list */
 .component-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  width: 100%;
+  height: fill;
+  padding: 0;
+  margin: 0;
+}
+
+.card-list {
+  width:75%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: 1fr 1fr 1fr;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+.product-list {
+  padding: 1vh 0;
+  text-align: center;
+  list-style: none;
+  border: solid 0.25vh var(--secondary-color);
+  border-radius: 0.5vh;
+}
+
 .component-list-item {
   padding: 1vh 0;
+  height: 100%;
+  width: 75%;
+  border: solid 0.25vh var(--secondary-color);
+  background-color: ;
+  border-radius: 0.5vh;
+  text-align: center;
+}
+
+.order-products {
+  width: 100%;
 }

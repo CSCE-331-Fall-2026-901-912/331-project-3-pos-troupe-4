@@ -34,3 +34,9 @@ Thumbs.db
 dist/
 coverage/
 .nyc_output/
+
+# personal bs
+.gitignore 
+start_server.sh
+node_server.log
+npm_server.log
