@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { getAddableItems } from '../../api';
-import { useCart, ADDON_PRICE } from '../../components/Cashier/CartHandling';
+import { getAddableItems } from '../api';
+import { useCart, ADDON_PRICE } from '../components/Cashier/CartHandling';
 
 const ICE_OPTIONS = ['- No Ice', '- Less Ice', '+ Extra Ice'];
 const SUGAR_OPTIONS = ['- Less Sugar', '- Half Sugar', '+ Extra Sugar'];
 
 export default function CustomizePage() {
-  const {state} = useLocation();
+  const { state } = useLocation();
   const navigate = useNavigate();
-  const {addItem} = useCart();
+  const { addItem } = useCart();
 
-  const [addable, setAddable] = useState([]);  
-  const [removed, setRemoved] = useState([]); 
-  const [addOns, setAddOns] = useState([]);   
+  const [addable, setAddable] = useState([]);
+  const [removed, setRemoved] = useState([]);
+  const [addOns, setAddOns] = useState([]);
   const [ice, setIce] = useState('');
   const [sugar, setSugar] = useState('');
 
   useEffect(() => {
     async function loadAddable() {
-      try{
+      try {
         const data = await getAddableItems();
         setAddable(data);
       } catch (error) {
@@ -29,14 +29,14 @@ export default function CustomizePage() {
     loadAddable();
   }, []);
 
-  if(!state) {
+  if (!state) {
     return <Navigate to="/cashier" />;
   }
   const product = state.product;
   function toggle(list, setList, name) {
-    if(list.includes(name)) {
+    if (list.includes(name)) {
       setList(list.filter((n) => n !== name));
-    } else{
+    } else {
       setList([...list, name]);
     }
   }
@@ -65,8 +65,8 @@ export default function CustomizePage() {
         <button className="btn btn--blue" onClick={handleAdd}>Add to Order</button>
       </header>
 
-    	<h4>Base Recipe Ingredients (click to omit/remove):</h4>
-    <div className="custom__row">
+      <h4>Base Recipe Ingredients (click to omit/remove):</h4>
+      <div className="custom__row">
         {(product.constituentItems || []).map((name) => (
           <button
             key={name}
@@ -76,10 +76,10 @@ export default function CustomizePage() {
             {removed.includes(name) ? '[ ]' : '[+]'} {name}
           </button>
         ))}
-    </div>
+      </div>
 
       <h4>Available Add-ins &amp; Toppings (+${ADDON_PRICE.toFixed(2)} each):</h4>
-    <div className="custom__grid">
+      <div className="custom__grid">
         {addable.map((name) => (
           <button
             key={name}
@@ -89,10 +89,10 @@ export default function CustomizePage() {
             +{name}<br />(+${ADDON_PRICE.toFixed(2)})
           </button>
         ))}
-    </div>
+      </div>
 
       <h4>Ice &amp; Sweetness Preferences:</h4>
-    <div className="custom__row">
+      <div className="custom__row">
         {ICE_OPTIONS.map((option) => (
           <button
             key={option}
@@ -111,7 +111,7 @@ export default function CustomizePage() {
             {option}
           </button>
         ))}
-    </div>
+      </div>
     </div>
   );
 }

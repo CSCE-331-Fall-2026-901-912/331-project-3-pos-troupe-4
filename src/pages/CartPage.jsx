@@ -1,18 +1,18 @@
-import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {placeOrder} from '../../api';
-import {useCart} from '../../components/Cashier/CartHandling';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { placeOrder } from '../api';
+import { useCart } from '../components/Cashier/CartHandling';
 
-const CASHIER_ID=3;
+const CASHIER_ID = 3;
 
 export default function CartPage() {
   const navigate = useNavigate();
-  const {items, removeItem, clearCart, customerName, subtotal, tax, total} = useCart();
+  const { items, removeItem, clearCart, customerName, subtotal, tax, total } = useCart();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
   async function handleSubmit() {
-    const order ={
+    const order = {
       employeeId: CASHIER_ID,
       customerName: customerName || 'Guest',
       totalPrice: total,
@@ -28,25 +28,25 @@ export default function CartPage() {
 
     setSubmitting(true);
     setError('');
-    try{
+    try {
       await placeOrder(order);
       clearCart();
       navigate('/cashier');
-    }catch(err){
+    } catch (err) {
       console.error('Error submitting order:', err);
       setError('Could not submit the order. Please try again.');
       setSubmitting(false);
     }
   }
 
-  return(
+  return (
     <div className="summary">
       <h2>Order Summary &amp; Confirmation</h2>
       <p className="muted">Customer: {customerName || 'Guest'}</p>
 
-    <div className="summary__list">
+      <div className="summary__list">
         {items.map((item, index) => (
-    	<div key={index} className="summary__item">
+          <div key={index} className="summary__item">
             <div>
               <strong>{item.productName}</strong>
               {item.addOns.length > 0 && (
@@ -62,9 +62,9 @@ export default function CartPage() {
               ${item.itemTotal.toFixed(2)}{' '}
               <button onClick={() => removeItem(index)}>✕</button>
             </div>
-        </div>
+          </div>
         ))}
-    </div>
+      </div>
 
       <div className="summary__end">
         <span>Subtotal: ${subtotal.toFixed(2)}</span>

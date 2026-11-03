@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles.css';
 
 import ManagerPage from './pages/ManagerPage';
-import CashierPage from './pages/cashier/CashierPage';
-import CustomizePage from './pages/cashier/CustomizePage';
-import CartPage from './pages/cashier/CartPage';
-import KioskPage from './pages/KioskPage/KioskMainPage';
+import CashierPage from './pages/CashierPage';
+import CustomizePage from './pages/CustomizePage';
+import CartPage from './pages/CartPage';
+import KioskPage from './pages/KioskMainPage';
 import KitchenPage from './pages/KitchenPage';
 import RoleSelector from './pages/RoleSelector';
 import { CartProvider } from './components/Cashier/CartHandling';
