@@ -10,7 +10,11 @@ export default function KitchenPage() {
   useEffect(() => {
     async function loadOrders() {
       try {
-        const data = await getOrderHistory('2026-09-05', '2026-09-05', 9);
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const yyyy = today.getFullYear();
+        const data = await getOrderHistory(yyyy + '-' + mm + '-' + dd, yyyy + '-' + mm + '-' + dd, 9);
 
         const ordersWithProducts = await Promise.all(
           data.map(async (order) => ({
