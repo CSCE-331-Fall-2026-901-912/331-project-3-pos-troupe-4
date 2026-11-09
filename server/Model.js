@@ -543,8 +543,6 @@ async function placeOrder(order) {
   }
 }
 
-
-
 async function getEmployees() {
     try {
         const result = await pool.query(
@@ -555,6 +553,40 @@ async function getEmployees() {
         return result.rows;
     } catch (err) {
         console.error('Error fetching employees:', err);
+        throw err;
+    }
+}
+
+// Find an employee using their GitHub account ID
+async function getEmployeeByGithubId(githubId) {
+    try {
+        const result = await pool.query(
+            `SELECT employee_id, employee_name, is_manager, github_id
+             FROM employees
+             WHERE github_id = $1`,
+            [githubId]
+        );
+
+        return result.rows[0] || null;
+    } catch (err) {
+        console.error('Error fetching employee by GitHub ID:', err);
+        throw err;
+    }
+}
+
+// Find an employee using their POS employee ID
+async function getEmployeeById(employeeId) {
+    try {
+        const result = await pool.query(
+            `SELECT employee_id, employee_name, is_manager, github_id
+             FROM employees
+             WHERE employee_id = $1`,
+            [employeeId]
+        );
+
+        return result.rows[0] || null;
+    } catch (err) {
+        console.error('Error fetching employee by ID:', err);
         throw err;
     }
 }
@@ -758,6 +790,8 @@ module.exports = {
   getOrderHistory,
   getOrderProducts,
     getEmployees,
+    getEmployeeByGithubId,
+    getEmployeeById,
     getItems,
     getXReport,
     getInventoryUsage,

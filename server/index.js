@@ -7,10 +7,162 @@ const express = require('express');
 const pool = require('./db');
 const Model = require('./Model');
 
+const session = require('express-session');
+const passport = require('passport');
+const GitHubStrategy = require('passport-github2').Strategy;
+const PgSession = require('connect-pg-simple')(session);
+
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Session configuration
+if (!process.env.SESSION_SECRET) {
+    throw new Error('SESSION_SECRET is missing from server/.env');
+}
+
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+}
+
+app.use(session({
+    store: new PgSession({
+        pool: pool,
+        tableName: 'user_sessions',
+        createTableIfMissing: true
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60 * 8
+    }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Configure GitHub OAuth
+passport.use(
+    new GitHubStrategy(
+        {
+            clientID: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+            callbackURL: process.env.GITHUB_CALLBACK_URL
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                // Match GitHub's verified account ID to an existing employee
+                const employee = await Model.getEmployeeByGithubId(profile.id);
+
+                if (!employee) {
+                    return done(null, false);
+                }
+
+                return done(null, employee);
+            } catch (err) {
+                return done(err);
+            }
+        }
+    )
+);
+
+// Store employee ID in the session
+passport.serializeUser((employee, done) => {
+    done(null, employee.employee_id);
+});
+
+// Reload employee information from the database
+passport.deserializeUser(async (employeeId, done) => {
+    try {
+        const employee = await Model.getEmployeeById(employeeId);
+        done(null, employee || false);
+    } catch (err) {
+        done(err);
+    }
+});
+
 app.use(express.json());
+
+// Start GitHub login
+app.get('/api/auth/github', (req, res, next) => {
+    const mode = req.query.mode;
+
+    if (!['manager', 'cashier'].includes(mode)) {
+        return res.status(400).json({ error: 'Invalid login mode' });
+    }
+
+    req.session.loginMode = mode;
+
+    req.session.save((err) => {
+        if (err) {
+            return next(err);
+        }
+
+        passport.authenticate('github', {
+            scope: ['read:user']
+        })(req, res, next);
+    });
+});
+
+// GitHub OAuth callback
+app.get(
+    '/api/auth/github/callback',
+    passport.authenticate('github', {
+        failureRedirect: '/?login=denied',
+        keepSessionInfo: true
+    }),
+    (req, res) => {
+      
+        const mode = req.session.loginMode;
+        delete req.session.loginMode;
+
+        // Manager dashboard requires manager permissions
+        if (mode === 'manager' && !req.user.is_manager) {
+            return req.logout(() => {
+                res.redirect('/?login=forbidden');
+            });
+        }
+
+        // Redirect to the selected dashboard
+        const frontendUrl = process.env.FRONTEND_URL || '';
+
+        if (mode === 'manager') {
+            return res.redirect(`${frontendUrl}/manager`);
+        }
+
+        return res.redirect(`${frontendUrl}/cashier`);
+    }
+);
+
+// Check current login status
+app.get('/api/auth/me', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    res.json({
+        employeeId: req.user.employee_id,
+        employeeName: req.user.employee_name,
+        isManager: req.user.is_manager
+    });
+});
+
+// Logout
+app.post('/api/auth/logout', (req, res, next) => {
+    req.logout((err) => {
+        if (err) return next(err);
+
+        req.session.destroy((err) => {
+            if (err) return next(err);
+
+            res.clearCookie('connect.sid');
+            res.json({ success: true });
+        });
+    });
+});
 
 app.get('/api/orders_products', async (req, res) => {
   try {

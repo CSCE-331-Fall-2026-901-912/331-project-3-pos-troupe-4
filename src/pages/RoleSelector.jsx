@@ -53,7 +53,15 @@ export default function RoleSelector() {
                             <button
                                 key={mode.path}
                                 className="role-card"
-                                onClick={() => navigate(mode.path)}
+                                onClick={() => {
+                                    if (mode.path === '/manager') {
+                                        window.location.href = '/api/auth/github?mode=manager';
+                                    } else if (mode.path === '/cashier') {
+                                        window.location.href = '/api/auth/github?mode=cashier';
+                                    } else {
+                                        navigate(mode.path);
+                                    }
+                                }}
                             >
                                 <span className="role-icon">{mode.icon}</span>
                                 <h3>{mode.title}</h3>

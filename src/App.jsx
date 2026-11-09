@@ -11,6 +11,7 @@ import KitchenPage from './pages/KitchenPage';
 import RoleSelector from './pages/RoleSelector';
 import { CartProvider } from './components/Cashier/CartHandling';
 import AccessibilityBar from './components/Cashier/AccessibilityBar';
+import EmployeeRoute from './components/EmployeeRoute';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -65,8 +66,50 @@ export default function App() {
           <Routes>
             <Route path="/" element={<RoleSelector />} />
             <Route path="/kiosk" element={<KioskPage />} />
-            <Route path="/manager" element={<ManagerPage />} />
-            <Route path="/cashier" element={<CashierPage />} />
+            <Route
+                path="/manager"
+                element={
+                    <EmployeeRoute managerOnly>
+                        <ManagerPage />
+                    </EmployeeRoute>
+                }
+            />
+
+            <Route
+                path="/cashier"
+                element={
+                    <EmployeeRoute>
+                        <CashierPage />
+                    </EmployeeRoute>
+                }
+            />
+
+            <Route
+                path="/cashier/customize"
+                element={
+                    <EmployeeRoute>
+                        <CustomizePage />
+                    </EmployeeRoute>
+                }
+            />
+
+            <Route
+                path="/cashier/cart"
+                element={
+                    <EmployeeRoute>
+                        <CartPage />
+                    </EmployeeRoute>
+                }
+            />
+
+            <Route
+                path="/cart"
+                element={
+                    <EmployeeRoute>
+                        <CartPage />
+                    </EmployeeRoute>
+                }
+            />
             <Route path="/cashier/customize" element={<CustomizePage />} />
             <Route path="/cashier/cart" element={<CartPage />} />
             <Route path="/cart" element={<CartPage />} />
