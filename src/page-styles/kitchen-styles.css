@@ -1,22 +1,30 @@
 @import url("../styles.css");
 
+:root {
+  --border-size: 0.1rem;
+  --border-radius: 0.5rem;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
 .component,
 .fill-component {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 25vw;
-  min-width: 260px;
-  min-height: 25vh;
+  min-width: 14vw;
+  min-height: 32.1vh;
   padding: 16px;
-  border: solid 1px var(--secondary-color);
-  border-radius: 8px;
+  border: solid var(--border-size) var(--secondary-color);
+  border-radius: var(--border-radius);
   gap: 14px;
 }
 
 /* Regular card */
 .component {
-  background-color: var(--primary-color);
+  background-color: var(--background-color);
 }
 
 /* Filled card */
@@ -36,13 +44,32 @@
   100% { background-position: 0% 50%; }
 }
 
+/* header */
+
+.kitchen-header-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 0 1vw;
+  margin: 1vh 0vw;
+}
+
+.kitchen-header {
+  background-color: var(--accent-color);
+  border: var(--border-size) solid var(--secondary-color);
+  padding: 1vh 1vw;
+  border-radius: var(--border-radius);
+  text-align: center;
+  font-size: var(--header-size);
+  font-weight: var(--header-weight);
+}
+
 /* Order header */
 .kitchen-card-header {
   display: flex;
   flex-direction: column;
   gap: 4px;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--secondary-color);
+  border-bottom: var(--border-size) solid var(--secondary-color);
 }
 
 .kitchen-card-header h3 {
@@ -68,6 +95,7 @@
 }
 
 .product-list {
+  background-color: var(--accent-color);
   list-style: none;
   padding: 0;
   margin: 0;
@@ -77,16 +105,17 @@
 .product-list li {
   padding: 7px 9px;
   margin-bottom: 5px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
+  border: var(--border-size) solid var(--secondary-color);
+  border-radius: var(--border-radius);
   font-size: 0.95rem;
 }
 
 /* Notes */
 .kitchen-card-notes {
+  background-color: var(--accent-color);
   padding: 10px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
+  border: var(--border-size) solid var(--secondary-color);
+  border-radius: var(--border-radius);
 }
 
 .kitchen-card-notes p {
@@ -100,20 +129,30 @@
   justify-content: flex-end;
   gap: 10px;
   padding-top: 10px;
-  border-top: 1px solid var(--secondary-color);
+  border-top: var(--border-size) solid var(--secondary-color);
 }
 
-.kitchen-card-actions button {
-  padding: 8px 14px;
+.kitchen-card-actions, button {
+  padding: 1vh 1vw;
   cursor: pointer;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
+  border: var(--border-size) solid var(--secondary-color);
+  background-color: var(--accent-color);
+  border-radius: var(--border-radius);
   font-size: 0.9rem;
+}
+
+.kitchen-card-buttons {
+  padding: 0.75vh 1vw;
+  backgroundColor: var(--accent-color);
+  border: var(--border-size) solid var(--secondary-color);
+  borderRadius: var(--border-radius);
+  cursor: pointer;
+  fontWeight: bold;
 }
 
 /* Existing list styles, if used elsewhere */
 .card-list {
-  width: 75%;
+  width: 101%;
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: 1fr 1fr 1fr;

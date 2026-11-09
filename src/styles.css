@@ -11,6 +11,8 @@
   --font-color: #1F1F1F;
   --border: #E5ECE6;
   --font-family: serif, Arial, Sans-Serif;
+  --header-weight: 800;
+  --header-size: 18pt;
 }
 
 body {

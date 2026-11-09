@@ -14,7 +14,7 @@ export default function KitchenPage() {
     async function loadOrders() {
       try {
         // Query the 9 most recent orders across the entire database
-        const data = await getOrderHistory(null, null, 9);
+        const data = await getOrderHistory(null, null, 12);
 
         const ordersWithProducts = await Promise.all(
           (data || []).map(async (order) => ({
@@ -37,7 +37,7 @@ export default function KitchenPage() {
 
   function setList() {
     if (!ordersSet) {
-      return (Array.from({ length: 9 }, (_, i) => i + 1).map(num => (
+      return (Array.from({ length: 12 }, (_, i) => i + 1).map(num => (
         <li key={num} >
           <EmptyCard />
         </li>
@@ -59,21 +59,23 @@ export default function KitchenPage() {
 
   return (
     <div style={{ padding: '16px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+      <div className="kitchen-header-box" /*style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}*/>
         <button
           onClick={() => navigate('/')}
-          style={{
-            padding: '8px 16px',
-            backgroundColor: '#fff',
-            border: '1px solid #ccc',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
+          className='kitchen-card-buttons'
+        //style={{
+        //  //padding: '8px 16px',
+        //  //backgroundColor: '#fff',
+        //  //border: '1px solid #ccc',
+        //  //borderRadius: '4px',
+        //  //cursor: 'pointer',
+        //  //fontWeight: 'bold',
+        //}}
         >
           ← Portal
         </button>
-        <h2 style={{ margin: 0 }}>Kitchen Orders (Most Recent)</h2>
+        <div className='kitchen-header'>Kitchen Orders (Most Recent)</div>
+        <div></div>
       </div>
       <ul className="card-list">
         {setList()}
