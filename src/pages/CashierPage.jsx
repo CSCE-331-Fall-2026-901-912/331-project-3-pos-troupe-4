@@ -4,6 +4,8 @@ import { getMenuItems } from '../api';
 import ProductSlot from '../components/Cashier/ProductSlot';
 import { useCart } from '../components/Cashier/CartHandling';
 import '../page-styles/Cashier.css';
+import '../styles.css';
+
 
 export default function CashierPage() {
   const [menu, setMenu] = useState([]);
