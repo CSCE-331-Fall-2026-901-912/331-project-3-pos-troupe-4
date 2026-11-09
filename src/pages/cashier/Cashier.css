@@ -48,7 +48,8 @@
 	font-weight: 700; 
 	font-size: 1.1px;
 }
-.cashier__actions {display: flex;
+.cashier__actions {
+	display: flex;
 	 gap: 8px; 
 	 justify-content: flex-end;
 	}
