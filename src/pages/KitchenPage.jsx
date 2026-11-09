@@ -58,7 +58,7 @@ export default function KitchenPage() {
   }
 
   return (
-    <div style={{ padding: '16px' }}>
+    <div className='kitchen-box'>
       <div className="kitchen-header-box" /*style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}*/>
         <button
           onClick={() => navigate('/')}

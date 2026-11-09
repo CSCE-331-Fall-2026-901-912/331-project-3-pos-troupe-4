@@ -8,15 +8,23 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.kitchen-box {
+  width: 80%;
+  display: flow;
+  padding: 1vh 0vw;
+  margin: 0 5vw;
+}
+
 .component,
 .fill-component {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: 25vw;
-  min-width: 14vw;
+  width: 20vw;
+  min-width: 20vw;
   min-height: 32.1vh;
-  padding: 16px;
+  padding: 1rem;
   border: solid var(--border-size) var(--secondary-color);
   border-radius: var(--border-radius);
   gap: 14px;
@@ -143,28 +151,27 @@ body {
 
 .kitchen-card-buttons {
   padding: 0.75vh 1vw;
-  backgroundColor: var(--accent-color);
+  background-color: var(--accent-color);
   border: var(--border-size) solid var(--secondary-color);
-  borderRadius: var(--border-radius);
+  border-radius: var(--border-radius);
   cursor: pointer;
-  fontWeight: bold;
 }
 
 /* Existing list styles, if used elsewhere */
 .card-list {
-  width: 101%;
+  padding: 0;
+  margin: 0;
+  width: 80%;
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: 1fr 1fr 1fr;
   list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
 @media (max-width: 900px) {
   .component,
   .fill-component {
-    width: 100%;
+    width: 80%;
     min-width: 0;
   }
 }
