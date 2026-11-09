@@ -2,16 +2,19 @@
   /*
    * Any colors should be inserted here like so
    */
-  --primary-color: #FAFAFA;
-  --secondary-color: #CCC;
-  --primary-bg-color: #FAFAFA;
-  --secondary-bg-color: #CCC;
-  --font-color: #111;
+  --primary-color: #2E6F5E; /*FAFAFA;*/
+  --secondary-color: #A7C957; /*CCC;*/
+  --accent-color: #D9F0E1;
+  --warning: #f7e6c8;
+  --error: #F4B6B6;
+  --background-color: #FAFBF8;
+  --font-color: #1F1F1F;
+  --border: #E5ECE6;
   --font-family: serif, Arial, Sans-Serif;
 }
 
 body {
-  background-color: var(--primary-color);
+  background-color: var(--primary-bg-color);
   color: var(--font-color);
   font-family: var(--font-family);
 }
