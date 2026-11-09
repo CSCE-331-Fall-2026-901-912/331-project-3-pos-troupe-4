@@ -10,7 +10,6 @@ import KioskPage from './pages/KioskMainPage';
 import KitchenPage from './pages/KitchenPage';
 import RoleSelector from './pages/RoleSelector';
 import { CartProvider } from './components/Cashier/CartHandling';
-import AccessibilityBar from './components/Cashier/AccessibilityBar';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -61,7 +60,6 @@ export default function App() {
     <ErrorBoundary>
       <CartProvider>
         <BrowserRouter>
-        <AccessibilityBar />
           <Routes>
             <Route path="/" element={<RoleSelector />} />
             <Route path="/kiosk" element={<KioskPage />} />
