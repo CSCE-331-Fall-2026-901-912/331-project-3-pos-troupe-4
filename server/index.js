@@ -3,6 +3,8 @@ const fs = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
+const { requireAuth, requireManager } = require('./middleware/auth');
+
 const express = require('express');
 const pool = require('./db');
 const Model = require('./Model');
@@ -164,7 +166,7 @@ app.post('/api/auth/logout', (req, res, next) => {
     });
 });
 
-app.get('/api/orders_products', async (req, res) => {
+app.get('/api/orders_products', requireManager, async (req, res) => {
   try {
     const { order_id } = req.query;
     const data = await Model.getOrderProducts(order_id);
@@ -178,7 +180,7 @@ app.get('/api/orders_products', async (req, res) => {
 });
 
 // GET order_history between two dates (or most recent if dates omitted)
-app.get('/api/order_history', async (req, res) => {
+app.get('/api/order_history', requireManager, async (req, res) => {
   try {
     const { startDate, endDate, limit } = req.query;
     const data = await Model.getOrderHistory(startDate, endDate, limit);
@@ -192,7 +194,7 @@ app.get('/api/order_history', async (req, res) => {
 });
 
 // GET ManagerView data
-app.get('/api/manager', async (req, res) => {
+app.get('/api/manager', requireManager, async (req, res) => {
   try {
     const data = await Model.getManagerData();
     res.json(data);
@@ -233,7 +235,7 @@ app.get('/api/addable-items', async (req, res) => {
 
 
 // GET low stock items
-app.get('/api/inventory/low-stock', async (req, res) => {
+app.get('/api/inventory/low-stock', requireManager, async (req, res) => {
   try {
     const data = await Model.getLowStockItems();
     res.json(data);
@@ -247,7 +249,7 @@ app.get('/api/inventory/low-stock', async (req, res) => {
 
 
 // GET sales report
-app.get('/api/salesReport', async (req, res) => {
+app.get('/api/salesReport', requireManager, async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
 
@@ -262,7 +264,7 @@ app.get('/api/salesReport', async (req, res) => {
 });
 
 // GET full inventory
-app.get('/api/inventory', async (req, res) => {
+app.get('/api/inventory', requireManager, async (req, res) => {
     try {
         const data = await Model.getInventory();
         res.json(data);
@@ -273,7 +275,7 @@ app.get('/api/inventory', async (req, res) => {
 });
 
 // Update inventory stock
-app.put('/api/inventory/:itemName', async (req, res) => {
+app.put('/api/inventory/:itemName', requireManager, async (req, res) => {
     try {
         const { itemName } = req.params;
         const { amount } = req.body;
@@ -286,7 +288,7 @@ app.put('/api/inventory/:itemName', async (req, res) => {
 });
 
 // GET inventory usage chart
-app.get('/api/reports/inventory-usage', async (req, res) => {
+app.get('/api/reports/inventory-usage', requireManager, async (req, res) => {
     try {
         const { startDate, endDate } = req.query;
         const data = await Model.getInventoryUsage(startDate, endDate);
@@ -298,7 +300,7 @@ app.get('/api/reports/inventory-usage', async (req, res) => {
 });
 
 // GET X-Report
-app.get('/api/reports/x-report', async (req, res) => {
+app.get('/api/reports/x-report', requireManager, async (req, res) => {
     try {
         const { date } = req.query;
         const data = await Model.getXReport(date);
@@ -310,7 +312,7 @@ app.get('/api/reports/x-report', async (req, res) => {
 });
 
 // GET employees
-app.get('/api/employees', async (req, res) => {
+app.get('/api/employees', requireManager, async (req, res) => {
     try {
         const data = await Model.getEmployees();
         res.json(data);
@@ -321,7 +323,7 @@ app.get('/api/employees', async (req, res) => {
 });
 
 // Update employee
-app.put('/api/employees/:employeeId', async (req, res) => {
+app.put('/api/employees/:employeeId', requireManager, async (req, res) => {
     try {
         const { employeeId } = req.params;
         const { employeeName, isManager, password } = req.body;
@@ -333,8 +335,8 @@ app.put('/api/employees/:employeeId', async (req, res) => {
     }
 });
 
-// GET all items
-app.get('/api/items', async (req, res) => {
+// GET all items TODO- should this be auth protected?
+app.get('/api/items', requireManager, async (req, res) => {
     try {
         const data = await Model.getItems();
         res.json(data);
@@ -345,7 +347,7 @@ app.get('/api/items', async (req, res) => {
 });
 
 // GET product constituent items
-app.get('/api/products/:name/constituents', async (req, res) => {
+app.get('/api/products/:name/constituents', requireManager, async (req, res) => {
     try {
         const { name } = req.params;
         const data = await Model.getConstituentItemsForProduct(name);
@@ -357,7 +359,7 @@ app.get('/api/products/:name/constituents', async (req, res) => {
 });
 
 // Update product price
-app.put('/api/products/:productName', async (req, res) => {
+app.put('/api/products/:productName', requireManager, async (req, res) => {
     try {
         const { productName } = req.params;
         const { price } = req.body;
@@ -371,7 +373,7 @@ app.put('/api/products/:productName', async (req, res) => {
 
 
 //add inventory item
-app.post('/api/inventory', async (req, res) => {
+app.post('/api/inventory', requireManager, async (req, res) => {
   try {
     const { itemName, initialStock, supplierCost, isAddable } = req.body;
 
@@ -394,7 +396,7 @@ app.post('/api/inventory', async (req, res) => {
 });
 
 //add employee
-app.post('/api/employees', async (req, res) => {
+app.post('/api/employees', requireManager, async (req, res) => {
   try {
     const { employeeName, manager, password } = req.body;
 
@@ -415,7 +417,7 @@ app.post('/api/employees', async (req, res) => {
 });
 
 //remove employee
-app.delete('/api/employees/:employeeId', async (req, res) => {
+app.delete('/api/employees/:employeeId', requireManager, async (req, res) => {
   try {
     const { employeeId } = req.params;
 
@@ -436,7 +438,7 @@ app.delete('/api/employees/:employeeId', async (req, res) => {
 });
 
 //add product
-app.post('/api/products', async (req, res) => {
+app.post('/api/products', requireManager, async (req, res) => {
   try {
     const { productName, price } = req.body;
 
@@ -457,7 +459,7 @@ app.post('/api/products', async (req, res) => {
 });
 
 //remove product
-app.delete('/api/products/:productName', async (req, res) => {
+app.delete('/api/products/:productName', requireManager, async (req, res) => {
   try {
     const { productName } = req.params;
 
@@ -478,7 +480,7 @@ app.delete('/api/products/:productName', async (req, res) => {
 });
 
 //add item
-app.post('/api/items', async (req, res) => {
+app.post('/api/items', requireManager, async (req, res) => {
   try {
     const { itemName, supplierPricePerUnit, isAddable } = req.body;
 
@@ -499,7 +501,7 @@ app.post('/api/items', async (req, res) => {
 });
 
 //remove item
-app.delete('/api/items/:itemName', async (req, res) => {
+app.delete('/api/items/:itemName', requireManager, async (req, res) => {
   try {
     const { itemName } = req.params;
 
@@ -520,7 +522,7 @@ app.delete('/api/items/:itemName', async (req, res) => {
 });
 
 // add product with constituent items
-app.post('/api/products/complete', async (req, res) => {
+app.post('/api/products/complete', requireManager, async (req, res) => {
   try {
     const {
       productName,
@@ -554,7 +556,7 @@ app.post('/api/products/complete', async (req, res) => {
 
 
 // Update product constituents
-app.put('/api/products/:name/constituents', async (req, res) => {
+app.put('/api/products/:name/constituents', requireManager, async (req, res) => {
   try {
     const { name } = req.params;
     const { constituentItems } = req.body;

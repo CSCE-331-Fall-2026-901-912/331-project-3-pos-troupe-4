@@ -35,11 +35,7 @@ export default function EmployeeRoute({ children, managerOnly = false }) {
         return <p>Checking login...</p>;
     }
 
-    if (status === 'unauthorized') {
-        return <Navigate to="/" replace />;
-    }
-
-    if (status === 'forbidden') {
+    if (status === 'unauthorized' || status === 'forbidden') {
         return <Navigate to="/" replace />;
     }
 

@@ -110,10 +110,14 @@ export default function App() {
                     </EmployeeRoute>
                 }
             />
-            <Route path="/cashier/customize" element={<CustomizePage />} />
-            <Route path="/cashier/cart" element={<CartPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/kitchen" element={<KitchenPage />} />
+            <Route
+                path="/kitchen"
+                element={
+                    <EmployeeRoute>
+                        <KitchenPage />
+                    </EmployeeRoute>
+                }
+            />
           </Routes>
         </BrowserRouter>
       </CartProvider>
