@@ -1,10 +1,44 @@
-.product-slot{
+@import "../../styles.css";
+
+.product-slot {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 4px;
+	gap: 6px;
 	width: 100%;
-	
+	min-height: max(10vh, 5.25rem);
+	padding: 1rem 0.8rem;
+	border: 1px solid #deded8;
+	border-radius: 8px;
+	background: #ffffff;
+	color: var(--font-color);
+	font-family: var(--font-family);
+	font-size: 0.95rem;
+	cursor: pointer;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	transition: all 0.15s ease-in-out;
+	user-select: none;
+}
 
+.product-slot:hover {
+	border-color: var(--primary-color, #2E6F5E);
+	background-color: #fafcf9;
+	box-shadow: 0 4px 10px rgba(46, 111, 94, 0.12);
+	transform: translateY(-2px);
+}
+	
+.product-slot:active {
+	transform: scale(0.98);
+}
+
+.product-slot__name {
+	text-align: center;
+	font-weight: 600;
+}
+
+.product-slot__price {
+	font-weight: 700;
+	color: var(--primary-color, #2E6F5E);
+	font-size: 0.95rem;
 }

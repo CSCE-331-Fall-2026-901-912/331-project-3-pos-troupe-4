@@ -1,29 +1,51 @@
+@import "../../styles.css";
+
 .accessibility-bar {
 	display: flex;
-	gap: 8px;
-	padding: 8px 16px;
-	background: white;
+  justify-content: flex-end;
+  align-items: center;
+	gap: 1vw;
+  padding: 2vh 3vw;
+	background: var(--background-color);
+  
+  border-bottom: 0.15vh solid var(--border);
 }
 
 .accessibility-bar button {
-	min-height: 44px;
-	min-width: 44px;
-	padding: 0 12px;
+	min-height: max(5vh, 2.70rem);
+	min-width: 2.75rem;
+	padding: 0 1rem;
+  border: 0.15rem solid var(--primary-color);
+  border-radius: 0.4rem;
+  border-color: var(--accent-color);
+  background: var(--background-color);
+  color: var(--background-color);
+  font-family: var(--font-family);
 	font-size: 1rem;
 	cursor: pointer;
 }
-
-:focus-visible {
-	outline: 3px solid blue;
-	outline-offset: 2px;
+.accessibility-bar button:hover{
+  background: var(--secondary-color);
+  color: var(--font-color);
 }
+
+.accessibility-bar button[aria-pressed = "true"]{
+  background: var(--secondary-color) ;
+  color: var(--font-color);
+}
+
+.accessibility-bar button:focus-visible {
+	outline: 0.2vh solid var(--secondary-color);
+	outline-offset: 0.15vh;
+}
+
 
 html.high-contrast * {
-	background-color: black !important;
-	color: white !important;
-	border-color: yellow !important;
+	background-color: var(--font-color) !important;
+	color: var(--background-color) !important;
+	border-color: var(--secondary-color) !important;
 }
-
-html.high-contrast :focus-visible {
-	outline-color: yellow;
+html.high-contrast button, html.high-contrast input{
+  background-color: var(--font-color) !important;
+  color: var(--background-color) !important;
 }

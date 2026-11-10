@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { placeOrder } from "../../api";
-import { useCart } from "../../components/Cashier/CartHandling";
-import "../../page-styles/KioskCheckout.css";
+import { useKioskCart } from "./KioskCartHandling";
+import "../../page-styles/KioskMainPage.css";
 
 const KIOSK_EMPLOYEE_ID = 0;
 
-export default function CheckoutPage({ onBack, onDone}) {
-    const {items, removeItem, clearCart, customerName, setCustomerName, subtotal, tax, total} = useCart();
+export default function CheckoutPage({ onBack, onDone, onModify }) {
+    const {items, removeItem, clearCart, customerName, setCustomerName, subtotal, tax, total} = useKioskCart();
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
 
@@ -20,10 +20,10 @@ export default function CheckoutPage({ onBack, onDone}) {
             totalPrice: total,
             items: (items || []).map((item) => ({
                 productName: item.productName,
-                selectAddOns: item.addOns.map((name) => ({ itemName: name, isAddition: true })),
+                selectAddOns: (item.addOns || []).map((name) => ({ itemName: name, isAddition: true })),
                 finalConstituentItems: [
-                    ...item.constituentItems.filter((name) => !item.removed.includes(name)),
-                    ...item.addOns,
+                    ...(item.constituentItems || []).filter((name) => !(item.removed || []).includes(name)),
+                    ...(item.addOns || []),
                 ],
             })),
         };
@@ -31,10 +31,10 @@ export default function CheckoutPage({ onBack, onDone}) {
         setSubmitting(true);
         setError('');
         try{
-            await placeOrder(order);
+            const res = await placeOrder(order);
             clearCart();
             setCustomerName('');
-            onDone();
+            onDone(res?.orderId);
         }catch(err){
             console.error('Error submitting order:', err);
             setError('Could not submit the order. Please try again or ask for assistance.');
@@ -74,9 +74,21 @@ export default function CheckoutPage({ onBack, onDone}) {
                                 {item.sugar && <span className="checkout-mod">{item.sugar} </span>}
                             </div>
                             <span className="checkout-item-price">${item.itemTotal.toFixed(2)}</span>
-                            <button className="checkout-remove" onClick={() => removeItem(index)} aria-label={`Remove ${item.productName} from order`}>
-                                Remove
-                            </button>
+                            <div className="checkout-item-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                {onModify && (
+                                    <button
+                                        type="button"
+                                        className="btn btn--outline"
+                                        style={{ padding: '6px 14px', fontSize: '0.85rem', minHeight: 'auto' }}
+                                        onClick={() => onModify(item, index)}
+                                    >
+                                        Modify
+                                    </button>
+                                )}
+                                <button className="checkout-remove" onClick={() => removeItem(index)} aria-label={`Remove ${item.productName} from order`}>
+                                    Remove
+                                </button>
+                            </div>
                         </li>
                     ))}
                 </ul>

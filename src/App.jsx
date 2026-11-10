@@ -12,6 +12,8 @@ import RoleSelector from './pages/RoleSelector';
 import { CartProvider } from './components/Cashier/CartHandling';
 import AccessibilityBar from './components/Cashier/AccessibilityBar';
 import EmployeeRoute from './components/EmployeeRoute';
+import { KioskCartProvider } from './components/Kiosk/KioskCartHandling';
+import AppHeader from './components/AppHeader';
 
 class ErrorBoundary extends Component {
   constructor(props) {

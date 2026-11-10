@@ -13,16 +13,11 @@ export default function AccessibilityBar(){
 
 	//This runs whenever the high contrast turned on or turned off
 	useEffect(() => {
-		if(isHighConstrastOn){
-			document.documentElement.classList.add('high-constrast');
-		}
-		else{
-			document.documentElement.classList.remove('high-constrast');
-		}
+			document.documentElement.classList.toggle('high-contrast',isHighConstrastOn);
 	}, [isHighConstrastOn]);
 
 
-function makeTextBigger(){
+function makeTextBigger(){	
 	if(textSizePercent < 200){
 		setTextSizePercent(textSizePercent + 25);
 	}

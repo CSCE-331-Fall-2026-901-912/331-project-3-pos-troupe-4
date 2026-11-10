@@ -1,22 +1,47 @@
 @import url("../styles.css");
 
+:root {
+  --border-size: 0.1rem;
+  --border-radius: 0.5rem;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.kitchen-box {
+  width: 92%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
 .component,
 .fill-component {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: 25vw;
-  min-width: 260px;
-  min-height: 25vh;
-  padding: 16px;
-  border: solid 1px var(--secondary-color);
-  border-radius: 8px;
-  gap: 14px;
+  width: 100%;
+  min-width: 0;
+  min-height: auto;
+  padding: 1.25rem;
+  border: 1px solid var(--border, #E5ECE6);
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.15s ease-in-out;
+  gap: 12px;
 }
 
 /* Regular card */
 .component {
-  background-color: var(--primary-color);
+  background-color: #ffffff;
+}
+
+.component:hover {
+  border-color: var(--primary-color, #2E6F5E);
+  box-shadow: 0 4px 12px rgba(46, 111, 94, 0.10);
 }
 
 /* Filled card */
@@ -36,13 +61,29 @@
   100% { background-position: 0% 50%; }
 }
 
+/* header */
+
+.kitchen-header-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.25rem 0;
+}
+
+.kitchen-header-title {
+  color: var(--primary-color, #2E6F5E);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
 /* Order header */
 .kitchen-card-header {
   display: flex;
   flex-direction: column;
   gap: 4px;
   padding-bottom: 10px;
-  border-bottom: 1px solid var(--secondary-color);
+  border-bottom: var(--border-size) solid var(--secondary-color);
 }
 
 .kitchen-card-header h3 {
@@ -68,6 +109,7 @@
 }
 
 .product-list {
+  background-color: var(--accent-color);
   list-style: none;
   padding: 0;
   margin: 0;
@@ -77,16 +119,17 @@
 .product-list li {
   padding: 7px 9px;
   margin-bottom: 5px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
+  border: var(--border-size) solid var(--secondary-color);
+  border-radius: var(--border-radius);
   font-size: 0.95rem;
 }
 
 /* Notes */
 .kitchen-card-notes {
+  background-color: var(--accent-color);
   padding: 10px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
+  border: var(--border-size) solid var(--secondary-color);
+  border-radius: var(--border-radius);
 }
 
 .kitchen-card-notes p {
@@ -100,32 +143,167 @@
   justify-content: flex-end;
   gap: 10px;
   padding-top: 10px;
-  border-top: 1px solid var(--secondary-color);
+  border-top: var(--border-size) solid var(--secondary-color);
 }
 
 .kitchen-card-actions button {
-  padding: 8px 14px;
+  padding: 1vh 1vw;
   cursor: pointer;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
+  border: var(--border-size) solid var(--secondary-color);
+  background-color: var(--accent-color);
+  border-radius: var(--border-radius);
   font-size: 0.9rem;
 }
 
-/* Existing list styles, if used elsewhere */
+.kitchen-card-buttons {
+  padding: 0.75vh 1vw;
+  background-color: var(--accent-color);
+  border: var(--border-size) solid var(--secondary-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+/* Masonry Column Layout for varying ticket lengths */
 .card-list {
-  width: 75%;
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: 1fr 1fr 1fr;
-  list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
+  list-style: none;
+  columns: 3 320px;
+  column-gap: 1.25rem;
+}
+
+.card-list-item {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
 }
 
 @media (max-width: 900px) {
   .component,
   .fill-component {
-    width: 100%;
+    width: 80%;
     min-width: 0;
   }
+}
+
+/* Kitchen Add-ins & Status Badges */
+.kitchen-customer-name {
+  font-size: 0.85rem;
+  color: #556658;
+  display: block;
+  margin-top: 2px;
+}
+
+.kitchen-status-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+}
+
+.kitchen-status-badge.status--in-queue {
+  background: var(--warning, #F7E6C8);
+  color: #78350f;
+  border: 1px solid #ebd0a8;
+}
+
+.kitchen-status-badge.status--preparing {
+  background: var(--accent-color, #D9F0E1);
+  color: var(--primary-color, #2E6F5E);
+  border: 1px solid #c2e5cd;
+}
+
+.kitchen-status-badge.status--ready {
+  background: var(--secondary-color, #A7C957);
+  color: #1e3a1e;
+  border: 1px solid #94b845;
+}
+
+.kitchen-status-badge.status--completed {
+  background: #E2E3E5;
+  color: #383D41;
+  border: 1px solid #D6D8DB;
+}
+
+.kitchen-card-addins {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: #f5f9f6;
+  border: 1px dashed var(--secondary-color, #A7C957);
+  border-radius: 6px;
+}
+
+.kitchen-card-addins h4 {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--primary-color, #2E6F5E);
+  letter-spacing: 0.5px;
+}
+
+.addin-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.addin-item {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1b5e20;
+  padding: 2px 0;
+}
+
+.btn-kitchen-undo {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: all 0.15s ease;
+}
+
+.btn-kitchen-undo:hover:not(:disabled) {
+  background: #f1f5f9 !important;
+  color: #000000 !important;
+  border-color: #94a3b8 !important;
+}
+
+.btn-kitchen-undo:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-kitchen-check {
+  background: var(--secondary-color, #A7C957) !important;
+  color: #142816 !important;
+  border: 1px solid #8cae43 !important;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 0.88rem;
+  letter-spacing: 0.2px;
+  transition: all 0.15s ease;
+}
+
+.btn-kitchen-check:hover {
+  background: #96ba4c !important;
+  color: #000000 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-kitchen-completed {
+  background: #e2e8f0 !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+  cursor: default;
 }

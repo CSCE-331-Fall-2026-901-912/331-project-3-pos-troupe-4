@@ -12,6 +12,10 @@ export function CartProvider({ children }) {
     setItems((prev) => [...prev, item]);
   }
 
+  function updateItem(index, updatedItem) {
+    setItems((prev) => prev.map((item, i) => (i === index ? updatedItem : item)));
+  }
+
   function removeItem(index) {
     setItems((prev) => prev.filter((_, i) => i !== index));
   }
@@ -35,6 +39,7 @@ export function CartProvider({ children }) {
   const value = {
     items,
     addItem,
+    updateItem,
     removeItem,
     clearCart,
     customerName,

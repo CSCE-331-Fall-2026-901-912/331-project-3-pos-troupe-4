@@ -29,9 +29,9 @@ export default function CartPage() {
     setSubmitting(true);
     setError('');
     try {
-      await placeOrder(order);
+      const res = await placeOrder(order);
       clearCart();
-      navigate('/cashier');
+      navigate('/cashier', { state: { orderId: res?.orderId } });
     } catch (err) {
       console.error('Error submitting order:', err);
       setError('Could not submit the order. Please try again.');
@@ -58,9 +58,35 @@ export default function CartPage() {
               {item.ice && <div className="summary__detail">{item.ice}</div>}
               {item.sugar && <div className="summary__detail">{item.sugar}</div>}
             </div>
-            <div>
-              ${item.itemTotal.toFixed(2)}{' '}
-              <button onClick={() => removeItem(index)}>✕</button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontWeight: 600 }}>${item.itemTotal.toFixed(2)}</span>
+              <button
+                type="button"
+                className="btn btn--outline"
+                style={{ padding: '4px 10px', fontSize: '0.82rem' }}
+                onClick={() => navigate('/cashier/customize', {
+                  state: {
+                    product: {
+                      name: item.productName,
+                      price: (item.itemTotal || 0) - (item.addOns?.length || 0) * 0.5,
+                      constituentItems: item.constituentItems || [],
+                    },
+                    editIndex: index,
+                    existingItem: item,
+                  }
+                })}
+              >
+                Modify
+              </button>
+              <button
+                type="button"
+                className="btn btn--outline"
+                style={{ padding: '4px 8px', fontSize: '0.82rem', color: '#dc2626' }}
+                onClick={() => removeItem(index)}
+                title="Remove item"
+              >
+                ✕
+              </button>
             </div>
           </div>
         ))}
@@ -75,8 +101,8 @@ export default function CartPage() {
       {error && <p className="error">{error}</p>}
 
       <div className="cashier__actions">
-        <button className="btn" onClick={() => navigate('/cashier')}>&larr; Back to Order</button>
-        <button className="btn btn--green" onClick={handleSubmit} disabled={submitting}>
+        <button className="btn btn--outline" onClick={() => navigate('/cashier')}>&larr; Back to Order</button>
+        <button className="btn btn--primary" onClick={handleSubmit} disabled={submitting}>
           {submitting ? 'Submitting...' : 'Confirm & Submit Order'}
         </button>
       </div>
