@@ -64,7 +64,7 @@ export default function App() {
     <ErrorBoundary>
       <CartProvider>
         <BrowserRouter>
-        <AccessibilityBar />
+        <AppHeader />
           <Routes>
             <Route path="/" element={<RoleSelector />} />
             <Route path="/kiosk" element={<KioskPage />} />
