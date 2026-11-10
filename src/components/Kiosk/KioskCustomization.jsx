@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import '../../page-styles/KioskCustomization.css';
+import '../../page-styles/KioskMainPage.css';
 import { getAddableItems } from '../../api';
 import { ADDON_PRICE } from '../Cashier/CartHandling';
 
