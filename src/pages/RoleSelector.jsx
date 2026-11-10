@@ -7,24 +7,27 @@ export default function RoleSelector() {
     const modes = [
         {
             title: 'Cashier Mode',
-            description: 'Take customer orders and process transactions.',
-            path: '/cashier'
+            description: 'Take customer orders, customize drinks, and process transactions.',
+            path: '/cashier',
+            icon: '💳'
         },
         {
             title: 'Manager Mode',
-            description: 'Manage inventory, employees, menu items, and reports.',
-            path: '/manager'
-            
+            description: 'Manage inventory, employees, menu items, prices, and sales reports.',
+            path: '/manager',
+            icon: '📊'
         },
         {
             title: 'Kitchen Mode',
-            description: 'View incoming orders and track drink preparation.',
-            path: '/kitchen'
+            description: 'View incoming orders, check customized add-ins, and advance preparation status.',
+            path: '/kitchen',
+            icon: '🍳'
         },
         {
             title: 'Kiosk Mode',
-            description: 'Allow customers to browse the menu and place orders.',
-            path: '/kiosk'
+            description: 'Allow customers to browse the menu, customize toppings, and place self-service orders.',
+            path: '/kiosk',
+            icon: '🍵'
         }
     ];
 

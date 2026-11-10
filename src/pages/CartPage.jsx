@@ -75,8 +75,8 @@ export default function CartPage() {
       {error && <p className="error">{error}</p>}
 
       <div className="cashier__actions">
-        <button className="btn" onClick={() => navigate('/cashier')}>&larr; Back to Order</button>
-        <button className="btn btn--green" onClick={handleSubmit} disabled={submitting}>
+        <button className="btn btn--outline" onClick={() => navigate('/cashier')}>&larr; Back to Order</button>
+        <button className="btn btn--primary" onClick={handleSubmit} disabled={submitting}>
           {submitting ? 'Submitting...' : 'Confirm & Submit Order'}
         </button>
       </div>

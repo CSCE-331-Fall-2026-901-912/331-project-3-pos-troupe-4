@@ -100,23 +100,11 @@ export default function KitchenPage() {
 
   return (
     <div className='kitchen-box'>
-      <div className="kitchen-header-box" /*style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}*/>
-        <button
-          onClick={() => navigate('/')}
-          className='kitchen-card-buttons'
-        //style={{
-        //  //padding: '8px 16px',
-        //  //backgroundColor: '#fff',
-        //  //border: '1px solid #ccc',
-        //  //borderRadius: '4px',
-        //  //cursor: 'pointer',
-        //  //fontWeight: 'bold',
-        //}}
-        >
-          ← Portal
-        </button>
-        <div className='kitchen-header'>Kitchen Orders (Most Recent)</div>
-        <div></div>
+      <div className="kitchen-header-box">
+        <h1 className="kitchen-header-title">Kitchen Orders</h1>
+        <div className="badge badge--secondary">
+          Live Orders: {orders.length}
+        </div>
       </div>
       <ul className="card-list">
         {setList()}

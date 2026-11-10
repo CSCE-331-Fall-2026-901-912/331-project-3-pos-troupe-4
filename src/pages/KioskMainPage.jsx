@@ -144,17 +144,9 @@ export default function KioskPage() {
   return (
     <main className="kiosk-container">
       <header className="kiosk-header">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <h1>Build your drink.</h1>
-            <p>Choose an item to get started.</p>
-          </div>
-          <button
-            onClick={() => navigate('/')}
-            className="kiosk-portal-btn"
-          >
-            ← Portal
-          </button>
+        <div>
+          <h1>Build your drink.</h1>
+          <p>Choose an item to get started.</p>
         </div>
 
         {/* Search & Sort / Filter Bar */}

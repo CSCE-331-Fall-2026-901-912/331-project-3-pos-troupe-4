@@ -522,12 +522,6 @@ export default function ManagerPage() {
           >
             Trends (Orders)
           </button>
-          <button
-            className="nav-tab-btn hub-link"
-            onClick={() => navigate('/')}
-          >
-            &larr; Portal Hub
-          </button>
         </nav>
 
         {/* TAB 1: HOME (X-REPORT) */}

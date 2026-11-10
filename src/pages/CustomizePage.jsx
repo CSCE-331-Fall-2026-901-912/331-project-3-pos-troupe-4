@@ -64,10 +64,10 @@ export default function CustomizePage() {
   return (
     <div className="custom">
       <header className="custom__header">
-        <button className="btn" onClick={() => navigate('/cashier')}>Cancel</button>
+        <button className="btn btn--outline" onClick={() => navigate('/cashier')}>Cancel</button>
         <h2>Customizing: {product.name}</h2>
         <span className="custom__total">Item Total: ${itemTotal.toFixed(2)}</span>
-        <button className="btn btn--blue" onClick={handleAdd}>Add to Order</button>
+        <button className="btn btn--primary" onClick={handleAdd}>Add to Order</button>
       </header>
 
       <h4>Base Recipe Ingredients (click to omit/remove):</h4>

@@ -10,10 +10,12 @@ body {
 }
 
 .kitchen-box {
-  width: 80%;
-  display: flow;
-  padding: 1vh 0vw;
-  margin: 0 5vw;
+  width: 92%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+  font-family: var(--font-family);
 }
 
 .component,
@@ -21,13 +23,13 @@ body {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  width: 20vw;
-  min-width: 20vw;
-  min-height: 32.1vh;
-  padding: 1rem;
-  border: solid var(--border-size) var(--secondary-color);
-  border-radius: var(--border-radius, 8px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  min-width: 0;
+  min-height: 280px;
+  padding: 1.25rem;
+  border: 1px solid var(--border, #E5ECE6);
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: all 0.15s ease-in-out;
   gap: 14px;
 }
@@ -35,6 +37,11 @@ body {
 /* Regular card */
 .component {
   background-color: #ffffff;
+}
+
+.component:hover {
+  border-color: var(--primary-color, #2E6F5E);
+  box-shadow: 0 4px 12px rgba(46, 111, 94, 0.10);
 }
 
 /* Filled card */
@@ -58,19 +65,16 @@ body {
 
 .kitchen-header-box {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 0 1vw;
-  margin: 1vh 0vw;
+  margin: 1.25rem 0;
 }
 
-.kitchen-header {
-  background-color: var(--accent-color);
-  border: var(--border-size) solid var(--secondary-color);
-  padding: 1vh 1vw;
-  border-radius: var(--border-radius);
-  text-align: center;
-  font-size: var(--header-size);
-  font-weight: var(--header-weight);
+.kitchen-header-title {
+  color: var(--primary-color, #2E6F5E);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
 }
 
 /* Order header */
@@ -163,10 +167,10 @@ body {
 .card-list {
   padding: 0;
   margin: 0;
-  width: 80%;
+  width: 100%;
   display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
   list-style: none;
 }
 
@@ -196,21 +200,21 @@ body {
 }
 
 .kitchen-status-badge.status--in-queue {
-  background: #FFF3CD;
-  color: #856404;
-  border: 1px solid #FFEEBA;
+  background: var(--warning, #F7E6C8);
+  color: #78350f;
+  border: 1px solid #ebd0a8;
 }
 
 .kitchen-status-badge.status--preparing {
-  background: #CCE5FF;
-  color: #004085;
-  border: 1px solid #B8DAFF;
+  background: var(--accent-color, #D9F0E1);
+  color: var(--primary-color, #2E6F5E);
+  border: 1px solid #c2e5cd;
 }
 
 .kitchen-status-badge.status--ready {
-  background: #D4EDDA;
-  color: #155724;
-  border: 1px solid #C3E6CB;
+  background: var(--secondary-color, #A7C957);
+  color: #1e3a1e;
+  border: 1px solid #94b845;
 }
 
 .kitchen-status-badge.status--completed {
