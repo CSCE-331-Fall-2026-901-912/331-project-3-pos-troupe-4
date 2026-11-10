@@ -29,9 +29,9 @@ export default function CartPage() {
     setSubmitting(true);
     setError('');
     try {
-      await placeOrder(order);
+      const res = await placeOrder(order);
       clearCart();
-      navigate('/cashier');
+      navigate('/cashier', { state: { orderId: res?.orderId } });
     } catch (err) {
       console.error('Error submitting order:', err);
       setError('Could not submit the order. Please try again.');

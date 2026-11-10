@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import '../../page-styles/KioskMainPage.css';
 import { getAddableItems } from '../../api';
-import { ADDON_PRICE } from '../Cashier/CartHandling';
+import { ADDON_PRICE } from './KioskCartHandling';
 
 const labelOf = (x) => (typeof x === 'string' ? x : x.name);
+const isPackaging = (name) => /cup|lid|napkin|straw|sleeve|seal|bag/i.test(name);
 const ICE_OPTIONS = ['- No Ice', '- Less Ice', '+ Extra Ice'];
 const SUGAR_OPTIONS = ['- Less Sugar', '- Half Sugar', '+ Extra Sugar'];
 
@@ -86,20 +87,24 @@ export default function CustomizationScreen({ item, onCancel, onConfirm }) {
     <main className="customize-container">
       <h2>{item.name}</h2>
 
-      <section>
-        <h3>Included items (tap to remove)</h3>
-        <div className="option-grid">
-          {(item.constituentItems ?? []).map((c) => {
-            const label = labelOf(c);
-            const isRemoved = removed.includes(label);
-            return (
-              <button key={label} className={`option-button ${isRemoved ? 'removed' : ''}`} onClick={() => toggleRemoved(label)}>
-                {isRemoved ? `No ${label}` : label}
-              </button>
-            )
-          })}
-        </div>
-      </section>
+      {(item.constituentItems ?? []).filter((c) => !isPackaging(labelOf(c))).length > 0 && (
+        <section>
+          <h3>Included ingredients (tap to omit)</h3>
+          <div className="option-grid">
+            {(item.constituentItems ?? [])
+              .filter((c) => !isPackaging(labelOf(c)))
+              .map((c) => {
+                const label = labelOf(c);
+                const isRemoved = removed.includes(label);
+                return (
+                  <button key={label} className={`option-button ${isRemoved ? 'removed' : ''}`} onClick={() => toggleRemoved(label)}>
+                    {isRemoved ? `No ${label}` : label}
+                  </button>
+                );
+              })}
+          </div>
+        </section>
+      )}
 
       <section>
         <h3>Add-ins</h3>

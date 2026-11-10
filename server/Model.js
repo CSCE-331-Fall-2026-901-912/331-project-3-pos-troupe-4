@@ -64,6 +64,19 @@ async function getOrderProducts(order_id) {
     throw err;
   }
 }
+
+async function getOrderAddIns(order_id) {
+  try {
+    const result = await pool.query(
+      `SELECT item_name FROM add_ins WHERE order_id = $1 ORDER BY item_name ASC`,
+      [order_id]
+    );
+    return result.rows.map(r => r.item_name);
+  } catch (err) {
+    console.error('Error getting add-ins associated with order_id: ', err);
+    return [];
+  }
+}
 /*
 async function getOrderHistory(startDate, endDate, limit) {
   try {
@@ -531,7 +544,7 @@ async function placeOrder(order) {
     await client.query('COMMIT');
 
     console.log(`Order #${orderId} saved successfully!`);
-    return true;
+    return { success: true, orderId };
 
   } catch (err) {
     await client.query('ROLLBACK');
@@ -757,6 +770,7 @@ module.exports = {
   getSalesReport,
   getOrderHistory,
   getOrderProducts,
+  getOrderAddIns,
     getEmployees,
     getItems,
     getXReport,

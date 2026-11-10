@@ -27,6 +27,27 @@
   font-family: var(--font-family);
 }
 
+.cashier__order-success {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.cashier__order-success button {
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  color: #155724;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
 .cashier__grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -44,11 +65,94 @@
 
 .cashier__cart {
   flex: 1;
-  padding: 1.5vh 1vw;
-  background: var(--accent-color);
-  border: 0.15rem solid var(--border);
-  border-radius: 0.4rem;
+  padding: 1vh 0.8vw;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   overflow-y: auto;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cashier__cart .none {
+  color: #718096;
+  text-align: center;
+  font-size: 0.95rem;
+  margin: auto;
+  padding: 2rem 1rem;
+}
+
+.cashier__cart-item {
+  background: var(--background-color, #fafbf8);
+  border: 1px solid var(--border, #e5ece6);
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease;
+}
+
+.cashier__cart-item:hover {
+  border-color: #cbd5e1;
+}
+
+.cashier__cart-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cashier__cart-item-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--font-color);
+  flex: 1;
+}
+
+.cashier__cart-item-price {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--primary-color);
+}
+
+.cashier__cart-remove-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.12s ease;
+}
+
+.cashier__cart-remove-btn:hover {
+  color: #ef4444;
+  background: #fee2e2;
+}
+
+.cashier__cart-item-customizations {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 4px;
+}
+
+.cashier__cart-custom-line {
+  font-size: 0.78rem;
+  color: #4b6352;
+  font-weight: 500;
+}
+
+.cashier__cart-custom-line--omitted {
+  color: #dc2626;
+  font-style: italic;
 }
 
 .cashier__cart-row {

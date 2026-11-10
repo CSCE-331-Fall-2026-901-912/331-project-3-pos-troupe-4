@@ -1,34 +1,44 @@
 @import "../../styles.css";
-.product-slot{
+
+.product-slot {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 0.5vh;
+	gap: 6px;
 	width: 100%;
 	min-height: max(10vh, 5.25rem);
-	padding: 1.2vh 0.8vw;
-	border:0.15rem solid var(--border);
-	border-color: var(--accent-color);
-	border-radius: 0.5rem;
-	background: var(--background-color);
+	padding: 1rem 0.8rem;
+	border: 1px solid #deded8;
+	border-radius: 8px;
+	background: #ffffff;
 	color: var(--font-color);
 	font-family: var(--font-family);
-	font-size: 0.9rem;
+	font-size: 0.95rem;
 	cursor: pointer;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	transition: all 0.15s ease-in-out;
+	user-select: none;
 }
 
 .product-slot:hover {
-	background-color: var(--accent-color);
+	border-color: var(--primary-color, #2E6F5E);
+	background-color: #fafcf9;
+	box-shadow: 0 4px 10px rgba(46, 111, 94, 0.12);
+	transform: translateY(-2px);
 }
 	
 .product-slot:active {
-	background-color: var(--secondary-color);
+	transform: scale(0.98);
 }
 
-.product-slot__name{
+.product-slot__name {
 	text-align: center;
-}
-.product-slot__price {
 	font-weight: 600;
+}
+
+.product-slot__price {
+	font-weight: 700;
+	color: var(--primary-color, #2E6F5E);
+	font-size: 0.95rem;
 }

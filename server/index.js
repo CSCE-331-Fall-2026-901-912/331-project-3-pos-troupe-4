@@ -25,6 +25,19 @@ app.get('/api/orders_products', async (req, res) => {
   }
 });
 
+app.get('/api/orders_addins', async (req, res) => {
+  try {
+    const { order_id } = req.query;
+    const data = await Model.getOrderAddIns(order_id);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: 'Failed to load order add-ins'
+    });
+  }
+});
+
 // GET order_history between two dates (or most recent if dates omitted)
 app.get('/api/order_history', async (req, res) => {
   try {
@@ -437,15 +450,16 @@ app.put('/api/products/:name/constituents', async (req, res) => {
 // Place order
 app.post('/api/orders', async (req, res) => {
   try {
-    const success = await Model.placeOrder(req.body);
+    const result = await Model.placeOrder(req.body);
 
-    if (!success) {
+    if (!result) {
       return res.status(400).json({
         error: 'Failed to place order'
       });
     }
 
-    res.status(201).json({ success: true });
+    const orderId = typeof result === 'object' ? result.orderId : result;
+    res.status(201).json({ success: true, orderId });
 
   } catch (err) {
     console.error(err);

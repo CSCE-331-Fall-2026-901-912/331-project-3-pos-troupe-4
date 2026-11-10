@@ -26,13 +26,15 @@ body {
   min-height: 32.1vh;
   padding: 1rem;
   border: solid var(--border-size) var(--secondary-color);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius, 8px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.15s ease-in-out;
   gap: 14px;
 }
 
 /* Regular card */
 .component {
-  background-color: var(--background-color);
+  background-color: #ffffff;
 }
 
 /* Filled card */
@@ -140,7 +142,7 @@ body {
   border-top: var(--border-size) solid var(--secondary-color);
 }
 
-.kitchen-card-actions, button {
+.kitchen-card-actions button {
   padding: 1vh 1vw;
   cursor: pointer;
   border: var(--border-size) solid var(--secondary-color);
@@ -174,4 +176,109 @@ body {
     width: 80%;
     min-width: 0;
   }
+}
+
+/* Kitchen Add-ins & Status Badges */
+.kitchen-customer-name {
+  font-size: 0.85rem;
+  color: #556658;
+  display: block;
+  margin-top: 2px;
+}
+
+.kitchen-status-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+}
+
+.kitchen-status-badge.status--in-queue {
+  background: #FFF3CD;
+  color: #856404;
+  border: 1px solid #FFEEBA;
+}
+
+.kitchen-status-badge.status--preparing {
+  background: #CCE5FF;
+  color: #004085;
+  border: 1px solid #B8DAFF;
+}
+
+.kitchen-status-badge.status--ready {
+  background: #D4EDDA;
+  color: #155724;
+  border: 1px solid #C3E6CB;
+}
+
+.kitchen-status-badge.status--completed {
+  background: #E2E3E5;
+  color: #383D41;
+  border: 1px solid #D6D8DB;
+}
+
+.kitchen-card-addins {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: #f5f9f6;
+  border: 1px dashed var(--secondary-color, #A7C957);
+  border-radius: 6px;
+}
+
+.kitchen-card-addins h4 {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--primary-color, #2E6F5E);
+  letter-spacing: 0.5px;
+}
+
+.addin-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.addin-item {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1b5e20;
+  padding: 2px 0;
+}
+
+.btn-kitchen-undo {
+  background: #f0f0f0;
+  color: #555;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-kitchen-undo:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-kitchen-check {
+  background: var(--primary-color, #2E6F5E);
+  color: #fff;
+  border: 1px solid var(--primary-color, #2E6F5E);
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.15s ease;
+}
+
+.btn-kitchen-check:hover {
+  background: #235447;
+}
+
+.btn-kitchen-completed {
+  background: #28a745;
+  border-color: #28a745;
 }

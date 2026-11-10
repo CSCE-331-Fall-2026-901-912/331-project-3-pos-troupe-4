@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getMenuItems } from '../api';
 import ProductSlot from '../components/Cashier/ProductSlot';
 import { useCart } from '../components/Cashier/CartHandling';
@@ -11,8 +11,16 @@ export default function CashierPage() {
   const [menu, setMenu] = useState([]);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const [placedOrderId, setPlacedOrderId] = useState(location.state?.orderId || null);
   const { items, removeItem, clearCart, customerName, setCustomerName, subtotal, tax, total } = useCart();
 
+  useEffect(() => {
+    if (location.state?.orderId) {
+      setPlacedOrderId(location.state.orderId);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     async function loadMenu() {
@@ -39,6 +47,12 @@ export default function CashierPage() {
   return (
     <div className="cashier">
       <section className="cashier__left">
+        {placedOrderId && (
+          <div className="cashier__order-success">
+            <span>✓ Order <strong>#{placedOrderId}</strong> placed successfully!</span>
+            <button type="button" onClick={() => setPlacedOrderId(null)}>✕</button>
+          </div>
+        )}
         <input
           className="cashier__search"
           placeholder="Search menu items..."
@@ -64,17 +78,41 @@ export default function CashierPage() {
           />
         </label>
 
-        <div className="cashier__cart"></div>
-        {(!items || items.length === 0) && (
-          <p className="none"> Cart is Empty. <br /> Click drinks to customize.</p>
-        )}
-        {items.map((item, index) => (
-          <div key={index} className="cashier__cart-row">
-            <span>{item.productName}</span>
-            <span>${item.itemTotal.toFixed(2)}</span>
-            <button onClick={() => removeItem(index)}>x</button>
-          </div>
-        ))}
+        <div className="cashier__cart">
+          {(!items || items.length === 0) ? (
+            <p className="none"> Cart is Empty. <br /> Click drinks to customize.</p>
+          ) : (
+            items.map((item, index) => (
+              <div key={index} className="cashier__cart-item">
+                <div className="cashier__cart-item-header">
+                  <span className="cashier__cart-item-name">{item.productName}</span>
+                  <span className="cashier__cart-item-price">${(item.itemTotal || 0).toFixed(2)}</span>
+                  <button
+                    type="button"
+                    className="cashier__cart-remove-btn"
+                    onClick={() => removeItem(index)}
+                    title="Remove item"
+                    aria-label={`Remove ${item.productName}`}
+                  >
+                    ✕
+                  </button>
+                </div>
+                {((item.addOns && item.addOns.length > 0) || (item.removed && item.removed.length > 0) || item.ice || item.sugar) && (
+                  <div className="cashier__cart-item-customizations">
+                    {item.addOns && item.addOns.length > 0 && (
+                      <div className="cashier__cart-custom-line">+ {item.addOns.join(', ')}</div>
+                    )}
+                    {item.ice && <div className="cashier__cart-custom-line">{item.ice}</div>}
+                    {item.sugar && <div className="cashier__cart-custom-line">{item.sugar}</div>}
+                    {item.removed && item.removed.length > 0 && (
+                      <div className="cashier__cart-custom-line cashier__cart-custom-line--omitted">No {item.removed.join(', ')}</div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </div>
 
         <div className="cashier__totals">
           <div><span>Subtotal:</span><span>${subtotal.toFixed(2)}</span></div>

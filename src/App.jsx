@@ -10,6 +10,7 @@ import KioskPage from './pages/KioskMainPage';
 import KitchenPage from './pages/KitchenPage';
 import RoleSelector from './pages/RoleSelector';
 import { CartProvider } from './components/Cashier/CartHandling';
+import { KioskCartProvider } from './components/Kiosk/KioskCartHandling';
 import AccessibilityBar from './components/Cashier/AccessibilityBar';
 
 class ErrorBoundary extends Component {
@@ -60,19 +61,21 @@ export default function App() {
   return (
     <ErrorBoundary>
       <CartProvider>
-        <BrowserRouter>
-          <AccessibilityBar />
-          <Routes>
-            <Route path="/" element={<RoleSelector />} />
-            <Route path="/kiosk" element={<KioskPage />} />
-            <Route path="/manager" element={<ManagerPage />} />
-            <Route path="/cashier" element={<CashierPage />} />
-            <Route path="/cashier/customize" element={<CustomizePage />} />
-            <Route path="/cashier/cart" element={<CartPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/kitchen" element={<KitchenPage />} />
-          </Routes>
-        </BrowserRouter>
+        <KioskCartProvider>
+          <BrowserRouter>
+            <AccessibilityBar />
+            <Routes>
+              <Route path="/" element={<RoleSelector />} />
+              <Route path="/kiosk" element={<KioskPage />} />
+              <Route path="/manager" element={<ManagerPage />} />
+              <Route path="/cashier" element={<CashierPage />} />
+              <Route path="/cashier/customize" element={<CustomizePage />} />
+              <Route path="/cashier/cart" element={<CartPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/kitchen" element={<KitchenPage />} />
+            </Routes>
+          </BrowserRouter>
+        </KioskCartProvider>
       </CartProvider>
     </ErrorBoundary>
   );

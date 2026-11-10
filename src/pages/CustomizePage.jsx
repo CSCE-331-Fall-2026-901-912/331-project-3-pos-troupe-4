@@ -56,6 +56,11 @@ export default function CustomizePage() {
     navigate('/cashier');
   }
 
+  const isPackaging = (name) => /cup|lid|napkin|straw|sleeve/i.test(name);
+  const removableConstituents = (product.constituentItems || []).filter(
+    (name) => !isPackaging(name)
+  );
+
   return (
     <div className="custom">
       <header className="custom__header">
@@ -67,7 +72,10 @@ export default function CustomizePage() {
 
       <h4>Base Recipe Ingredients (click to omit/remove):</h4>
       <div className="custom__row">
-        {(product.constituentItems || []).map((name) => (
+        {removableConstituents.length === 0 && (
+          <span className="muted">Standard base recipe (no modifiable base ingredients).</span>
+        )}
+        {removableConstituents.map((name) => (
           <button
             key={name}
             className={removed.includes(name) ? 'chip chip--off' : 'chip chip--on'}
