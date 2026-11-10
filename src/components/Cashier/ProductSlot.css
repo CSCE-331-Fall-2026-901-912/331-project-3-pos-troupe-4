@@ -1,10 +1,33 @@
+@import "../../styles.css";
 .product-slot{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: 4px;
+	gap: 0.5vh;
 	width: 100%;
-	
+	min-height: max(10vh, 5.25rem);
+	padding: 1.2vh 0.8vw;
+	border:0.15rem solid var(--border);
+	border-radius: 0.5rem;
+	background: var(--background-color);
+	color: var(--font-color);
+	font-family: var(--font-family);
+	font-size: 0.9rem;
+	cursor: pointer;
+}
 
+.product-slot:hover {
+	background-color: var(--accent-color);
+}
+	
+.product-slot:active {
+	background-color: var(--secondary-color);
+}
+
+.product-slot__name{
+	text-align: center;
+}
+.product-slot__price {
+	font-weight: 600;
 }
