@@ -9,6 +9,7 @@
 	min-height: max(10vh, 5.25rem);
 	padding: 1.2vh 0.8vw;
 	border:0.15rem solid var(--border);
+	border-color: var(--accent-color);
 	border-radius: 0.5rem;
 	background: var(--background-color);
 	color: var(--font-color);

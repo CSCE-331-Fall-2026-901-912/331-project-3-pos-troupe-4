@@ -6,7 +6,8 @@
   align-items: center;
 	gap: 1vw;
   padding: 2vh 3vw;
-	background: var(--accent-color);
+	background: var(--background-color);
+  
   border-bottom: 0.15vh solid var(--border);
 }
 
@@ -16,7 +17,8 @@
 	padding: 0 1rem;
   border: 0.15rem solid var(--primary-color);
   border-radius: 0.4rem;
-  background: var(--primary-color);
+  border-color: var(--accent-color);
+  background: var(--background-color);
   color: var(--background-color);
   font-family: var(--font-family);
 	font-size: 1rem;
