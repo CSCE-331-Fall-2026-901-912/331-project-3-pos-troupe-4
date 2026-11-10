@@ -2,18 +2,20 @@ import { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../page-styles/KioskMainPage.css';
 import { getMenuItems } from '../api';
-import { useKioskCart } from '../components/Kiosk/KioskCartHandling';
+import { useKioskCart, ADDON_PRICE } from '../components/Kiosk/KioskCartHandling';
 import CustomizationScreen from '../components/Kiosk/KioskCustomization';
 import CheckoutScreen from '../components/Kiosk/KioskCheckout';
 import DrinkIcon from '../components/Kiosk/DrinkIcon';
 
 export default function KioskPage() {
   const navigate = useNavigate();
-  const { items, addItem, subtotal } = useKioskCart();
+  const { items, addItem, updateItem, subtotal } = useKioskCart();
   const [menuItems, setMenuItems] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [initialCustomization, setInitialCustomization] = useState(null);
   const [showCheckout, setShowCheckout] = useState(false);
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [confirmedOrderId, setConfirmedOrderId] = useState(null);
@@ -51,8 +53,16 @@ export default function KioskPage() {
   }, [orderConfirmed]);
 
   function handleAddToCart(cartItem) {
-    addItem(cartItem);
-    setSelectedItem(null);
+    if (editingIndex !== null) {
+      updateItem(editingIndex, cartItem);
+      setEditingIndex(null);
+      setInitialCustomization(null);
+      setSelectedItem(null);
+      setShowCheckout(true);
+    } else {
+      addItem(cartItem);
+      setSelectedItem(null);
+    }
   }
 
   // Filter & Sort Logic
@@ -122,7 +132,15 @@ export default function KioskPage() {
     return (
       <CustomizationScreen
         item={selectedItem}
-        onCancel={() => setSelectedItem(null)}
+        initialCustomization={initialCustomization}
+        onCancel={() => {
+          setSelectedItem(null);
+          setInitialCustomization(null);
+          if (editingIndex !== null) {
+            setEditingIndex(null);
+            setShowCheckout(true);
+          }
+        }}
         onConfirm={handleAddToCart}
       />
     );
@@ -132,6 +150,17 @@ export default function KioskPage() {
     return (
       <CheckoutScreen
         onBack={() => setShowCheckout(false)}
+        onModify={(item, index) => {
+          const menuItem = menuItems.find((m) => m.name === item.productName) || {
+            name: item.productName,
+            price: (Number(item.itemTotal) || 0) - (item.addOns?.length || 0) * ADDON_PRICE,
+            constituentItems: item.constituentItems || [],
+          };
+          setSelectedItem(menuItem);
+          setInitialCustomization(item);
+          setEditingIndex(index);
+          setShowCheckout(false);
+        }}
         onDone={(orderId) => {
           setShowCheckout(false);
           setConfirmedOrderId(orderId);

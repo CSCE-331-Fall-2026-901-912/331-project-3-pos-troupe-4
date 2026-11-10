@@ -167,6 +167,36 @@
   color: var(--primary-color);
 }
 
+.cashier__cart-item-btns {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cashier__cart-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 4px;
+  transition: all 0.12s ease;
+}
+
+.cashier__cart-btn--edit:hover {
+  color: var(--primary-color, #2E6F5E);
+  background: var(--accent-color, #D9F0E1);
+  border-color: #b8e0c8;
+}
+
+.cashier__cart-btn--remove:hover {
+  color: #ef4444;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
 .cashier__cart-remove-btn {
   background: transparent;
   border: none;

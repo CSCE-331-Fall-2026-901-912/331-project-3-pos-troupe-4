@@ -73,7 +73,7 @@ export default function AppHeader() {
         )}
 
         {!isPortal && (
-          <div className="app-header__mode-pill">
+          <div className="app-header__mode-label">
             <span className="app-header__mode-icon">{currentMode.icon}</span>
             <span className="app-header__mode-name">{currentMode.name}</span>
           </div>

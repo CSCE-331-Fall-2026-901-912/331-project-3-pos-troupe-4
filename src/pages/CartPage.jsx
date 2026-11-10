@@ -58,9 +58,35 @@ export default function CartPage() {
               {item.ice && <div className="summary__detail">{item.ice}</div>}
               {item.sugar && <div className="summary__detail">{item.sugar}</div>}
             </div>
-            <div>
-              ${item.itemTotal.toFixed(2)}{' '}
-              <button onClick={() => removeItem(index)}>✕</button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontWeight: 600 }}>${item.itemTotal.toFixed(2)}</span>
+              <button
+                type="button"
+                className="btn btn--outline"
+                style={{ padding: '4px 10px', fontSize: '0.82rem' }}
+                onClick={() => navigate('/cashier/customize', {
+                  state: {
+                    product: {
+                      name: item.productName,
+                      price: (item.itemTotal || 0) - (item.addOns?.length || 0) * 0.5,
+                      constituentItems: item.constituentItems || [],
+                    },
+                    editIndex: index,
+                    existingItem: item,
+                  }
+                })}
+              >
+                Modify
+              </button>
+              <button
+                type="button"
+                className="btn btn--outline"
+                style={{ padding: '4px 8px', fontSize: '0.82rem', color: '#dc2626' }}
+                onClick={() => removeItem(index)}
+                title="Remove item"
+              >
+                ✕
+              </button>
             </div>
           </div>
         ))}

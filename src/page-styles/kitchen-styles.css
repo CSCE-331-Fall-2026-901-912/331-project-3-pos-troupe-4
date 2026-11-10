@@ -25,13 +25,13 @@ body {
   flex-direction: column;
   width: 100%;
   min-width: 0;
-  min-height: 280px;
+  min-height: auto;
   padding: 1.25rem;
   border: 1px solid var(--border, #E5ECE6);
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: all 0.15s ease-in-out;
-  gap: 14px;
+  gap: 12px;
 }
 
 /* Regular card */
@@ -163,15 +163,22 @@ body {
   cursor: pointer;
 }
 
-/* Existing list styles, if used elsewhere */
+/* Masonry Column Layout for varying ticket lengths */
 .card-list {
   padding: 0;
   margin: 0;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 1.25rem;
   list-style: none;
+  columns: 3 320px;
+  column-gap: 1.25rem;
+}
+
+.card-list-item {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
 }
 
 @media (max-width: 900px) {
@@ -253,36 +260,50 @@ body {
 }
 
 .btn-kitchen-undo {
-  background: #f0f0f0;
-  color: #555;
-  border: 1px solid #ccc;
-  padding: 6px 12px;
-  border-radius: 4px;
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 6px 14px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: all 0.15s ease;
+}
+
+.btn-kitchen-undo:hover:not(:disabled) {
+  background: #f1f5f9 !important;
+  color: #000000 !important;
+  border-color: #94a3b8 !important;
 }
 
 .btn-kitchen-undo:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
 .btn-kitchen-check {
-  background: var(--primary-color, #2E6F5E);
-  color: #fff;
-  border: 1px solid var(--primary-color, #2E6F5E);
-  padding: 6px 14px;
-  border-radius: 4px;
+  background: var(--secondary-color, #A7C957) !important;
+  color: #142816 !important;
+  border: 1px solid #8cae43 !important;
+  padding: 6px 16px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 0.88rem;
+  letter-spacing: 0.2px;
   transition: all 0.15s ease;
 }
 
 .btn-kitchen-check:hover {
-  background: #235447;
+  background: #96ba4c !important;
+  color: #000000 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-kitchen-completed {
-  background: #28a745;
-  border-color: #28a745;
+  background: #e2e8f0 !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+  cursor: default;
 }

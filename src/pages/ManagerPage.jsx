@@ -24,8 +24,54 @@ import {
 } from '../api';
 import './ManagerPage.css';
 
+// Format hour integer (0-23) as 12-hour timestamp (e.g. 5:00 PM)
+function formatHourTime(hourInt) {
+  const h = Number(hourInt);
+  if (isNaN(h)) return String(hourInt);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const displayH = h % 12 === 0 ? 12 : h % 12;
+  return `${displayH}:00 ${period}`;
+}
+
+// Normalize hourly series so that all operating hours are present (defaulting missing hours to 0)
+function normalizeHourlyData(rawList, valKey) {
+  const dataMap = new Map();
+  if (Array.isArray(rawList)) {
+    rawList.forEach((item) => {
+      const h = Number(item.hour);
+      if (!isNaN(h)) {
+        dataMap.set(h, Number(item[valKey]) || 0);
+      }
+    });
+  }
+
+  // Operating window: at least 8:00 AM to 10:00 PM (8 to 22), or broader if data exists outside that
+  const existingHours = Array.from(dataMap.keys());
+  const minHour = existingHours.length > 0 ? Math.min(8, ...existingHours) : 8;
+  const maxHour = existingHours.length > 0 ? Math.max(22, ...existingHours) : 22;
+
+  const result = [];
+  for (let h = minHour; h <= maxHour; h++) {
+    result.push({
+      hour: h,
+      time_label: formatHourTime(h),
+      [valKey]: dataMap.has(h) ? dataMap.get(h) : 0,
+    });
+  }
+  return result;
+}
+
 // Reusable SVG Bar Chart component for reports
-function SvgBarChart({ data, xKey, yKey, title, yLabel, barColor = "#500000", height = 240 }) {
+function SvgBarChart({
+  data,
+  xKey,
+  yKey,
+  title,
+  yLabel,
+  barColor = '#2E6F5E',
+  height = 240,
+  slantLabels = false,
+}) {
   if (!data || data.length === 0) {
     return (
       <div className="chart-container">
@@ -37,12 +83,20 @@ function SvgBarChart({ data, xKey, yKey, title, yLabel, barColor = "#500000", he
     );
   }
 
-  const chartHeight = height;
-  const padding = { top: 25, right: 20, bottom: 45, left: 55 };
-  const width = Math.max(500, data.length * 48);
+  // If slantLabels is enabled, increase bottom padding and total height so labels never overlap
+  const padding = {
+    top: 28,
+    right: 24,
+    bottom: slantLabels ? 95 : 45,
+    left: 60,
+  };
+  const chartHeight = slantLabels ? height + 60 : height;
+  const colWidth = slantLabels ? 56 : 46;
+  const width = Math.max(620, data.length * colWidth + padding.left + padding.right);
 
-  const values = data.map(d => Number(d[yKey]) || 0);
+  const values = data.map((d) => Number(d[yKey]) || 0);
   const maxVal = Math.max(...values, 1);
+  const availablePlotHeight = chartHeight - padding.top - padding.bottom;
 
   return (
     <div className="chart-container">
@@ -51,7 +105,7 @@ function SvgBarChart({ data, xKey, yKey, title, yLabel, barColor = "#500000", he
         <svg width={width} height={chartHeight} style={{ overflow: 'visible', display: 'block' }}>
           {/* Y Axis Guide Lines */}
           {[0, 0.25, 0.5, 0.75, 1].map((ratio, idx) => {
-            const yPos = padding.top + (1 - ratio) * (chartHeight - padding.top - padding.bottom);
+            const yPos = padding.top + (1 - ratio) * availablePlotHeight;
             const labelVal = Math.round(maxVal * ratio);
             return (
               <g key={idx}>
@@ -79,14 +133,20 @@ function SvgBarChart({ data, xKey, yKey, title, yLabel, barColor = "#500000", he
           {/* Bars */}
           {data.map((item, idx) => {
             const val = Number(item[yKey]) || 0;
-            const barH = (val / maxVal) * (chartHeight - padding.top - padding.bottom);
+            const barH = (val / maxVal) * availablePlotHeight;
             const slotWidth = (width - padding.left - padding.right) / data.length;
-            const barW = Math.max(16, slotWidth * 0.65);
+            const barW = Math.max(16, slotWidth * 0.62);
             const xPos = padding.left + idx * slotWidth + (slotWidth - barW) / 2;
             const yPos = chartHeight - padding.bottom - barH;
 
             const labelRaw = String(item[xKey] ?? '');
-            const labelDisplay = labelRaw.length > 12 ? labelRaw.slice(0, 10) + '..' : labelRaw;
+            // For slanted, allow full label up to 26 chars; for non-slanted truncate at 12 chars
+            const labelDisplay = slantLabels
+              ? (labelRaw.length > 26 ? labelRaw.slice(0, 24) + '…' : labelRaw)
+              : (labelRaw.length > 12 ? labelRaw.slice(0, 10) + '..' : labelRaw);
+
+            const labelX = xPos + barW / 2;
+            const labelY = chartHeight - padding.bottom + (slantLabels ? 12 : 16);
 
             return (
               <g key={idx}>
@@ -94,29 +154,34 @@ function SvgBarChart({ data, xKey, yKey, title, yLabel, barColor = "#500000", he
                   x={xPos}
                   y={yPos}
                   width={barW}
-                  height={Math.max(barH, 2)}
+                  height={Math.max(barH, val > 0 ? 2 : 0)}
                   fill={barColor}
                   rx="3"
                 >
                   <title>{`${labelRaw}: ${val}`}</title>
                 </rect>
+                {val > 0 && (
+                  <text
+                    x={xPos + barW / 2}
+                    y={yPos - 5}
+                    textAnchor="middle"
+                    fontSize="10"
+                    fontWeight="600"
+                    fill="#334155"
+                  >
+                    {val}
+                  </text>
+                )}
                 <text
-                  x={xPos + barW / 2}
-                  y={yPos - 5}
-                  textAnchor="middle"
-                  fontSize="10"
-                  fontWeight="600"
-                  fill="#334155"
-                >
-                  {val > 0 ? val : ''}
-                </text>
-                <text
-                  x={xPos + barW / 2}
-                  y={chartHeight - padding.bottom + 16}
-                  textAnchor="middle"
+                  x={labelX}
+                  y={labelY}
+                  transform={slantLabels ? `rotate(-42, ${labelX}, ${labelY})` : undefined}
+                  textAnchor={slantLabels ? 'end' : 'middle'}
                   fontSize="11"
+                  fontWeight="500"
                   fill="#475569"
                 >
+                  <title>{labelRaw}</title>
                   {labelDisplay}
                 </text>
               </g>
@@ -577,21 +642,23 @@ export default function ManagerPage() {
 
               {/* Bar Charts */}
               <SvgBarChart
-                data={xReport?.incomeByHour || []}
-                xKey="hour"
+                data={normalizeHourlyData(xReport?.incomeByHour, 'total_income')}
+                xKey="time_label"
                 yKey="total_income"
                 title="Income by Hour ($)"
                 yLabel="Income ($)"
-                barColor="#500000"
+                barColor="#2E6F5E"
+                slantLabels={true}
               />
 
               <SvgBarChart
-                data={xReport?.transactionsByHour || []}
-                xKey="hour"
+                data={normalizeHourlyData(xReport?.transactionsByHour, 'transactions')}
+                xKey="time_label"
                 yKey="transactions"
                 title="Transactions by Hour"
                 yLabel="Count"
-                barColor="#0284c7"
+                barColor="#A7C957"
+                slantLabels={true}
               />
 
               <SvgBarChart
@@ -600,7 +667,8 @@ export default function ManagerPage() {
                 yKey="transactions"
                 title="Transactions by Employee"
                 yLabel="Orders"
-                barColor="#059669"
+                barColor="#2E6F5E"
+                slantLabels={true}
               />
             </div>
           </div>
@@ -642,7 +710,8 @@ export default function ManagerPage() {
               yKey="total_qty_used"
               title="Ingredient Units Consumed"
               yLabel="Units"
-              barColor="#0f766e"
+              barColor="#2E6F5E"
+              slantLabels={true}
               height={260}
             />
 
@@ -736,7 +805,8 @@ export default function ManagerPage() {
               yKey="units_sold"
               title="Top Selling Menu Items (Units)"
               yLabel="Units"
-              barColor="#500000"
+              barColor="#2E6F5E"
+              slantLabels={true}
               height={260}
             />
 

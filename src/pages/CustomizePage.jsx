@@ -9,13 +9,16 @@ const SUGAR_OPTIONS = ['- Less Sugar', '- Half Sugar', '+ Extra Sugar'];
 export default function CustomizePage() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { addItem, updateItem } = useCart();
+
+  const editIndex = state?.editIndex;
+  const existingItem = state?.existingItem;
 
   const [addable, setAddable] = useState([]);
-  const [removed, setRemoved] = useState([]);
-  const [addOns, setAddOns] = useState([]);
-  const [ice, setIce] = useState('');
-  const [sugar, setSugar] = useState('');
+  const [removed, setRemoved] = useState(existingItem?.removed || []);
+  const [addOns, setAddOns] = useState(existingItem?.addOns || []);
+  const [ice, setIce] = useState(existingItem?.ice || '');
+  const [sugar, setSugar] = useState(existingItem?.sugar || '');
 
   useEffect(() => {
     async function loadAddable() {
@@ -41,10 +44,11 @@ export default function CustomizePage() {
     }
   }
 
-  const itemTotal = (Number(product?.price) || 0) + (addOns?.length || 0) * ADDON_PRICE;
+  const basePrice = Number(product?.price) || 0;
+  const itemTotal = basePrice + (addOns?.length || 0) * ADDON_PRICE;
 
   function handleAdd() {
-    addItem({
+    const customized = {
       productName: product.name,
       constituentItems: product.constituentItems || [],
       removed: removed,
@@ -52,7 +56,13 @@ export default function CustomizePage() {
       ice: ice,
       sugar: sugar,
       itemTotal: itemTotal,
-    });
+    };
+
+    if (editIndex !== undefined && editIndex !== null) {
+      updateItem(editIndex, customized);
+    } else {
+      addItem(customized);
+    }
     navigate('/cashier');
   }
 
@@ -65,9 +75,11 @@ export default function CustomizePage() {
     <div className="custom">
       <header className="custom__header">
         <button className="btn btn--outline" onClick={() => navigate('/cashier')}>Cancel</button>
-        <h2>Customizing: {product.name}</h2>
+        <h2>{editIndex != null ? 'Modifying:' : 'Customizing:'} {product.name}</h2>
         <span className="custom__total">Item Total: ${itemTotal.toFixed(2)}</span>
-        <button className="btn btn--primary" onClick={handleAdd}>Add to Order</button>
+        <button className="btn btn--primary" onClick={handleAdd}>
+          {editIndex != null ? 'Save Changes' : 'Add to Order'}
+        </button>
       </header>
 
       <h4>Base Recipe Ingredients (click to omit/remove):</h4>

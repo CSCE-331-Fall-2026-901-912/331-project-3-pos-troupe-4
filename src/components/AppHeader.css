@@ -65,21 +65,19 @@
   line-height: 1;
 }
 
-.app-header__mode-pill {
+.app-header__mode-label {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.8rem;
-  background: var(--background-color, #FAFBF8);
-  border: 1px solid var(--border, #E5ECE6);
-  border-radius: 9999px;
-  font-size: 0.88rem;
+  gap: 0.45rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: var(--font-color);
+  color: var(--primary-color, #2E6F5E);
+  user-select: none;
 }
 
 .app-header__mode-icon {
-  font-size: 1rem;
+  font-size: 1.15rem;
+  line-height: 1;
 }
 
 .app-header__right {

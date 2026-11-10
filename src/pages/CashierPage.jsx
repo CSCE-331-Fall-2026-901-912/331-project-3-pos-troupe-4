@@ -43,6 +43,22 @@ export default function CashierPage() {
     navigate('/cashier/customize', { state: { product: product } });
   }
 
+  function handleModify(item, index) {
+    const matched = menu.find((p) => p.name.toLowerCase() === item.productName.toLowerCase());
+    const product = matched || {
+      name: item.productName,
+      price: (item.itemTotal || 0) - (item.addOns?.length || 0) * 0.5,
+      constituentItems: item.constituentItems || [],
+    };
+    navigate('/cashier/customize', {
+      state: {
+        product: product,
+        editIndex: index,
+        existingItem: item,
+      },
+    });
+  }
+
 
   return (
     <div className="cashier">
@@ -87,15 +103,26 @@ export default function CashierPage() {
                 <div className="cashier__cart-item-header">
                   <span className="cashier__cart-item-name">{item.productName}</span>
                   <span className="cashier__cart-item-price">${(item.itemTotal || 0).toFixed(2)}</span>
-                  <button
-                    type="button"
-                    className="cashier__cart-remove-btn"
-                    onClick={() => removeItem(index)}
-                    title="Remove item"
-                    aria-label={`Remove ${item.productName}`}
-                  >
-                    ✕
-                  </button>
+                  <div className="cashier__cart-item-btns">
+                    <button
+                      type="button"
+                      className="cashier__cart-btn cashier__cart-btn--edit"
+                      onClick={() => handleModify(item, index)}
+                      title="Modify drink"
+                      aria-label={`Modify ${item.productName}`}
+                    >
+                      ✎
+                    </button>
+                    <button
+                      type="button"
+                      className="cashier__cart-btn cashier__cart-btn--remove"
+                      onClick={() => removeItem(index)}
+                      title="Remove item"
+                      aria-label={`Remove ${item.productName}`}
+                    >
+                      ✕
+                    </button>
+                  </div>
                 </div>
                 {((item.addOns && item.addOns.length > 0) || (item.removed && item.removed.length > 0) || item.ice || item.sugar) && (
                   <div className="cashier__cart-item-customizations">

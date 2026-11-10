@@ -6,7 +6,7 @@ import "../../page-styles/KioskMainPage.css";
 
 const KIOSK_EMPLOYEE_ID = 0;
 
-export default function CheckoutPage({ onBack, onDone}) {
+export default function CheckoutPage({ onBack, onDone, onModify }) {
     const {items, removeItem, clearCart, customerName, setCustomerName, subtotal, tax, total} = useKioskCart();
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
@@ -74,9 +74,21 @@ export default function CheckoutPage({ onBack, onDone}) {
                                 {item.sugar && <span className="checkout-mod">{item.sugar} </span>}
                             </div>
                             <span className="checkout-item-price">${item.itemTotal.toFixed(2)}</span>
-                            <button className="checkout-remove" onClick={() => removeItem(index)} aria-label={`Remove ${item.productName} from order`}>
-                                Remove
-                            </button>
+                            <div className="checkout-item-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                {onModify && (
+                                    <button
+                                        type="button"
+                                        className="btn btn--outline"
+                                        style={{ padding: '6px 14px', fontSize: '0.85rem', minHeight: 'auto' }}
+                                        onClick={() => onModify(item, index)}
+                                    >
+                                        Modify
+                                    </button>
+                                )}
+                                <button className="checkout-remove" onClick={() => removeItem(index)} aria-label={`Remove ${item.productName} from order`}>
+                                    Remove
+                                </button>
+                            </div>
                         </li>
                     ))}
                 </ul>
