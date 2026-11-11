@@ -10,7 +10,6 @@ import KioskPage from './pages/KioskMainPage';
 import KitchenPage from './pages/KitchenPage';
 import RoleSelector from './pages/RoleSelector';
 import { CartProvider } from './components/Cashier/CartHandling';
-import AccessibilityBar from './components/Cashier/AccessibilityBar';
 import EmployeeRoute from './components/EmployeeRoute';
 import { KioskCartProvider } from './components/Kiosk/KioskCartHandling';
 import AppHeader from './components/AppHeader';
@@ -63,6 +62,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <CartProvider>
+        <KioskCartProvider>
         <BrowserRouter>
         <AppHeader />
           <Routes>
@@ -122,6 +122,7 @@ export default function App() {
             />
           </Routes>
         </BrowserRouter>
+        </KioskCartProvider>
       </CartProvider>
     </ErrorBoundary>
   );

@@ -1,8 +1,32 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import './RoleSelector.css';
 
 export default function RoleSelector() {
     const navigate = useNavigate();
+    const [logoutStatus, setLogoutStatus] = useState('loggingOut');
+
+    useEffect(() => {
+        const logout = async () => {
+            try {
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Logout failed');
+                }
+
+                setLogoutStatus('ready');
+            } catch (error) {
+                console.error('Logout error:', error);
+                setLogoutStatus('error');
+            }
+        };
+
+        logout();
+    }, []);
 
     const modes = [
         {
@@ -56,11 +80,14 @@ export default function RoleSelector() {
                             <button
                                 key={mode.path}
                                 className="role-card"
+                                disabled={logoutStatus !== 'ready'}
                                 onClick={() => {
                                     if (mode.path === '/manager') {
                                         window.location.href = '/api/auth/github?mode=manager';
                                     } else if (mode.path === '/cashier') {
                                         window.location.href = '/api/auth/github?mode=cashier';
+                                    } else if (mode.path === '/kitchen') {
+                                        window.location.href = '/api/auth/github?mode=kitchen';
                                     } else {
                                         navigate(mode.path);
                                     }

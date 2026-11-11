@@ -92,7 +92,7 @@ app.use(express.json());
 app.get('/api/auth/github', (req, res, next) => {
     const mode = req.query.mode;
 
-    if (!['manager', 'cashier'].includes(mode)) {
+    if (!['manager', 'cashier', 'kitchen'].includes(mode)) {
         return res.status(400).json({ error: 'Invalid login mode' });
     }
 
@@ -134,8 +134,11 @@ app.get(
         if (mode === 'manager') {
             return res.redirect(`${frontendUrl}/manager`);
         }
+        if (mode === 'cashier') {
+          return res.redirect(`${frontendUrl}/cashier`);
+        }
 
-        return res.redirect(`${frontendUrl}/cashier`);
+        return res.redirect(`${frontendUrl}/kitchen`);
     }
 );
 
@@ -153,18 +156,32 @@ app.get('/api/auth/me', (req, res) => {
 });
 
 // Logout
+
 app.post('/api/auth/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) return next(err);
+    const destroySession = () => {
+        if (!req.session) {
+            res.clearCookie('connect.sid');
+            return res.json({ success: true });
+        }
 
         req.session.destroy((err) => {
             if (err) return next(err);
 
             res.clearCookie('connect.sid');
-            res.json({ success: true });
+            return res.json({ success: true });
         });
-    });
+    };
+
+    if (req.isAuthenticated()) {
+        req.logout((err) => {
+            if (err) return next(err);
+            destroySession();
+        });
+    } else {
+        destroySession();
+    }
 });
+
 
 app.get('/api/orders_products', requireManager, async (req, res) => {
   try {
