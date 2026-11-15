@@ -55,7 +55,7 @@ body {
   line-height: 1.2;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
-  background: #ffffff;
+  background: var(--card-bg);
   color: var(--font-color);
   cursor: pointer;
   transition: all 0.15s ease-in-out;
@@ -94,7 +94,7 @@ body {
 .btn--secondary {
   background: var(--secondary-color);
   border-color: var(--secondary-color);
-  color: var(--font-color);
+  color: #000000;
 }
 
 .btn--secondary:hover:not(:disabled) {
@@ -108,7 +108,7 @@ body {
 }
 
 .btn--outline {
-  background: #ffffff;
+  background: var(--card-bg);
   border-color: var(--border-strong);
   color: var(--font-color);
 }
@@ -116,7 +116,7 @@ body {
 .btn--outline:hover:not(:disabled) {
   border-color: var(--primary-color);
   color: var(--primary-color);
-  background: #fafcf9;
+  background: var(--card-bg);
 }
 
 .btn--danger {
@@ -187,11 +187,11 @@ body {
 html.high-contrast {
   --background-color: #000000;
   --card-bg: #121212;
-  --font-color: #ffffff;
+  --font-color: #ffff00;
   --font-muted: #e2e8f0;
-  --border: #ffff00;
-  --border-strong: #ffff00;
-  --primary-color: #00ffff;
+  --border: #ffffff;
+  --border-strong: #ffffff;
+  --primary-color: #ffff00;
   --primary-hover: #33ffff;
   --secondary-color: #ffff00;
   --accent-color: #1a365d;
@@ -199,7 +199,7 @@ html.high-contrast {
 
 html.high-contrast body {
   background-color: #000000;
-  color: #ffffff;
+  color: var(--primary-color);
 }
 
 html.high-contrast .card,
@@ -207,8 +207,8 @@ html.high-contrast .product-slot,
 html.high-contrast .kiosk-button,
 html.high-contrast .role-card,
 html.high-contrast .component {
-  background-color: #121212 !important;
-  color: #ffffff !important;
+  background-color: var(--background-color) !important;
+  color: var(--primary-color) !important;
   border: 2px solid #ffff00 !important;
 }
 

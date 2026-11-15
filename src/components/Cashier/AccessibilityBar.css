@@ -7,7 +7,6 @@
 	gap: 1vw;
   padding: 2vh 3vw;
 	background: var(--background-color);
-  
   border-bottom: 0.15vh solid var(--border);
 }
 
@@ -17,21 +16,20 @@
 	padding: 0 1rem;
   border: 0.15rem solid var(--primary-color);
   border-radius: 0.4rem;
-  border-color: var(--accent-color);
   background: var(--background-color);
-  color: var(--background-color);
+  color: var(--font-color);
   font-family: var(--font-family);
 	font-size: 1rem;
 	cursor: pointer;
 }
 .accessibility-bar button:hover{
   background: var(--secondary-color);
-  color: var(--font-color);
+  color: #000000;
 }
 
 .accessibility-bar button[aria-pressed = "true"]{
-  background: var(--secondary-color) ;
-  color: var(--font-color);
+  background: var(--secondary-color);
+  color: #000000;
 }
 
 .accessibility-bar button:focus-visible {
@@ -40,12 +38,4 @@
 }
 
 
-html.high-contrast * {
-	background-color: var(--font-color) !important;
-	color: var(--background-color) !important;
-	border-color: var(--secondary-color) !important;
-}
-html.high-contrast button, html.high-contrast input{
-  background-color: var(--font-color) !important;
-  color: var(--background-color) !important;
-}
+
