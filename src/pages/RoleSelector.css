@@ -28,7 +28,7 @@
 /* Header */
 
 .role-header {
-    background: #ffffff;
+    background: var(--card-bg);
     border-radius: 10px;
     padding: 1.5rem 1.75rem;
     margin-bottom: 1.5rem;
@@ -49,7 +49,7 @@
 }
 
 .role-header p {
-    color: var(--font-muted, #64748b);
+    color: var(--font-muted);
     font-size: 0.95rem;
     margin: 0.35rem 0 0;
 }
@@ -68,7 +68,7 @@
 /* Main Content */
 
 .role-content {
-    background: #ffffff;
+    background: var(--card-bg);
     border: 1px solid var(--border, #E5ECE6);
     border-radius: 10px;
     padding: 2rem;
@@ -87,7 +87,7 @@
 }
 
 .role-intro p {
-    color: var(--font-muted, #64748b);
+    color: var(--font-muted);
     font-size: 0.95rem;
     margin: 0;
 }
@@ -101,7 +101,7 @@
 }
 
 .role-card {
-    background: #ffffff;
+    background: var(--card-bg);
     border: 1px solid var(--border, #E5ECE6);
     border-radius: 10px;
     padding: 1.5rem;
@@ -123,7 +123,7 @@
 }
 
 .role-card:hover {
-    background: #fafcf9;
+    background: var(--card-bg);
     border-color: var(--primary-color, #2E6F5E);
     box-shadow: 0 6px 16px rgba(46, 111, 94, 0.12);
     transform: translateY(-3px);
@@ -142,7 +142,7 @@
 }
 
 .role-card p {
-    color: var(--font-muted, #64748b);
+    color: var(--font-muted);
     font-size: 0.92rem;
     line-height: 1.5;
     margin: 0 0 1rem;

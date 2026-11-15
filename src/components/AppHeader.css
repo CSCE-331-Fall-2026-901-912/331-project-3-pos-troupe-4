@@ -9,7 +9,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.65rem 1.5rem;
-  background-color: #ffffff;
+  background-color: var(--card-bg);
   border-bottom: 1px solid var(--border, #E5ECE6);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   font-family: var(--font-family);
@@ -56,7 +56,7 @@
 
 .app-header__portal-btn:hover {
   background: var(--primary-color, #2E6F5E);
-  color: #ffffff;
+  color: var(--background-color);
   transform: translateY(-1px);
 }
 
@@ -94,7 +94,7 @@
 
 .app-header__a11y-label {
   font-size: 0.82rem;
-  color: #718096;
+  color: var(--font-muted);
   font-weight: 500;
 }
 
@@ -103,7 +103,7 @@
   border: 1px solid var(--border, #E5ECE6);
   border-radius: 6px;
   overflow: hidden;
-  background: #ffffff;
+  background: var(--card-bg);
 }
 
 .app-header__btn {
@@ -116,7 +116,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--font-color);
-  background: #ffffff;
+  background: var(--card-bg);
   border: none;
   cursor: pointer;
   transition: all 0.12s ease-in-out;
@@ -142,13 +142,13 @@
 .app-header__btn--contrast {
   border: 1px solid var(--border, #E5ECE6);
   border-radius: 6px;
-  background: #ffffff;
+  background: var(--card-bg);
   padding: 0.35rem 0.8rem;
 }
 
 .app-header__btn--active {
   background: var(--primary-color, #2E6F5E);
-  color: #ffffff;
+  color: var(--background-color);
   border-color: var(--primary-color, #2E6F5E);
 }
 

@@ -47,9 +47,9 @@
   gap: 12px;
   min-height: 115px;
   padding: 1.25rem;
-  background: white;
-  color: #292929;
-  border: 1px solid #deded8;
+  background: var(--card-bg);
+  color: var(--font-color);
+  border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   font-size: 1.15rem;
@@ -61,8 +61,8 @@
 }
 
 .kiosk-button:hover {
-  border-color: #66806a;
-  background-color: #fafcf9;
+  border-color: var(--primary-color);
+  background-color: var(--card-bg);
   box-shadow: 0 4px 10px rgba(46, 111, 94, 0.12);
   transform: translateY(-2px);
 }
@@ -76,14 +76,14 @@
 }
 
 .kiosk-button .price {
-  color: #66806a;
+  color: var(--primary-color);
   font-size: 1rem;
   font-weight: 600;
 }
 
 .kiosk-button:focus-visible,
 .checkout-button:focus-visible {
-  outline: 3px solid #66806a;
+  outline: 3px solid var(--primary-color);
   outline-offset: 3px;
 }
 
@@ -102,8 +102,8 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem 3rem;
-  background: white;
-  border-top: 1px solid #deded8;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -114,7 +114,7 @@
 }
 
 .order-count {
-  color: #737373;
+  color: var(--font-muted);
   font-size: 1rem;
 }
 
@@ -180,8 +180,8 @@
 .customize-container {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f5f5f2;
-  color: #292929;
+  background-color: var(--background-color);
+  color: var(--font-color);
   min-height: 100vh;
   box-sizing: border-box;
   padding: 2.5rem 3rem;
@@ -190,7 +190,7 @@
 .customize-container h1,
 .customize-container h2,
 .customize-container h3 {
-  color: #292929;
+  color: var(--font-color);
 }
 
 .option-grid {
@@ -203,9 +203,9 @@
 .option-button {
   min-height: 75px;
   padding: 1rem;
-  background: white;
-  color: #292929;
-  border: 1px solid #deded8;
+  background: var(--card-bg);
+  color: var(--font-color);
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 1.05rem;
   font-weight: 500;
@@ -215,8 +215,8 @@
 }
 
 .option-button:hover {
-  border-color: #78917c;
-  background: #fafcf9;
+  border-color: var(--primary-color);
+  background: var(--card-bg);
 }
 
 .option-button:active {
@@ -225,15 +225,15 @@
 
 .option-button.removed {
   text-decoration: line-through;
-  color: #999;
-  background: #eeeeeb;
+  color: var(--font-muted);
+  background: var(--card-bg);
   opacity: 0.8;
 }
 
 .option-button.selected {
-  border: 2px solid #66806a;
-  background: #edf2ed;
-  color: #435c47;
+  border: 2px solid var(--primary-color);
+  background: var(--accent-color);
+  color: var(--font-color);
 }
 
 .option-button.confirm {
@@ -259,8 +259,8 @@
 .checkout-container {
     min-height: 100vh;
     padding: 32px 5%;
-    background-color: #f7f7f3;
-    color: #292d29;
+    background-color: var(--background-color);
+    color: var(--font-color);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -270,7 +270,7 @@
     font-size: 2rem;
     font-weight: 600;
     margin: 0 0 28px;
-    color: #303a31;
+    color: var(--font-color);
 }
 
 /* Customer name */
@@ -286,16 +286,16 @@
 
 .checkout-name input {
     padding: 11px 12px;
-    border: 1px solid #d4d9d1;
+    border: 1px solid var(--border);
     border-radius: 5px;
-    background: #fff;
+    background: var(--card-bg);
     font-size: 1rem;
-    color: #292d29;
+    color: var(--font-color);
     outline: none;
 }
 
 .checkout-name input:focus {
-    border-color: #718875;
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(113, 136, 117, 0.15);
 }
 
@@ -304,7 +304,7 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    border-top: 1px solid #deded8;
+    border-top: 1px solid var(--border);
 }
 
 .checkout-item {
@@ -313,7 +313,7 @@
     align-items: center;
     gap: 24px;
     padding: 20px 8px;
-    border-bottom: 1px solid #deded8;
+    border-bottom: 1px solid var(--border);
 }
 
 .checkout-item-detail {
@@ -326,26 +326,26 @@
 .checkout-item-name {
     font-size: 1.05rem;
     font-weight: 600;
-    color: #303a31;
+    color: var(--font-color);
     margin-right: 5px;
 }
 
 .checkout-mod {
     font-size: 0.85rem;
-    color: #666e65;
-    background: #ecefe9;
+    color: var(--font-muted);
+    background: var(--card-bg);
     padding: 4px 7px;
     border-radius: 3px;
 }
 
 .checkout-mod.removed {
     color: #925c50;
-    background: #f3eae6;
+    background: var(--card-bg);
 }
 
 .checkout-mod.added {
     color: #527458;
-    background: #e8eee7;
+    background: var(--card-bg);
 }
 
 .checkout-item-price {
@@ -368,7 +368,7 @@
 }
 
 .checkout-empty {
-    color: #777d75;
+    color: var(--font-muted);
     padding: 24px 0;
 }
 
@@ -394,22 +394,22 @@
     gap: 7px;
     margin-left: auto;
     font-size: 0.95rem;
-    color: #626960;
+    color: var(--font-muted);
 }
 
 .checkout-total {
     font-size: 1.2rem;
-    color: #303a31;
+    color: var(--font-color);
     padding-top: 5px;
 }
 
 /* Buttons */
 .checkout-button {
     padding: 11px 18px;
-    border: 1px solid #aab5a8;
+    border: 1px solid var(--border-strong);
     border-radius: 5px;
-    background: #fff;
-    color: #405744;
+    background:var(--card-bg);
+    color: var(--font-color);
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
@@ -417,8 +417,8 @@
 }
 
 .checkout-button:hover:not(:disabled) {
-    background: #edf1eb;
-    border-color: #718875;
+    background: var(--card-bg);
+    border-color: var(--primary-color);
 }
 
 .checkout-button.confirm {
@@ -462,7 +462,7 @@
         width: 100%;
         margin: 0;
         padding-bottom: 12px;
-        border-bottom: 1px solid #deded8;
+        border-bottom: 1px solid var(--border);
     }
 
     .checkout-footer .checkout-button {
@@ -473,7 +473,7 @@
 /* Kiosk Controls: Search, Sort, Categories, Portal Button */
 .kiosk-portal-btn {
     padding: 8px 16px;
-    background: #ffffff;
+    background: var(--card-bg);
     border: 1px solid var(--secondary-color, #A7C957);
     color: var(--primary-color, #2E6F5E);
     border-radius: 6px;
@@ -493,7 +493,7 @@
     align-items: center;
     margin-top: 16px;
     padding-top: 14px;
-    border-top: 1px solid #e2e8e3;
+    border-top: 1px solid var(--border);
 }
 
 .kiosk-search-wrap {
@@ -507,9 +507,10 @@
     box-sizing: border-box;
     padding: 10px 14px;
     font-size: 1rem;
-    border: 1px solid #cbd5cc;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--card-bg);
+    color: var(--font-color);
     outline: none;
     transition: border-color 0.15s ease;
 }
@@ -526,7 +527,7 @@
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: #888;
+    color: var(--font-muted);
     cursor: pointer;
     font-size: 1rem;
 }
@@ -539,23 +540,23 @@
 
 .kiosk-tab {
     padding: 8px 14px;
-    background: #f0f4f1;
-    border: 1px solid #d4ded6;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
     border-radius: 20px;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #445447;
+    color: var(--font-color);
     cursor: pointer;
     transition: all 0.15s ease;
 }
 
 .kiosk-tab:hover {
-    background: #e3ece5;
+    background: var(--accent-color);
 }
 
 .kiosk-tab.active {
     background: var(--primary-color, #2E6F5E);
-    color: #ffffff;
+    color: var(--background-color);
     border-color: var(--primary-color, #2E6F5E);
 }
 
@@ -564,17 +565,17 @@
     align-items: center;
     gap: 8px;
     font-size: 0.9rem;
-    color: #445447;
+    color: var(--font-color);
     font-weight: 500;
 }
 
 .kiosk-sort-select {
     padding: 8px 12px;
-    border: 1px solid #cbd5cc;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--card-bg);
     font-size: 0.9rem;
-    color: #1F1F1F;
+    color: var(--font-color);
     cursor: pointer;
     outline: none;
 }
@@ -592,7 +593,7 @@
     padding: 20px 14px;
     border: 1px solid #deded8;
     border-radius: 10px;
-    background: #ffffff;
+    background: var(--card-bg);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
@@ -630,8 +631,8 @@
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: #77887B;
-    background: #f4f7f5;
+    color: var(--primary-color);
+    background: var(--accent-color);
     padding: 4px 10px;
     border-radius: 12px;
 }
@@ -645,8 +646,8 @@
 }
 
 .confirmed-card {
-    background: #ffffff;
-    border: 1px solid #d4ded6;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 40px;
     max-width: 500px;
@@ -658,8 +659,8 @@
 .confirmed-icon {
     width: 64px;
     height: 64px;
-    background: #e8f5e9;
-    color: #2e7d32;
+    background: var(--accent-color);
+    color:var(--primary-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -684,7 +685,7 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #445447;
+    color: var(--font-color);
     font-weight: 600;
 }
 
@@ -695,7 +696,7 @@
 }
 
 .confirmed-desc {
-    color: #556658;
+    color: var(--font-muted);
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 28px;
@@ -705,14 +706,14 @@
     grid-column: 1 / -1;
     text-align: center;
     padding: 40px 20px;
-    color: #667768;
+    color: var(--font-muted);
 }
 
 .kiosk-reset-btn {
     margin-top: 10px;
     padding: 8px 16px;
     background: var(--primary-color, #2E6F5E);
-    color: #ffffff;
+    color: var(--background-color);
     border: none;
     border-radius: 6px;
     cursor: pointer;

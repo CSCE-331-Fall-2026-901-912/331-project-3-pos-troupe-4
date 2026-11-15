@@ -24,7 +24,7 @@
   padding: 0.65rem 1rem;
   border: 1px solid var(--border-strong, #d1ded4);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--card-bg);
   color: var(--font-color);
   font-family: var(--font-family);
   font-size: 0.95rem;
@@ -36,7 +36,6 @@
   border-color: var(--primary-color, #2E6F5E);
   box-shadow: 0 0 0 2px rgba(46, 111, 94, 0.15);
 }
-
 .cashier__order-success {
   display: flex;
   align-items: center;
@@ -44,7 +43,7 @@
   padding: 10px 14px;
   background: var(--accent-color, #D9F0E1);
   color: var(--primary-color, #2E6F5E);
-  border: 1px solid #b8e0c8;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 600;
@@ -71,7 +70,7 @@
 .cashier__order {
   width: 360px;
   max-width: 35vw;
-  background: #ffffff;
+  background: var(--card-bg);
   border: 1px solid var(--border, #E5ECE6);
   border-radius: 10px;
   padding: 1.25rem;
@@ -91,7 +90,8 @@
 .cashier__order label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #475569;
+  color: var(--font-color);
+  background: var(--card-bg);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -101,6 +101,8 @@
   flex: 1;
   padding: 0.45rem 0.75rem;
   border: 1px solid var(--border-strong, #d1ded4);
+  background: var(--card-bg);
+  color: var(--font-color);
   border-radius: 6px;
   font-size: 0.9rem;
   outline: none;
@@ -113,7 +115,7 @@
 .cashier__cart {
   flex: 1;
   padding: 1vh 0.8vw;
-  background: #ffffff;
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow-y: auto;
@@ -124,7 +126,7 @@
 }
 
 .cashier__cart .none {
-  color: #718096;
+  color: var(--font-muted);
   text-align: center;
   font-size: 0.95rem;
   margin: auto;
@@ -144,7 +146,7 @@
 }
 
 .cashier__cart-item:hover {
-  border-color: #cbd5e1;
+  border-color: var(--primary-color);  
 }
 
 .cashier__cart-item-header {
@@ -176,7 +178,7 @@
 .cashier__cart-btn {
   background: transparent;
   border: 1px solid transparent;
-  color: #64748b;
+  color: var(--font-muted);
   font-size: 0.95rem;
   line-height: 1;
   cursor: pointer;
@@ -200,7 +202,7 @@
 .cashier__cart-remove-btn {
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: var(--font-muted);
   font-size: 1.1rem;
   line-height: 1;
   cursor: pointer;
@@ -223,12 +225,12 @@
 
 .cashier__cart-custom-line {
   font-size: 0.78rem;
-  color: #4b6352;
+  color: var(--font-muted);
   font-weight: 500;
 }
 
 .cashier__cart-custom-line--omitted {
-  color: #dc2626;
+  color: #ff6b6b;
   font-style: italic;
 }
 
@@ -264,7 +266,7 @@
 .error {
   padding: 1vh 1vw;
   background: var(--error);
-  color: var(--font-color);
+  color: #000000;
   border-radius: 0.4rem;
 }
 
@@ -322,7 +324,7 @@
   padding: 0.6rem 1rem;
   border: 1px solid var(--border, #E5ECE6);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--card-bg);
   color: var(--font-color);
   font-family: var(--font-family);
   font-size: 0.92rem;
@@ -335,7 +337,7 @@
 
 .chip:hover {
   border-color: var(--primary-color, #2E6F5E);
-  background: #fafcf9;
+  background: var(--card-bg);
 }
 
 .chip--big {
@@ -395,7 +397,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.25rem;
-  background: #ffffff;
+  background: var(--card-bg);
   border: 1px solid var(--border, #E5ECE6);
   border-radius: 8px;
   margin-bottom: 0.75rem;
@@ -414,7 +416,7 @@
 }
 
 .summary__end {
-  background: #ffffff;
+  background: var(--card-bg);
   border: 1px solid var(--border, #E5ECE6);
   border-radius: 8px;
   padding: 1rem 1.25rem;
