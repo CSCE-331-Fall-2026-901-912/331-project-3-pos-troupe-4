@@ -218,3 +218,13 @@ html.high-contrast .btn--green {
   color: #000000 !important;
   font-weight: 700 !important;
 }
+
+/* Keyboard accessibility friendly */
+:focus-visible{
+  outline: 3px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+#main:focus{
+  outline: none;
+}

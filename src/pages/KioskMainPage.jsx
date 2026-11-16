@@ -171,7 +171,7 @@ export default function KioskPage() {
   }
 
   return (
-    <main className="kiosk-container">
+    <main id = "main" className="kiosk-container">
       <header className="kiosk-header">
         <div>
           <h1>Build your drink.</h1>

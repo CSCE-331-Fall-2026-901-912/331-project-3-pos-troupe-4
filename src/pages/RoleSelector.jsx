@@ -56,7 +56,7 @@ export default function RoleSelector() {
     ];
 
     return (
-        <main className="role-container">
+        <main id="main"  className="role-container">
             <div className="role-shell">
 
                 <header className="role-header">

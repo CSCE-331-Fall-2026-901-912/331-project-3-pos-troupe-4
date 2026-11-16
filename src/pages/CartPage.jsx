@@ -40,7 +40,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="summary">
+    <div id = "main" className="summary">
       <h2>Order Summary &amp; Confirmation</h2>
       <p className="muted">Customer: {customerName || 'Guest'}</p>
 

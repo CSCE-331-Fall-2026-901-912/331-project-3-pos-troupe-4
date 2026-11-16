@@ -16,6 +16,14 @@ export default function AppHeader() {
     document.documentElement.classList.toggle('high-contrast', isHighContrastOn);
   }, [isHighContrastOn]);
 
+  useEffect(() => {
+    const main = document.getElementById('main');
+    if (main){
+      main.setAttribute('tabindex', '-1');
+      main.focus();
+    }
+  }, [location.pathname]);
+
   function makeTextBigger() {
     if (textSizePercent < 175) {
       setTextSizePercent((prev) => prev + 15);
@@ -53,6 +61,17 @@ export default function AppHeader() {
 
   return (
     <header className="app-header" role="banner">
+      <a href="#main" className="skip-link"
+        onClick={(e) => {
+          e.preventDefault();
+          const main = document.getElementById('main');
+          if(main){
+            main.setAttribute('tableindex', '-1');
+            main.focus();
+            main.scrollIntoView();
+          }
+        }}
+        >Skip to main Content</a>
       <div className="app-header__left">
         {!isPortal ? (
           <button

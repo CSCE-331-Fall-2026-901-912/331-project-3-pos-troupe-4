@@ -516,7 +516,7 @@ export default function ManagerPage() {
   }
 
   return (
-    <main className="manager-container">
+    <main id="main" className="manager-container">
       <div className="manager-shell">
         {/* Header */}
         <header className="manager-header">
