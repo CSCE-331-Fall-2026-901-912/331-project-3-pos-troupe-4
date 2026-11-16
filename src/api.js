@@ -111,7 +111,7 @@ export async function getSalesReport(startDate, endDate) {
 }
 
 export async function getWeather() {
-  return apiFetch('/api/weather');
+  return apiFetch('/weather');
 }
 
 // INVENTORY

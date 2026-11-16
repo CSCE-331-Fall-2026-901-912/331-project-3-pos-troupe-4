@@ -642,8 +642,6 @@ app.post('/api/orders', async (req, res) => {
 });
 
 // Get weather information for the day for the kiosk
-import { getDailyWeather } from './middleware/weather';
-
 app.get('/api/weather', async (req, res) => {
   const weather = await getDailyWeather();
   if (!weather) return res.status(503).json({ error: 'Weather unavailable' });

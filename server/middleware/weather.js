@@ -1,8 +1,9 @@
-import { readFile, writeFile } from 'node:fs/promises';
+const path = require('path');
+const { readFile, writeFile } = require('node:fs/promises');
 
-const CACHE_FILE = './weather-cashe.json';
+const CACHE_FILE = path.join(__dirname, './weather-cache.json');
 const STORE_TZ = 'America/Chicago';
-const RETRY_AFTER_FAILURE_MS = 30 * 60 * 1000; 
+const RETRY_AFTER_FAILURE_MS = 30 * 60 * 1000;
 
 let cache = null;
 let loadedFromDisk = false;
@@ -10,7 +11,7 @@ let inFlight = null;
 let lastFailureAt = 0;
 
 function todayInStoreTz() {
-    return new Date().toLocaleDateString('en-CA', { timeZone: STORE_TZ});
+    return new Date().toLocaleDateString('en-CA', { timeZone: STORE_TZ });
 }
 
 function describeWeatherCode(code) {
@@ -22,29 +23,29 @@ function describeWeatherCode(code) {
     if (code >= 61 && code <= 67) return 'Rain';
     if (code >= 71 && code <= 77) return 'Snow';
     if (code >= 80 && code <= 82) return 'Rain showers';
-    if (code === 85 || code === 86) return 'Show showers';
+    if (code === 85 || code === 86) return 'Snow showers';
     if (code >= 95) return 'Thunderstorms';
     return 'Mixed conditions';
 }
 
-async function fetchFromProvider(){
+async function fetchFromProvider() {
     const params = new URLSearchParams({
-        latitude: 30.628,
-        longitude: -96.3344,
-        daily: 'weather_code, temperature_2m_max, temperature_2m_min, precipitation_probability_max',
+        latitude: '30.628',
+        longitude: '-96.3344',
+        daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max',
         temperature_unit: 'fahrenheit',
         timezone: STORE_TZ,
         forecast_days: '1',
     });
 
-    const res = await fetch('https://api.open-meteo.com/v1/forecast?${params}');
+    const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
     if (!res.ok) throw new Error(`Open-Meteo responded ${res.status}`);
 
-    const {daily} = await res.json();
+    const { daily } = await res.json();
     return {
         high: daily.temperature_2m_max[0],
         low: daily.temperature_2m_min[0],
-        rainChance: daily.precipitation_probabiliy_max[0],
+        rainChance: daily.precipitation_probability_max[0],
         condition: describeWeatherCode(daily.weather_code[0]),
     };
 }
@@ -59,7 +60,7 @@ async function loadCacheFromDisk() {
     }
 }
 
-export async function getDailyWeather(){
+async function getDailyWeather() {
     await loadCacheFromDisk();
     const today = todayInStoreTz();
 
@@ -77,11 +78,13 @@ export async function getDailyWeather(){
                 return cache.data;
             })
             .catch((err) => {
-                console.error('Weather fetch failed', err);
+                console.error('Weather fetch failed:', err);
                 lastFailureAt = Date.now();
                 return cache?.data ?? null;
             })
             .finally(() => { inFlight = null; });
     }
-    return inFlight
+    return inFlight;
 }
+
+module.exports = { getDailyWeather };
