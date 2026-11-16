@@ -719,3 +719,26 @@
     cursor: pointer;
     font-weight: 600;
 }
+
+.kiosk-weather {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.875rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    font-size: 0.95rem;
+    color: var(--font-color);
+}
+
+.kiosk-weather-temps {
+    color: var(--font-muted);
+    font-weight: 600;
+}
+
+.kiosk-weather-credit {
+    font-size: 0.7rem;
+    color: var(--font-muted);
+}
