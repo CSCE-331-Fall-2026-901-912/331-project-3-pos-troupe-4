@@ -110,6 +110,10 @@ export async function getSalesReport(startDate, endDate) {
   return apiFetch(`/salesReport?${params}`);
 }
 
+export async function getWeather() {
+  return apiFetch('/api/weather');
+}
+
 // INVENTORY
 
 export async function addInventoryItem(itemName, initialStock, supplierCost, isAddable) {

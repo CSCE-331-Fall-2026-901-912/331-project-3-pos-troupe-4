@@ -6,6 +6,7 @@ import { useKioskCart, ADDON_PRICE } from '../components/Kiosk/KioskCartHandling
 import CustomizationScreen from '../components/Kiosk/KioskCustomization';
 import CheckoutScreen from '../components/Kiosk/KioskCheckout';
 import DrinkIcon from '../components/Kiosk/DrinkIcon';
+import WeatherBadge from '../components/Kiosk/WeatherBadge';
 
 export default function KioskPage() {
   const navigate = useNavigate();
@@ -177,6 +178,8 @@ export default function KioskPage() {
           <h1>Build your drink.</h1>
           <p>Choose an item to get started.</p>
         </div>
+
+        <WeatherBadge />
 
         {/* Search & Sort / Filter Bar */}
         <div className="kiosk-controls">

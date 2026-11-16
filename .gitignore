@@ -34,6 +34,7 @@ Thumbs.db
 dist/
 coverage/
 .nyc_output/
+weather-cache.json/
 
 # personal bs
 .gitignore 
