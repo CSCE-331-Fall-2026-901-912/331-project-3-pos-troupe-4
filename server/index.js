@@ -11,6 +11,7 @@ const Model = require('./Model');
 
 const session = require('express-session');
 const passport = require('passport');
+const { getDailyWeather } = require('./middleware/weather');
 const GitHubStrategy = require('passport-github2').Strategy;
 const PgSession = require('connect-pg-simple')(session);
 
@@ -639,6 +640,15 @@ app.post('/api/orders', async (req, res) => {
     });
   }
 });
+
+// Get weather information for the day for the kiosk
+import { getDailyWeather } from './middleware/weather';
+
+app.get('/api/weather', async (req, res) => {
+  const weather = await getDailyWeather();
+  if (!weather) return res.status(503).json({ error: 'Weather unavailable' });
+  res.json(weather);
+})
 
 // Serve static frontend assets built by Vite
 const distPath = path.join(__dirname, '../dist');
