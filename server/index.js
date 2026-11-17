@@ -694,7 +694,29 @@ app.get('/api/weather', async (req, res) => {
   const weather = await getDailyWeather();
   if (!weather) return res.status(503).json({ error: 'Weather unavailable' });
   res.json(weather);
-})
+});
+
+// GET customer order history
+app.get('/api/customer/orders', async (req, res) => {
+  try {
+    const { name } = req.query;
+    if (!name || !name.trim()) {
+      return res.json([]);
+    }
+    const result = await pool.query(
+      `SELECT order_id, total_price, customer_name, date_time 
+       FROM order_history 
+       WHERE LOWER(customer_name) = LOWER($1) 
+       ORDER BY date_time DESC 
+       LIMIT 15`,
+      [name.trim()]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Failed to get customer orders:', err);
+    res.status(500).json({ error: 'Failed to fetch customer orders' });
+  }
+});
 
 // Serve static frontend assets built by Vite
 const distPath = path.join(__dirname, '../dist');

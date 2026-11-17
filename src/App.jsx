@@ -9,6 +9,7 @@ import CartPage from './pages/CartPage';
 import KioskPage from './pages/KioskMainPage';
 import KitchenPage from './pages/KitchenPage';
 import RoleSelector from './pages/RoleSelector';
+import CustomerOrderPage from './pages/CustomerOrderPage';
 import { CartProvider } from './components/Cashier/CartHandling';
 import EmployeeRoute from './components/EmployeeRoute';
 import { KioskCartProvider } from './components/Kiosk/KioskCartHandling';
@@ -68,6 +69,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<RoleSelector />} />
             <Route path="/kiosk" element={<KioskPage />} />
+            <Route path="/order" element={<CustomerOrderPage />} />
+            <Route path="/customer" element={<CustomerOrderPage />} />
             <Route
                 path="/manager"
                 element={

@@ -48,6 +48,8 @@ export default function AppHeader() {
   const isPortal = pathname === '/';
 
   const modeTitles = {
+    '/order': { name: 'Customer Ordering', icon: '🛍️' },
+    '/customer': { name: 'Customer Ordering', icon: '🛍️' },
     '/kiosk': { name: 'Kiosk Ordering', icon: '🍵' },
     '/cashier': { name: 'Cashier POS', icon: '💳' },
     '/cashier/customize': { name: 'Cashier Customization', icon: '🎨' },

@@ -238,3 +238,10 @@ export async function placeOrder(order) {
     body: JSON.stringify(order)
   });
 }
+
+export async function getCustomerOrders(customerName) {
+  if (!customerName) return [];
+  const params = new URLSearchParams({ name: customerName });
+  return apiFetch(`/customer/orders?${params}`);
+}
+
