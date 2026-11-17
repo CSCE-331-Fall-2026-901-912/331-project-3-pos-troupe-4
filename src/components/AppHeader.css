@@ -211,6 +211,9 @@ html.high-contrast .app-header__view-btn.active {
 }
 
 @media (max-width: 768px) {
+  .app-header.app-header--customer-order {
+    display: none !important;
+  }
   .app-header__view-toggle {
     display: none;
   }

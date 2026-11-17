@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getMenuItems } from '../../api';
 import { useCustomerCart } from './CustomerCartContext';
 import DrinkIcon from '../Kiosk/DrinkIcon';
@@ -8,6 +9,7 @@ import CustomerProfileModal from './CustomerProfileModal';
 import './CustomerOrderView.css';
 
 export default function CustomerOrderView({ isMobile = false, isSimulated = false }) {
+  const navigate = useNavigate();
   const {
     items,
     addItem,
@@ -119,7 +121,24 @@ export default function CustomerOrderView({ isMobile = false, isSimulated = fals
     <div className={`customer-order-root ${isMobile ? 'is-mobile-view' : 'is-desktop-view'} ${isSimulated ? 'is-simulated-view' : ''}`}>
       {/* Brand Header */}
       <header className="customer-nav-header">
-        <div className="nav-brand-wrap">
+        <div
+          className="nav-brand-wrap"
+          onClick={() => {
+            if (!isSimulated) {
+              navigate('/');
+            }
+          }}
+          style={{ cursor: isSimulated ? 'default' : 'pointer' }}
+          role={isSimulated ? undefined : "button"}
+          tabIndex={isSimulated ? undefined : 0}
+          onKeyDown={(e) => {
+            if (!isSimulated && (e.key === 'Enter' || e.key === ' ')) {
+              e.preventDefault();
+              navigate('/');
+            }
+          }}
+          title={isSimulated ? undefined : "Return to Portal"}
+        >
           <span className="brand-logo-icon">🧋</span>
           <div>
             <h1 className="brand-heading">Troupe 04 Boba</h1>

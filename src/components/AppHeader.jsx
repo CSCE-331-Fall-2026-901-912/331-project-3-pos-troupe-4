@@ -69,7 +69,7 @@ export default function AppHeader() {
   }
 
   return (
-    <header className="app-header" role="banner">
+    <header className={`app-header ${isCustomerOrderPage ? 'app-header--customer-order' : ''}`} role="banner">
       <a href="#main" className="skip-link"
         onClick={(e) => {
           e.preventDefault();

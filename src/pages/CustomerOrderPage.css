@@ -1,6 +1,7 @@
 /* Full Customer Order Page */
 .customer-page-native-mobile {
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   background: var(--background-color, #f8fafc);
   box-sizing: border-box;
