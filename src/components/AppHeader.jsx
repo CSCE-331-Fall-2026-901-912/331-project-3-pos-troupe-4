@@ -59,6 +59,7 @@ export default function AppHeader() {
     '/manager': { name: 'Manager Portal', icon: '📊' },
   };
 
+  const currentMode = modeTitles[pathname] || { name: 'POS System', icon: '🍵' };
   const isCustomerOrderPage = pathname === '/order' || pathname === '/customer';
   const searchParams = new URLSearchParams(location.search);
   const currentView = searchParams.get('view') === 'mobile' ? 'mobile' : 'desktop';
