@@ -4,20 +4,22 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 70px);
-  padding: 1.5rem 1rem 2.5rem;
+  min-height: calc(100vh - 65px);
+  padding: 0.75rem 1rem;
   background: var(--background-color, #f1f5f9);
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-/* Simplified Smartphone Chassis - Plain Black Outline */
+/* Simplified Smartphone Chassis - Plain Black Outline with Locked 19.5:9 Aspect Ratio */
 .phone-chassis {
   position: relative;
-  width: 393px;
-  height: 844px;
-  max-height: calc(100vh - 100px);
+  height: min(844px, calc(100vh - 90px));
+  aspect-ratio: 393 / 852;
+  width: auto;
+  max-width: 90vw;
   background: #000000;
-  border: 8px solid #000000;
+  border: 7px solid #000000;
   border-radius: 46px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
   box-sizing: border-box;

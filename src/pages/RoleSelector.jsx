@@ -58,37 +58,56 @@ export default function RoleSelector() {
             title: 'Cashier Mode',
             description: 'Take customer orders, customize drinks, and process transactions.',
             path: '/cashier',
-            icon: '💳'
+            icon: '💳',
+            requiresAuth: true
         },
         {
             title: 'Manager Mode',
             description: 'Manage inventory, employees, menu items, prices, and sales reports.',
             path: '/manager',
-            icon: '📊'
+            icon: '📊',
+            requiresAuth: true
         },
         {
             title: 'Kitchen Mode',
             description: 'View incoming orders, check customized add-ins, and advance preparation status.',
             path: '/kitchen',
-            icon: '🍳'
+            icon: '🍳',
+            requiresAuth: true
         },
         {
             title: 'Kiosk Mode',
             description: 'Allow customers to browse the menu, customize toppings, and place self-service orders.',
             path: '/kiosk',
-            icon: '🍵'
+            icon: '🍵',
+            requiresAuth: false
         },
         {
-            title: 'Customer Online Ordering',
-            description: 'Order ahead from mobile or desktop with customer accounts, drink customization, and live pickup status.',
+            title: 'Online Ordering',
+            description: 'Order ahead from mobile or desktop with customer accounts and live pickup status.',
             path: '/order',
             icon: '🛍️',
             isCustomer: true
         }
     ];
 
+    function handleDefaultAction(mode) {
+        if (logoutStatus !== 'ready') return;
+        if (mode.path === '/manager') {
+            window.location.href = '/api/auth/github?mode=manager';
+        } else if (mode.path === '/cashier') {
+            window.location.href = '/api/auth/github?mode=cashier';
+        } else if (mode.path === '/kitchen') {
+            window.location.href = '/api/auth/github?mode=kitchen';
+        } else if (mode.isCustomer) {
+            navigate('/order?view=desktop');
+        } else {
+            navigate(mode.path);
+        }
+    }
+
     return (
-        <main id="main"  className="role-container">
+        <main id="main" className="role-container">
             <div className="role-shell">
 
                 <header className="role-header">
@@ -109,52 +128,81 @@ export default function RoleSelector() {
 
                     <div className="role-grid">
                         {modes.map((mode) => (
-                            <div key={mode.path} className="role-card-wrapper">
-                                <div
-                                    className={`role-card ${mode.isCustomer ? 'role-card--highlight' : ''}`}
-                                    onClick={() => {
-                                        if (logoutStatus !== 'ready') return;
-                                        if (mode.path === '/manager') {
-                                            window.location.href = '/api/auth/github?mode=manager';
-                                        } else if (mode.path === '/cashier') {
-                                            window.location.href = '/api/auth/github?mode=cashier';
-                                        } else if (mode.path === '/kitchen') {
-                                            window.location.href = '/api/auth/github?mode=kitchen';
-                                        } else {
-                                            navigate(mode.path);
-                                        }
-                                    }}
-                                    role="button"
-                                    tabIndex={0}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' || e.key === ' ') {
-                                            e.preventDefault();
-                                            if (mode.path === '/manager') window.location.href = '/api/auth/github?mode=manager';
-                                            else if (mode.path === '/cashier') window.location.href = '/api/auth/github?mode=cashier';
-                                            else if (mode.path === '/kitchen') window.location.href = '/api/auth/github?mode=kitchen';
-                                            else navigate(mode.path);
-                                        }
-                                    }}
-                                >
-                                    <div className="role-card-top">
-                                        <span className="role-icon">{mode.icon}</span>
-                                        {mode.badge && <span className="role-badge">{mode.badge}</span>}
-                                    </div>
-                                    <h3>{mode.title}</h3>
-                                    <p>{mode.description}</p>
+                            <div
+                                key={mode.path}
+                                className={`role-card ${mode.isCustomer ? 'role-card--highlight' : ''}`}
+                                onClick={() => handleDefaultAction(mode)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        handleDefaultAction(mode);
+                                    }
+                                }}
+                            >
+                                <div className="role-card-top">
+                                    <span className="role-icon">{mode.icon}</span>
+                                </div>
+                                <h3>{mode.title}</h3>
+                                <p>{mode.description}</p>
 
-                                    {mode.isCustomer ? (
-                                        <div className="role-customer-actions">
+                                <div className="role-card-actions">
+                                    {mode.requiresAuth && (
+                                        <>
                                             <button
                                                 type="button"
-                                                className="role-sub-btn role-sub-btn--desktop"
+                                                className="role-sub-btn role-sub-btn--primary"
+                                                disabled={logoutStatus !== 'ready'}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    window.location.href = `/api/auth/github?mode=${mode.path.substring(1)}`;
+                                                }}
+                                                title="Log in with verified GitHub account"
+                                            >
+                                                Log In
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="role-sub-btn role-sub-btn--demo"
+                                                disabled={logoutStatus !== 'ready'}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDemoLogin(mode.path.substring(1));
+                                                }}
+                                                title="Test with demo account"
+                                            >
+                                                Demo Login
+                                            </button>
+                                        </>
+                                    )}
+
+                                    {mode.path === '/kiosk' && (
+                                        <button
+                                            type="button"
+                                            className="role-sub-btn role-sub-btn--primary role-sub-btn--full"
+                                            disabled={logoutStatus !== 'ready'}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                navigate('/kiosk');
+                                            }}
+                                        >
+                                            Launch Kiosk →
+                                        </button>
+                                    )}
+
+                                    {mode.isCustomer && (
+                                        <>
+                                            <button
+                                                type="button"
+                                                className="role-sub-btn role-sub-btn--primary"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     navigate('/order?view=desktop');
                                                 }}
                                                 title="Open full desktop customer website"
                                             >
-                                                🖥️ Desktop View
+                                                🖥️ Desktop
                                             </button>
                                             <button
                                                 type="button"
@@ -165,25 +213,11 @@ export default function RoleSelector() {
                                                 }}
                                                 title="Open mobile smartphone simulator"
                                             >
-                                                📱 Phone Simulator
+                                                📱 Phone Sim
                                             </button>
-                                        </div>
-                                    ) : (
-                                        <span className="role-card-link">
-                                            Open Mode →
-                                        </span>
+                                        </>
                                     )}
                                 </div>
-
-                                {mode.path !== '/kiosk' && !mode.isCustomer && (
-                                    <button
-                                        className="demo-login-button"
-                                        disabled={logoutStatus !== 'ready'}
-                                        onClick={() => handleDemoLogin(mode.path.substring(1))}
-                                    >
-                                        Demo Login →
-                                    </button>
-                                )}
                             </div>
                         ))}
                     </div>
