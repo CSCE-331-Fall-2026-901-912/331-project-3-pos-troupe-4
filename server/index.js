@@ -89,6 +89,54 @@ passport.deserializeUser(async (employeeId, done) => {
 
 app.use(express.json());
 
+
+// Demo login for TA testing
+app.post('/api/auth/demo', async (req, res, next) => {
+    // Only allow demo login when explicitly enabled
+    if (process.env.ENABLE_DEMO_LOGIN !== 'true') {
+        return res.status(404).json({ error: 'Not found' });
+    }
+
+    const { mode } = req.body;
+
+    if (!['manager', 'cashier', 'kitchen'].includes(mode)) {
+        return res.status(400).json({ error: 'Invalid login mode' });
+    }
+
+    try {
+        // Retrieve your employee profile
+        const employee = await Model.getEmployeeById(1);
+
+        if (!employee) {
+            return res.status(404).json({
+                error: 'Demo employee not found'
+            });
+        }
+
+        // Enforce manager permissions
+        if (mode === 'manager' && !employee.is_manager) {
+            return res.status(403).json({
+                error: 'Manager access required'
+            });
+        }
+
+        // Establish a real Passport session
+        req.login(employee, (err) => {
+            if (err) return next(err);
+
+            res.json({
+                success: true,
+                redirectTo: `/${mode}`
+            });
+        });
+
+    } catch (err) {
+        console.error('Demo login error:', err);
+        res.status(500).json({ error: 'Demo login failed' });
+    }
+});
+
+
 // Start GitHub login
 app.get('/api/auth/github', (req, res, next) => {
     const mode = req.query.mode;

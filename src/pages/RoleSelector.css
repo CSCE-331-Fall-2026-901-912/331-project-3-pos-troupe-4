@@ -183,3 +183,33 @@
         font-size: 1.4rem;
     }
 }
+
+.role-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.role-card-wrapper .role-card {
+    width: 100%;
+}
+
+.demo-login-button {
+    padding: 10px;
+    border: 1px solid #64748b;
+    border-radius: 6px;
+    background: white;
+    color: #475569;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.demo-login-button:hover:not(:disabled) {
+    background: #f1f5f9;
+}
+
+.demo-login-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

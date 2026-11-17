@@ -6,6 +6,31 @@ export default function RoleSelector() {
     const navigate = useNavigate();
     const [logoutStatus, setLogoutStatus] = useState('loggingOut');
 
+    const handleDemoLogin = async (mode) => {
+        try {
+            const response = await fetch('/api/auth/demo', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mode })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Demo login failed');
+            }
+
+            navigate(data.redirectTo);
+
+        } catch (error) {
+            console.error('Demo login error:', error);
+            alert(error.message);
+        }
+    };
+
     useEffect(() => {
         const logout = async () => {
             try {
@@ -77,31 +102,44 @@ export default function RoleSelector() {
 
                     <div className="role-grid">
                         {modes.map((mode) => (
-                            <button
-                                key={mode.path}
-                                className="role-card"
-                                disabled={logoutStatus !== 'ready'}
-                                onClick={() => {
-                                    if (mode.path === '/manager') {
-                                        window.location.href = '/api/auth/github?mode=manager';
-                                    } else if (mode.path === '/cashier') {
-                                        window.location.href = '/api/auth/github?mode=cashier';
-                                    } else if (mode.path === '/kitchen') {
-                                        window.location.href = '/api/auth/github?mode=kitchen';
-                                    } else {
-                                        navigate(mode.path);
-                                    }
-                                }}
-                            >
-                                <span className="role-icon">{mode.icon}</span>
-                                <h3>{mode.title}</h3>
-                                <p>{mode.description}</p>
-                                <span className="role-card-link">
-                                    Open Mode →
-                                </span>
-                            </button>
+                            <div key={mode.path} className="role-card-wrapper">
+
+                                <button
+                                    className="role-card"
+                                    disabled={logoutStatus !== 'ready'}
+                                    onClick={() => {
+                                        if (mode.path === '/manager') {
+                                            window.location.href = '/api/auth/github?mode=manager';
+                                        } else if (mode.path === '/cashier') {
+                                            window.location.href = '/api/auth/github?mode=cashier';
+                                        } else if (mode.path === '/kitchen') {
+                                            window.location.href = '/api/auth/github?mode=kitchen';
+                                        } else {
+                                            navigate(mode.path);
+                                        }
+                                    }}
+                                >
+                                    <span className="role-icon">{mode.icon}</span>
+                                    <h3>{mode.title}</h3>
+                                    <p>{mode.description}</p>
+                                    <span className="role-card-link">
+                                        Open Mode →
+                                    </span>
+                                </button>
+
+                                {mode.path !== '/kiosk' && (
+                                    <button
+                                        className="demo-login-button"
+                                        disabled={logoutStatus !== 'ready'}
+                                        onClick={() => handleDemoLogin(mode.path.substring(1))}
+                                    >
+                                        Demo Login →
+                                    </button>
+                                )}
+
+                            </div>
                         ))}
-                    </div>
+</div>
                 </section>
 
                 <footer className="role-footer">
