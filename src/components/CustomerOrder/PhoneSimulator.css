@@ -3,29 +3,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: calc(100vh - 65px);
-  padding: 0.75rem 1rem;
+  padding: 1.5rem 1rem 3rem;
   background: var(--background-color, #f1f5f9);
   box-sizing: border-box;
-  overflow: hidden;
 }
 
-/* Simplified Smartphone Chassis - Plain Black Outline with Locked 19.5:9 Aspect Ratio */
+/* Simplified Smartphone Chassis - Original iPhone 16 Pro Sizing with Plain Black Outline */
 .phone-chassis {
   position: relative;
-  height: min(844px, calc(100vh - 90px));
-  aspect-ratio: 393 / 852;
-  width: auto;
-  max-width: 90vw;
+  width: 393px;
+  height: 830px;
+  max-width: 100%;
   background: #000000;
-  border: 7px solid #000000;
+  border: 8px solid #000000;
   border-radius: 46px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   user-select: none;
+  flex-shrink: 0;
 }
 
 /* Screen Shell */

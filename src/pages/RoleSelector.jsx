@@ -83,8 +83,8 @@ export default function RoleSelector() {
             requiresAuth: false
         },
         {
-            title: 'Online Ordering',
-            description: 'Order ahead from mobile or desktop with customer accounts and live pickup status.',
+            title: 'Customer Online Ordering',
+            description: 'Order ahead from mobile or desktop with customer accounts, drink customization, and live pickup status.',
             path: '/order',
             icon: '🛍️',
             isCustomer: true
@@ -202,7 +202,7 @@ export default function RoleSelector() {
                                                 }}
                                                 title="Open full desktop customer website"
                                             >
-                                                🖥️ Desktop
+                                                🖥️ Desktop View
                                             </button>
                                             <button
                                                 type="button"
@@ -213,7 +213,7 @@ export default function RoleSelector() {
                                                 }}
                                                 title="Open mobile smartphone simulator"
                                             >
-                                                📱 Phone Sim
+                                                📱 Phone Simulator
                                             </button>
                                         </>
                                     )}
