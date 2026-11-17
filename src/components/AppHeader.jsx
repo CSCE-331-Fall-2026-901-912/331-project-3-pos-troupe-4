@@ -59,7 +59,13 @@ export default function AppHeader() {
     '/manager': { name: 'Manager Portal', icon: '📊' },
   };
 
-  const currentMode = modeTitles[pathname] || { name: 'POS System', icon: '🍵' };
+  const isCustomerOrderPage = pathname === '/order' || pathname === '/customer';
+  const searchParams = new URLSearchParams(location.search);
+  const currentView = searchParams.get('view') === 'mobile' ? 'mobile' : 'desktop';
+
+  function handleViewChange(view) {
+    navigate(`${pathname}?view=${view}`);
+  }
 
   return (
     <header className="app-header" role="banner">
@@ -97,6 +103,29 @@ export default function AppHeader() {
           <div className="app-header__mode-label">
             <span className="app-header__mode-icon">{currentMode.icon}</span>
             <span className="app-header__mode-name">{currentMode.name}</span>
+          </div>
+        )}
+
+        {isCustomerOrderPage && (
+          <div className="app-header__view-toggle" role="group" aria-label="Customer View Mode">
+            <button
+              type="button"
+              className={`app-header__view-btn ${currentView === 'desktop' ? 'active' : ''}`}
+              onClick={() => handleViewChange('desktop')}
+              title="View full desktop website"
+            >
+              <span>🖥️</span>
+              <span>Desktop</span>
+            </button>
+            <button
+              type="button"
+              className={`app-header__view-btn ${currentView === 'mobile' ? 'active' : ''}`}
+              onClick={() => handleViewChange('mobile')}
+              title="View simulated mobile phone"
+            >
+              <span>📱</span>
+              <span>Mobile Sim</span>
+            </button>
           </div>
         )}
       </div>

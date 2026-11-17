@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useCustomerCart } from './CustomerCartContext';
 import { getCustomerOrders } from '../../api';
 
-export default function CustomerProfileModal({ isOpen, onClose, onSelectDrink, isMobile }) {
+export default function CustomerProfileModal({ isOpen, onClose, onSelectDrink, isMobile, isSimulated }) {
   const { profile, updateProfile, reorder } = useCustomerCart();
   const [activeTab, setActiveTab] = useState('orders'); // 'orders' or 'profile'
   const [name, setName] = useState(profile.name || '');
@@ -52,7 +52,7 @@ export default function CustomerProfileModal({ isOpen, onClose, onSelectDrink, i
   const localOrders = profile.recentOrders || [];
 
   return (
-    <div className={`customer-modal-backdrop ${isMobile ? 'is-mobile-backdrop' : ''}`} onClick={onClose}>
+    <div className={`customer-modal-backdrop ${isMobile ? 'is-mobile-backdrop' : ''} ${isSimulated ? 'is-simulated-backdrop' : ''}`} onClick={onClose}>
       <div
         className={`customer-profile-card ${isMobile ? 'is-mobile-sheet' : ''}`}
         onClick={(e) => e.stopPropagation()}

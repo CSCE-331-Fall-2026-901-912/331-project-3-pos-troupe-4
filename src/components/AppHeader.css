@@ -159,6 +159,64 @@
   margin: 0 0.25rem;
 }
 
+/* Online Ordering View Toggle */
+.app-header__view-toggle {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border, #E5ECE6);
+  border-radius: 9999px;
+  background: var(--card-bg, #ffffff);
+  padding: 2px;
+  margin-left: 0.5rem;
+}
+
+.app-header__view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--font-muted, #64748b);
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  line-height: 1.2;
+}
+
+.app-header__view-btn:hover {
+  color: var(--primary-color, #2E6F5E);
+}
+
+.app-header__view-btn.active {
+  background: var(--primary-color, #2E6F5E);
+  color: #ffffff;
+}
+
+html.high-contrast .app-header__view-toggle {
+  border: 2px solid #ffff00 !important;
+  background: #000000 !important;
+}
+
+html.high-contrast .app-header__view-btn {
+  color: #ffff00 !important;
+}
+
+html.high-contrast .app-header__view-btn.active {
+  background: #ffff00 !important;
+  color: #000000 !important;
+}
+
+@media (max-width: 768px) {
+  .app-header__view-toggle {
+    display: none;
+  }
+}
+
+
 /* keyboard accessible */
 .skip-link{
   position: absolute;

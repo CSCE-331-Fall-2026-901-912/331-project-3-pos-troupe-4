@@ -1308,3 +1308,261 @@
   font-size: 0.8rem;
   font-weight: 600;
 }
+
+/* ==========================================================================
+   SIMULATED MOBILE VIEWPORT CONTAINMENT
+   Ensures modals, drawers, and floating bars remain inside the phone screen
+   ========================================================================== */
+.customer-order-root.is-simulated-view {
+  position: relative !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  padding-bottom: 0 !important;
+}
+
+.customer-order-root.is-simulated-view .customer-main-content {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding-bottom: 5.5rem !important;
+}
+
+.customer-order-root.is-simulated-view .customer-modal-backdrop,
+.customer-order-root.is-simulated-view .customer-cart-backdrop,
+.is-simulated-backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 500 !important;
+  border-radius: 36px !important;
+  overflow: hidden !important;
+}
+
+.customer-order-root.is-simulated-view .customer-modal-card.is-mobile-sheet,
+.customer-order-root.is-simulated-view .customer-profile-card.is-mobile-sheet {
+  width: 100% !important;
+  max-width: 100% !important;
+  max-height: 82% !important;
+  border-radius: 20px 20px 0 0 !important;
+}
+
+.customer-order-root.is-simulated-view .customer-cart-panel.is-mobile-cart-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 88% !important;
+  max-height: 88% !important;
+  border-radius: 20px 20px 0 0 !important;
+}
+
+.customer-order-root.is-simulated-view .mobile-floating-cart-bar {
+  position: absolute !important;
+  bottom: 0.65rem !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 0.85rem !important;
+  z-index: 45 !important;
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE FOR CUSTOMER ORDER VIEW
+   ========================================================================== */
+html.high-contrast .customer-order-root {
+  background: #000000 !important;
+  color: #ffff00 !important;
+}
+
+html.high-contrast .customer-nav-header {
+  background: #000000 !important;
+  border-bottom: 2px solid #ffff00 !important;
+}
+
+html.high-contrast .brand-heading {
+  color: #ffff00 !important;
+}
+
+html.high-contrast .brand-sub {
+  color: #ffffff !important;
+}
+
+html.high-contrast .nav-profile-btn {
+  background: #000000 !important;
+  color: #ffff00 !important;
+  border: 2px solid #ffff00 !important;
+}
+
+html.high-contrast .nav-profile-btn:hover {
+  background: #ffff00 !important;
+  color: #000000 !important;
+}
+
+html.high-contrast .nav-cart-btn {
+  background: #ffff00 !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+html.high-contrast .cart-badge-count {
+  background: #ff0055 !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+}
+
+html.high-contrast .customer-promo-banner {
+  background: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+  box-shadow: none !important;
+}
+
+html.high-contrast .promo-pill {
+  background: #ffff00 !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+html.high-contrast .customer-search-input,
+html.high-contrast .customer-sort-dropdown,
+html.high-contrast .checkout-input,
+html.high-contrast .custom-notes-input,
+html.high-contrast .profile-input,
+html.high-contrast .mock-card-input {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffff00 !important;
+}
+
+html.high-contrast .category-pill,
+html.high-contrast .custom-pill-btn,
+html.high-contrast .profile-tab-btn,
+html.high-contrast .payment-pill {
+  background: #000000 !important;
+  color: #ffff00 !important;
+  border: 1px solid #ffff00 !important;
+}
+
+html.high-contrast .category-pill.active,
+html.high-contrast .custom-pill-btn.active,
+html.high-contrast .profile-tab-btn.active,
+html.high-contrast .payment-pill.active {
+  background: #ffff00 !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+html.high-contrast .drink-card,
+html.high-contrast .cart-item-card,
+html.high-contrast .profile-order-card,
+html.high-contrast .confirmed-ticket-card {
+  background: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+  box-shadow: none !important;
+}
+
+html.high-contrast .drink-card-name {
+  color: #ffff00 !important;
+}
+
+html.high-contrast .drink-card-price,
+html.high-contrast .footer-price-val,
+html.high-contrast .ticket-id,
+html.high-contrast .grand-price,
+html.high-contrast .order-card-number,
+html.high-contrast .floating-cart-total {
+  color: #00ffff !important;
+}
+
+html.high-contrast .drink-card-add-btn,
+html.high-contrast .floating-cart-btn,
+html.high-contrast .custom-confirm-btn,
+html.high-contrast .cart-checkout-proceed-btn,
+html.high-contrast .submit-order-btn,
+html.high-contrast .new-order-btn,
+html.high-contrast .save-profile-btn,
+html.high-contrast .reorder-btn {
+  background: #00ffff !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  border: 2px solid #ffffff !important;
+}
+
+html.high-contrast .mobile-floating-cart-bar {
+  background: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+  box-shadow: none !important;
+}
+
+html.high-contrast .customer-modal-card,
+html.high-contrast .customer-cart-panel,
+html.high-contrast .customer-profile-card {
+  background: #000000 !important;
+  border: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+html.high-contrast .custom-modal-header,
+html.high-contrast .cart-panel-header,
+html.high-contrast .profile-modal-header {
+  background: #000000 !important;
+  border-bottom: 2px solid #ffff00 !important;
+}
+
+html.high-contrast .custom-modal-footer,
+html.high-contrast .cart-panel-footer {
+  background: #000000 !important;
+  border-top: 2px solid #ffff00 !important;
+}
+
+html.high-contrast .pickup-banner {
+  background: #000000 !important;
+  border: 2px solid #00ffff !important;
+  color: #00ffff !important;
+}
+
+html.high-contrast .pickup-banner p {
+  color: #ffffff !important;
+}
+
+html.high-contrast .custom-cancel-btn,
+html.high-contrast .back-to-bag-btn {
+  background: #000000 !important;
+  color: #ffff00 !important;
+  border: 1px solid #ffff00 !important;
+}
+
+html.high-contrast .custom-modal-close,
+html.high-contrast .cart-close-btn {
+  background: #000000 !important;
+  color: #ffff00 !important;
+  border: 1px solid #ffff00 !important;
+}
+
+html.high-contrast .tracker-step .step-circle {
+  background: #000000 !important;
+  border-color: #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+html.high-contrast .tracker-step.completed .step-circle {
+  background: #00ffff !important;
+  border-color: #00ffff !important;
+  color: #000000 !important;
+}
+
+html.high-contrast .tracker-line.active {
+  background: #00ffff !important;
+}
+
+html.high-contrast .order-card-summary,
+html.high-contrast .confirmed-tagline,
+html.high-contrast .custom-section-title,
+html.high-contrast .checkout-label {
+  color: #ffff00 !important;
+}
+

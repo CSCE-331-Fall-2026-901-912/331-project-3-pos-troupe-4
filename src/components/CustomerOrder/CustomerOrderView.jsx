@@ -7,7 +7,7 @@ import CustomerCartDrawer from './CustomerCartDrawer';
 import CustomerProfileModal from './CustomerProfileModal';
 import './CustomerOrderView.css';
 
-export default function CustomerOrderView({ isMobile = false }) {
+export default function CustomerOrderView({ isMobile = false, isSimulated = false }) {
   const {
     items,
     addItem,
@@ -116,7 +116,7 @@ export default function CustomerOrderView({ isMobile = false }) {
   }
 
   return (
-    <div className={`customer-order-root ${isMobile ? 'is-mobile-view' : 'is-desktop-view'}`}>
+    <div className={`customer-order-root ${isMobile ? 'is-mobile-view' : 'is-desktop-view'} ${isSimulated ? 'is-simulated-view' : ''}`}>
       {/* Brand Header */}
       <header className="customer-nav-header">
         <div className="nav-brand-wrap">
@@ -405,6 +405,7 @@ export default function CustomerOrderView({ isMobile = false }) {
           }}
           onConfirm={handleSaveCustomization}
           isMobile={isMobile}
+          isSimulated={isSimulated}
         />
       )}
 
@@ -417,12 +418,14 @@ export default function CustomerOrderView({ isMobile = false }) {
           setLastOrderPlaced(orderData);
         }}
         isMobile={isMobile}
+        isSimulated={isSimulated}
       />
 
       <CustomerProfileModal
         isOpen={isProfileOpen}
         onClose={() => setIsProfileOpen(false)}
         isMobile={isMobile}
+        isSimulated={isSimulated}
       />
     </div>
   );

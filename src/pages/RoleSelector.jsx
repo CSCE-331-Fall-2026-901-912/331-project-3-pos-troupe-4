@@ -80,7 +80,6 @@ export default function RoleSelector() {
         },
         {
             title: 'Customer Online Ordering',
-            badge: 'Beyond Feature (PB-15)',
             description: 'Order ahead from mobile or desktop with customer accounts, drink customization, and live pickup status.',
             path: '/order',
             icon: '🛍️',

@@ -15,7 +15,8 @@ export default function CustomerCustomizationModal({
   initialData,
   onClose,
   onConfirm,
-  isMobile
+  isMobile,
+  isSimulated
 }) {
   const [addableItems, setAddableItems] = useState([]);
   const [loadingAddables, setLoadingAddables] = useState(true);
@@ -68,7 +69,7 @@ export default function CustomerCustomizationModal({
   }
 
   return (
-    <div className={`customer-modal-backdrop ${isMobile ? 'is-mobile-backdrop' : ''}`} onClick={onClose}>
+    <div className={`customer-modal-backdrop ${isMobile ? 'is-mobile-backdrop' : ''} ${isSimulated ? 'is-simulated-backdrop' : ''}`} onClick={onClose}>
       <div
         className={`customer-modal-card ${isMobile ? 'is-mobile-sheet' : ''}`}
         onClick={(e) => e.stopPropagation()}

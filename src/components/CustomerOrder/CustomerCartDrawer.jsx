@@ -8,7 +8,8 @@ export default function CustomerCartDrawer({
   onClose,
   onEditItem,
   onOrderSuccess,
-  isMobile
+  isMobile,
+  isSimulated
 }) {
   const {
     items,
@@ -105,7 +106,7 @@ export default function CustomerCartDrawer({
   }
 
   return (
-    <div className={`customer-cart-backdrop ${isMobile ? 'is-mobile-cart-backdrop' : ''}`} onClick={onClose}>
+    <div className={`customer-cart-backdrop ${isMobile ? 'is-mobile-cart-backdrop' : ''} ${isSimulated ? 'is-simulated-backdrop' : ''}`} onClick={onClose}>
       <aside
         className={`customer-cart-panel ${isMobile ? 'is-mobile-cart-panel' : ''}`}
         onClick={(e) => e.stopPropagation()}
