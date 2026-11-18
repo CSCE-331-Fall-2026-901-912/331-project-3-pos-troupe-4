@@ -148,9 +148,13 @@ export default function CustomerCartDrawer({
                       </div>
 
                       <div className="cart-item-specs">
-                        {item.size && <span className="spec-tag">{item.size}</span>}
                         {item.sugar && <span className="spec-tag">{item.sugar}</span>}
                         {item.ice && <span className="spec-tag">{item.ice}</span>}
+                        {item.removed && item.removed.length > 0 && (
+                          item.removed.map((r) => (
+                            <span key={r} className="spec-tag spec-tag--removed">No {r}</span>
+                          ))
+                        )}
                       </div>
 
                       {item.addOns && item.addOns.length > 0 && (

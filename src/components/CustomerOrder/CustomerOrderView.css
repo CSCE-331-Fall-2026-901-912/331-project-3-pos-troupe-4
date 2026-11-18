@@ -583,6 +583,17 @@
   border-color: #2e6f5e;
 }
 
+.custom-pill-btn.removed {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fca5a5;
+  text-decoration: line-through;
+}
+
+.custom-pill-btn.removed:hover {
+  background: #fecaca;
+}
+
 .pill-extra {
   font-size: 0.75rem;
   opacity: 0.85;
@@ -766,6 +777,11 @@
   font-weight: 600;
   padding: 0.15rem 0.45rem;
   border-radius: 4px;
+}
+
+.spec-tag--removed {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .cart-item-addons {
@@ -1452,6 +1468,18 @@ html.high-contrast .payment-pill.active {
   background: #ffff00 !important;
   color: #000000 !important;
   font-weight: 800 !important;
+}
+
+html.high-contrast .custom-pill-btn.removed {
+  background: #000000 !important;
+  color: #ff5555 !important;
+  border: 2px dashed #ff5555 !important;
+}
+
+html.high-contrast .spec-tag--removed {
+  background: #000000 !important;
+  color: #ff5555 !important;
+  border: 1px dashed #ff5555 !important;
 }
 
 html.high-contrast .drink-card,

@@ -3,12 +3,11 @@ import { getAddableItems } from '../../api';
 import DrinkIcon from '../Kiosk/DrinkIcon';
 import { CUSTOMER_ADDON_PRICE } from './CustomerCartContext';
 
-const SWEETNESS_OPTIONS = ['100% (Normal)', '70% (Less Sweet)', '50% (Half Sweet)', '30% (Slight)', '0% (Unsweetened)'];
-const ICE_OPTIONS = ['Regular Ice', 'Less Ice', 'No Ice', 'Extra Ice'];
-const SIZE_OPTIONS = [
-  { label: 'Regular (16 oz)', extra: 0.00 },
-  { label: 'Large (24 oz)', extra: 0.75 },
-];
+const ICE_OPTIONS = ['- No Ice', '- Less Ice', '+ Extra Ice'];
+const SUGAR_OPTIONS = ['- Less Sugar', '- Half Sugar', '+ Extra Sugar'];
+
+const isPackaging = (name) => /cup|lid|napkin|straw|sleeve|seal|bag/i.test(name);
+const labelOf = (x) => (typeof x === 'string' ? x : x?.name || '');
 
 export default function CustomerCustomizationModal({
   item,
@@ -21,10 +20,10 @@ export default function CustomerCustomizationModal({
   const [addableItems, setAddableItems] = useState([]);
   const [loadingAddables, setLoadingAddables] = useState(true);
 
-  const [size, setSize] = useState(initialData?.size || 'Regular (16 oz)');
-  const [sweetness, setSweetness] = useState(initialData?.sugar || '100% (Normal)');
-  const [ice, setIce] = useState(initialData?.ice || 'Regular Ice');
+  const [removed, setRemoved] = useState(initialData?.removed || []);
   const [selectedAddons, setSelectedAddons] = useState(initialData?.addOns || []);
+  const [ice, setIce] = useState(initialData?.ice || '');
+  const [sugar, setSugar] = useState(initialData?.sugar || '');
   const [specialInstructions, setSpecialInstructions] = useState(initialData?.notes || '');
 
   useEffect(() => {
@@ -49,21 +48,30 @@ export default function CustomerCustomizationModal({
     );
   }
 
+  function toggleRemoved(name) {
+    setRemoved((prev) =>
+      prev.includes(name) ? prev.filter((r) => r !== name) : [...prev, name]
+    );
+  }
+
   const basePrice = Number(item.price) || 0;
-  const sizeExtra = size.includes('Large') ? 0.75 : 0.00;
   const addonsTotal = selectedAddons.length * CUSTOMER_ADDON_PRICE;
-  const unitTotal = basePrice + sizeExtra + addonsTotal;
+  const unitTotal = basePrice + addonsTotal;
+
+  const removableConstituents = (item.constituentItems || [])
+    .map(labelOf)
+    .filter((name) => !isPackaging(name));
 
   function handleSave() {
     onConfirm({
       productName: item.name,
       basePrice,
-      size,
-      sugar: sweetness,
+      sugar,
       ice,
       addOns: selectedAddons,
+      removed,
       notes: specialInstructions.trim(),
-      constituentItems: item.constituentItems || [],
+      constituentItems: (item.constituentItems || []).map(labelOf),
       itemTotal: unitTotal
     });
   }
@@ -91,34 +99,48 @@ export default function CustomerCustomizationModal({
 
         {/* Scrollable Body */}
         <div className="custom-modal-body">
-          {/* Size Selection */}
-          <section className="custom-section">
-            <label className="custom-section-title">Drink Size</label>
-            <div className="custom-options-row">
-              {SIZE_OPTIONS.map((opt) => (
-                <button
-                  key={opt.label}
-                  type="button"
-                  className={`custom-pill-btn ${size === opt.label ? 'active' : ''}`}
-                  onClick={() => setSize(opt.label)}
-                >
-                  <span>{opt.label}</span>
-                  {opt.extra > 0 && <span className="pill-extra">+${opt.extra.toFixed(2)}</span>}
-                </button>
-              ))}
-            </div>
-          </section>
+          {/* Base Recipe Ingredients (Included) */}
+          {removableConstituents.length > 0 && (
+            <section className="custom-section">
+              <div className="custom-section-header-flex">
+                <label className="custom-section-title">Included Ingredients</label>
+                <span className="custom-section-sub">Tap to omit</span>
+              </div>
+              <div className="custom-options-grid">
+                {removableConstituents.map((name) => {
+                  const isRemoved = removed.includes(name);
+                  return (
+                    <button
+                      key={name}
+                      type="button"
+                      className={`custom-pill-btn ${isRemoved ? 'removed' : 'active'}`}
+                      onClick={() => toggleRemoved(name)}
+                    >
+                      <span>{isRemoved ? `✕ No ${name}` : `✓ ${name}`}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
-          {/* Sweetness */}
+          {/* Sweetness Preference */}
           <section className="custom-section">
             <label className="custom-section-title">Sweetness Level</label>
             <div className="custom-options-grid">
-              {SWEETNESS_OPTIONS.map((opt) => (
+              <button
+                type="button"
+                className={`custom-pill-btn ${sugar === '' ? 'active' : ''}`}
+                onClick={() => setSugar('')}
+              >
+                Regular Sugar (Default)
+              </button>
+              {SUGAR_OPTIONS.map((opt) => (
                 <button
                   key={opt}
                   type="button"
-                  className={`custom-pill-btn ${sweetness === opt ? 'active' : ''}`}
-                  onClick={() => setSweetness(opt)}
+                  className={`custom-pill-btn ${sugar === opt ? 'active' : ''}`}
+                  onClick={() => setSugar(sugar === opt ? '' : opt)}
                 >
                   {opt}
                 </button>
@@ -126,16 +148,23 @@ export default function CustomerCustomizationModal({
             </div>
           </section>
 
-          {/* Ice */}
+          {/* Ice Preference */}
           <section className="custom-section">
             <label className="custom-section-title">Ice Level</label>
             <div className="custom-options-grid">
+              <button
+                type="button"
+                className={`custom-pill-btn ${ice === '' ? 'active' : ''}`}
+                onClick={() => setIce('')}
+              >
+                Regular Ice (Default)
+              </button>
               {ICE_OPTIONS.map((opt) => (
                 <button
                   key={opt}
                   type="button"
                   className={`custom-pill-btn ${ice === opt ? 'active' : ''}`}
-                  onClick={() => setIce(opt)}
+                  onClick={() => setIce(ice === opt ? '' : opt)}
                 >
                   {opt}
                 </button>
