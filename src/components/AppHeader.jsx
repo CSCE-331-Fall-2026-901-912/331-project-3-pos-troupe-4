@@ -24,6 +24,24 @@ export default function AppHeader() {
     }
   }, [location.pathname]);
 
+  /*Google Translate*/
+  useEffect(() => {
+    if(document.getElementById('google-translate-script')) return;
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        {pageLanguage: 'en', layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE },
+        'google_translate_element'
+      );
+    };
+
+    const script = document.createElement('script');
+    script.id = 'google-translate-script';
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
+    script.async = true;
+    document.body.appendChild(script);
+  
+  }, []);
+
   function makeTextBigger() {
     if (textSizePercent < 175) {
       setTextSizePercent((prev) => prev + 15);
@@ -178,6 +196,8 @@ export default function AppHeader() {
             <span aria-hidden="true">🌓</span>
             <span>High Contrast</span>
           </button>
+
+        <div id = "google_translate_element" className="app-header__translate"></div>
         </div>
       </div>
     </header>
