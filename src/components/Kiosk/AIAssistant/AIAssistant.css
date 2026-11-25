@@ -1,0 +1,228 @@
+
+/* Main floating container */
+.ai-assistant-container {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+}
+
+/* Floating button */
+.ai-assistant-toggle {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: none;
+    background: #55358a;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.ai-assistant-toggle:hover {
+    background: #43276f;
+    transform: scale(1.07);
+}
+
+/* Chat window */
+.ai-assistant-window {
+    position: absolute;
+    bottom: 78px;
+    right: 0;
+    width: 360px;
+    height: 480px;
+    max-height: calc(100vh - 130px);
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e5e5e5;
+}
+
+/* Header */
+.ai-assistant-header {
+    background: #55358a;
+    color: white;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ai-assistant-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ai-assistant-avatar {
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.ai-assistant-header h3 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.ai-assistant-header span {
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+.ai-assistant-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+/* Message area */
+.ai-assistant-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #faf9fc;
+}
+
+.ai-message-row {
+    display: flex;
+    width: 100%;
+}
+
+.ai-message-row.assistant {
+    justify-content: flex-start;
+}
+
+.ai-message-row.user {
+    justify-content: flex-end;
+}
+
+.ai-message {
+    max-width: 82%;
+    padding: 11px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.ai-message.assistant {
+    background: white;
+    color: #333;
+    border: 1px solid #e8e5ed;
+    border-bottom-left-radius: 3px;
+}
+
+.ai-message.user {
+    background: #55358a;
+    color: white;
+    border-bottom-right-radius: 3px;
+}
+
+/* Input area */
+.ai-assistant-input-area {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid #eee;
+    background: white;
+}
+
+.ai-assistant-input-area input {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 13px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+}
+
+.ai-assistant-input-area input:focus {
+    border-color: #55358a;
+}
+
+.ai-assistant-input-area button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: #55358a;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.ai-assistant-input-area button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Smaller screens */
+@media (max-width: 480px) {
+    .ai-assistant-container {
+        right: 15px;
+        bottom: 15px;
+    }
+
+    .ai-assistant-window {
+        width: calc(100vw - 30px);
+        right: -5px;
+        height: min(480px, calc(100dvh - 110px));
+    }
+}
+
+
+/* AI typing indicator */
+.ai-typing {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 55px;
+    padding: 14px;
+}
+
+.ai-typing span {
+    width: 7px;
+    height: 7px;
+    background: #8b79a8;
+    border-radius: 50%;
+    animation: aiTyping 1.2s infinite ease-in-out;
+}
+
+.ai-typing span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.ai-typing span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes aiTyping {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+
+    30% {
+        transform: translateY(-5px);
+        opacity: 1;
+    }
+}

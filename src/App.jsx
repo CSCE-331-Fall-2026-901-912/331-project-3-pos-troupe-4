@@ -14,6 +14,7 @@ import { CartProvider } from './components/Cashier/CartHandling';
 import EmployeeRoute from './components/EmployeeRoute';
 import { KioskCartProvider } from './components/Kiosk/KioskCartHandling';
 import AppHeader from './components/AppHeader';
+import KioskWithAssistant from './components/Kiosk/KioskWithAssistant';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -68,9 +69,34 @@ export default function App() {
         <AppHeader />
           <Routes>
             <Route path="/" element={<RoleSelector />} />
-            <Route path="/kiosk" element={<KioskPage />} />
-            <Route path="/order" element={<CustomerOrderPage />} />
-            <Route path="/customer" element={<CustomerOrderPage />} />
+            
+            <Route
+                path="/kiosk"
+                element={
+                    <KioskWithAssistant>
+                        <KioskPage />
+                    </KioskWithAssistant>
+                }
+            />
+
+            <Route
+                path="/order"
+                element={
+                    <KioskWithAssistant>
+                        <CustomerOrderPage />
+                    </KioskWithAssistant>
+                }
+            />
+
+            <Route
+                path="/customer"
+                element={
+                    <KioskWithAssistant>
+                        <CustomerOrderPage />
+                    </KioskWithAssistant>
+                }
+            />
+
             <Route
                 path="/manager"
                 element={

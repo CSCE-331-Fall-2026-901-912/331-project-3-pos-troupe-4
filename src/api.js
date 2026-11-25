@@ -38,7 +38,7 @@ export async function getOrderAddIns(order_id) {
   return apiFetch(`/orders_addins?${params}`);
 }
 /*
-export async function getOrderHistory(startDate = "2026-09-05", endDate = "2026-09-05", limit = 10) {
+export async function getAIResponse(startDate = "2026-09-05", endDate = "2026-09-05", limit = 10) {
   const params = new URLSearchParams({ startDate, endDate, limit });
   return apiFetch(`/order_history?${params}`)
 }*/
@@ -245,3 +245,14 @@ export async function getCustomerOrders(customerName) {
   return apiFetch(`/customer/orders?${params}`);
 }
 
+export async function sendAIMessage(message) {
+  return apiFetch('/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message
+    })
+  });
+}
