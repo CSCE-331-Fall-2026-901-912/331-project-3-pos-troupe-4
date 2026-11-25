@@ -8,6 +8,7 @@ const { requireAuth, requireManager } = require('./middleware/auth');
 const express = require('express');
 const pool = require('./db');
 const Model = require('./Model');
+const { askGemini } = require('./ai');
 
 const session = require('express-session');
 const passport = require('passport');
@@ -716,6 +717,48 @@ app.get('/api/customer/orders', async (req, res) => {
     console.error('Failed to get customer orders:', err);
     res.status(500).json({ error: 'Failed to fetch customer orders' });
   }
+});
+
+// AI Personal Assistant
+app.post('/api/chat', async (req, res) => {
+    try {
+        const { message } = req.body;
+
+        // Validate customer message
+        if (!message || typeof message !== 'string' || !message.trim()) {
+            return res.status(400).json({
+                error: 'A message is required.'
+            });
+        }
+
+        if (message.length > 1000) {
+            return res.status(400).json({
+                error: 'Message is too long.'
+            });
+        }
+
+        // Retrieve current menu information from database
+        const [menu, addableItems] = await Promise.all([
+            Model.getMenuItems(),
+            Model.getAddableItems()
+        ]);
+
+        // Ask Gemini to generate a response
+        const reply = await askGemini(
+            message.trim(),
+            menu,
+            addableItems
+        );
+
+        res.json({ reply });
+
+    } catch (error) {
+        console.error('AI Assistant Error:', error);
+
+        res.status(500).json({
+            error: 'Unable to generate an AI response.'
+        });
+    }
 });
 
 // Serve static frontend assets built by Vite
